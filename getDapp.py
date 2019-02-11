@@ -12,6 +12,8 @@ else:
 
 DISAS = "./TOOLS/wasm-dis %s -o %s"
 BPLIST  = "./INFO/bpList"
+CLEOS   = "./TOOLS/cleos"
+
 def main(accountName, IP="127.0.0.1:8888"):
     URL = "%s/v1/chain/get_raw_code_and_abi"%(IP)
     data={"account_name":USER_NAME}
@@ -37,6 +39,12 @@ def main(accountName, IP="127.0.0.1:8888"):
                 #print decodeWast
                 with open(PATH_FILE+".abi.down","w+") as f: f.write(decodeAbi)
                 print "[!] Save wast file [%s.abi] " % accountName
+
+                os.chdir(PATH_FILE)
+                cmd = "/EOS/cleos -u %s get code %s -a %s.abi" %(IP, USER_NAME, USER_NAME)
+                os.poen(cmd)
+                os.chdir("../../")
+
 
 if __name__ =="__main__":
     with open(BPLIST,"r") as bplists :

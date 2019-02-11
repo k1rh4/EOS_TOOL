@@ -63,6 +63,7 @@ class abiCook:
             cnt = self.getCount("Action Value")
             cnt = (cnt+1) * self.byteSize
             actionName = self.abiByte[self.base : self.base+cnt].decode("hex").strip("\x00")
+            actionName = actionName.replace("_","")
             tmpDic={'name':actionName,'type':actionName,'ricardian_contract':''}
             tmpList.append(tmpDic)
             print actionName + " : " + self.abiByte[self.base : self.base+cnt]
@@ -96,6 +97,7 @@ class abiCook:
 
             t3Value = self.carving()
             #print "[T3]" + t3Value
+            t3Value = t3Value.replace("_","")
             tmpDic["type"] = t3Value
             tmpDic["name"] = t3Value
             tmpList.append(tmpDic)
