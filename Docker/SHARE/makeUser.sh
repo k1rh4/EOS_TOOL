@@ -1,4 +1,5 @@
 #!/bin/sh
 
-python /FUZZ/runNode.py
+python /FUZZ/runNode.py | tee userInfo.db
+
 
