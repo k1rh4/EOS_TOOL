@@ -13,19 +13,20 @@ if len(sys.argv) > 1 :
 
 #nodeos_process = subprocess.Popen(cmdline,stderr=subprocess.PIPE , stdout=subprocess.PIPE)
 
-
+OP=["--stake-cpu","\"0.0001 EOS\"","--stake-net" ,"\"0.0001 EOS\"", "--buy-ram" ,"\"0.0001 EOS\""]
+OP=[]
 
 for i in range(0,3):
     print "---------------------------------------------------"
 
     randomName = ''.join(random.choice(string.ascii_lowercase) for _ in range(6))
-    print "[+] random Name : %s " % randomName
     if i == 0: randomName = "eosio.token"
-    print "[I] Create wallet "
+        print "[+] random Name : %s " % randomName
+#    print "[I] Create wallet "
     cmdLine = [ "/EOS/cleos", "wallet", "create", "-n", randomName ]
 
     wallet_process = subprocess.Popen(cmdLine, stdout=subprocess.PIPE)
-    for line in iter(wallet_process.stdout.readline,''): print line,
+#    for line in iter(wallet_process.stdout.readline,''): print line,
 
 
     cmdline = ["/EOS/cleos" ,"create","key"]
@@ -34,32 +35,34 @@ for i in range(0,3):
     priv_key    = str(key_process.stdout.readline()[13:-1])
     pub_key     = str(key_process.stdout.readline()[12:-1])
 
-    print "[+] pub_key : %s " % pub_key
+#    print "[+] pub_key : %s " % pub_key
     print "[+] priv_key: %s " % priv_key
 
 
     cmdline = ["/EOS/cleos", "wallet", "import", "-n", randomName, "--private-key", priv_key]
     wallet_process = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
-    for line in iter(wallet_process.stdout.readline,''): print line,
+#    for line in iter(wallet_process.stdout.readline,''): print line,
 
 
     eosio_key = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
     cmdline = ["/EOS/cleos", "wallet", "import", "-n", randomName, "--private-key", eosio_key]
     wallet_process = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
     wallet_process.wait()
-    for line in iter(wallet_process.stdout.readline,''): print line,
+#    for line in iter(wallet_process.stdout.readline,''): print line,
 
 
     cmdline = ["/EOS/cleos", "create", "account", "eosio", randomName, pub_key]
+    cmdline.extend(OP)
+
     account_process = subprocess.Popen(cmdline, stdout=subprocess.PIPE)
     account_process.wait()
-    for line in iter(account_process.stdout.readline,''): print line,
+#    for line in iter(account_process.stdout.readline,''): print line,
 
 
     cmdline = ["/EOS/cleos" ,"set","contract", randomName ,"[Contract Path]" ]
-    print "------------------------------------------"
-    print "[I] SET CONTRACT COMMAND LINE"
-    print " ".join(cmdline)
+#    print "------------------------------------------"
+#    print "[I] SET CONTRACT COMMAND LINE"
+#    print " ".join(cmdline)
 if len(sys.argv)>1:
     import time
     time.sleep(1000)
