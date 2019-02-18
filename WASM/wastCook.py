@@ -39,7 +39,7 @@ class wastCook():
             isFunc = 1
 
         while True:
-            w = _wastFile[_line].strip()
+            w = self.__deMangling(_wastFile[_line].strip())
             # [!] Data section could include token...#
             if _type == "data" :
                 right += w.count(") \"")
