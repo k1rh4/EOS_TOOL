@@ -98,11 +98,9 @@ class eoray():
                     if operand[i].find("goto "+label) > 0 :break;
             elif "nop" in data          : ray_code ="\n;\n"
             elif "loop" in data         :
-                raw_input("loop>")
                 label = (data.split(" ")[1])
                 operand.append(".LOOP %s:" %(label))
                 for i in range(len(operand)):
-                raw_input("block>")
                     operand[i] = "    %s" %(operand[i])
                     if operand[i].find("goto "+label)>0: break;
 
