@@ -47,7 +47,7 @@ class eoray():
             for data in self.__wastCook["import"]:
                 if fName == "$"+data.split("import \"env\"")[1].split("\"")[1] :
                     param = data[data.find("(param")::]
-                    if param.find("result")>0 : retFlag = 1
+                    if data.find("(result")>0 : retFlag = 1
                     if len(param)>0 :
                         param   = param[0:param.find(")")]
                         nRes    = param.count(" ")
@@ -70,6 +70,7 @@ class eoray():
         if nRes == -1 : 
             print "[E] there is no data for function [__getArguFormFunc : %s ]" % fName
             raw_input("stop>")
+
         return nRes, retFlag
 
     def __ray( self , stack ):
@@ -81,24 +82,31 @@ class eoray():
 
         while (stack):
             data = stack.pop()
-            print "[D] Current Stack-> ",
+            print "[D] Operand Stack-> ",
             print operand 
             print "[D] Current inst -> " +  data 
 
+            ### [error code ] ### 
             if "module" in data         : print "[E] ray function is suppose to set only function"
 
             ### [ Control constructs and instructions ] ###
-            elif "block" in data        : 
-                ray_code =".LABEL %s:" %(data.split(" ")[1])
-                while operand : ray_code += "\n\t\t" + operand.pop()
-
+            elif "block" in data        :
+                raw_input("block>")
+                label = (data.split(" ")[1])
+                label =".LABEL %s:" 
+                for i in range(operand):
+                    operand(i) = "\t%s"%(operand(i))
+                '''
+                while operand : 
+                    ray_code = ray_code + "\n %s -- %s" %(data.split(" ")[1],operand.pop())
+                '''
             elif "nop" in data          : ray_code ="\n;\n"
-            elif "br_if" in data        : ray_code  = "if ( %s ) { goto %s }" %(operand.pop(),data.split(" ")[1])
-            elif "loop" in data           : ray_code  = "loop %s" %(data.split(" ")[1])
-            elif "br" in data           : ray_code  = "goto %s" %(data.split(" ")[1])
-            elif "return" in data       :
-                if operand  : ray_code = "  return (operand.pop())"
-                else        : ray_code = "  return;"
+            elif "loop" in data         : ray_code  = "loop %s" %(data.split(" ")[1])
+            elif "return" in data       : ray_code = "return->"
+            elif "br_if" in data        : 
+                operand.append("if ( %s ) { goto %s }" %(operand.pop(),data.split(" ")[1]))
+            elif "br" in data           : 
+                operand.append("{goto %s}" %(data.split(" ")[1]))
 
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
@@ -109,10 +117,10 @@ class eoray():
 
             ### [Constants] ###
             elif "i32.const" in data    : operand.append("[%s]" %(data.split(" ")[1]))
-            elif "i64.const" in data    : operand.append("%s" %(data.split(" ")[1]))
+            elif "i64.const" in data    : operand.append("(int_64)%s" %(data.split(" ")[1]))
 
             ### [ Type-parametric operators] ###
-            elif "drop" in data         : operand.pop()
+            elif "drop" in data         : ray_code = operand.pop()
             elif "select" in data       : operand.append("( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop()))
 
             ### [ 32-bit Integer operators] ###
@@ -128,8 +136,28 @@ class eoray():
             elif "i32.gt_u" in data     : operand.append("((uint_32)%s > (uint_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.mul" in data      : operand.append("((int_32)%s * (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.lt_s" in data     : operand.append("((int_32)%s < (int_32)%s)" %(operand.pop(), operand.pop()))
-            ### [ Floating point operators ] ###
-            #???
+            elif "i32.eq" in data       : operand.append("((int_32)%s == (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.ne" in data       : operand.append("((int_32)%s != (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.xor" in data      : operand.append("((int_32)%s ^ (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.le_u" in data     : operand.append("((uint_32)%s <= (uint_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.wrap/i64" in data : operand.append("(CASTING uint_32)(uint_64 %s)" %(operand.pop()))
+            elif "i32.div_u" in data    : operand.append("((uint_32)%s / (uint_32)%s)" %(operand.pop(), operand.pop()))
+            ### [ 64-bit Integer operators] ###
+            elif "i64.div_u" in data    : operand.append("((uint_64)%s / (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.ne" in data       : operand.append("((int_64)%s != (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.add" in data      : operand.append("((int_64)%s + (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.or" in data       : operand.append("((int_64)%s | (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.add" in data      : operand.append("((int_64)%s + (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.and" in data      : operand.append("((int_64)%s & (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.shl" in data      : operand.append("((int_64)%s << (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.extend_u/i32" in data : operand.append("(CASTING uint_64)(uint_32 %s)" %(operand.pop()))
+            elif "i64.shr_s" in data    : operand.append("(int_64)%s >> (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.le_u" in data     : operand.append("((uint_64)%s <= (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.gt_u" in data     : operand.append("((uint_64)%s > (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.eq" in data       : operand.append("((int_64)%s == (int_64)%s)" %(operand.pop(), operand.pop()))
+
+            ## [ Resizing ] ###
+            elif "current_memory" in data   : operand.append("(current_memory)")
 
             ### [ Linear Memory Accesses ] ###
                 ## LOAD SOTRE NEED MODIFICATION
@@ -145,13 +173,17 @@ class eoray():
                 else                                : var  = ""
                 if var  : ray_code = "(%s+[%s]) = %s" %(operand.pop(), var, operand.pop())
                 else    : ray_code = "(%s) = %s" %(operand.pop(), operand.pop()) 
-
             elif "i64.store" in data:
                 if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
                 else                                : var  = ""
                 if var  : ray_code = "(%s+[%s]) = %s" %(operand.pop(), var, operand.pop())
                 else    : ray_code = "(%s) = %s" %(operand.pop(), operand.pop()) 
                 pass
+            elif "i64.load" in data:
+                if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
+                else                                : var = ""
+                if var  : operand.append("*(%s+[%s])" %(operand.pop(),var) )
+                else    : operand.append("*(%s)" %(operand.pop()))
 
             ### [ Calls ] ###
             elif "call" in data:
@@ -160,56 +192,55 @@ class eoray():
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
                 ray_code = "%s(%s)" % (fName, (", ".join(l)))
-                fName = fName.strip("$")
-                if retFlag == 1 : operand.append(ray_code)
+                #fName = fName.strip("$")
+                if retFlag == 1 : 
+                    operand.append(ray_code)
+                    ray_code=""
+                else : pass ## no return, print directly
 
             ### [ FUNCTION Calling convention ###
-            elif "param" == data[0:5] : operand.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
+            elif "param" == data[0:5] :
+                if not funcRet :
+                    while operand: aLineList.insert(0,operand.pop())
+                    funcRet = "void " 
+                operand.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
+
             elif "local" == data[0:5] :
-                while operand:
-                    ray_code = "%s" %(operand.pop())
-                    aLineList.insert(0,ray_code)
+                if funcRet =="":
+                    while operand: aLineList.insert(0,operand.pop())
+                    funcRet = "void "
                 ray_code  = "%s %s" % (data.split(" ")[2], data.split(" ")[1])
 
             elif "result " in data : 
+                if not funcRet :
+                    while operand: aLineList.insert(0,operand.pop())
+                    funcRet = "void "
                 funcRet = data.split(" ")[1]
-                while operand:
-                    ray_code = "%s" %(operand.pop())
-                    aLineList.insert(0,ray_code)
-            elif "type $" in data:
-                '''
-                callingConv = data.split("$")[-1]
-                if callingConv[0] == "v"    : funcType = "void "
-                elif callingConv[0] =="i"   : funcType = "int32 "
-                elif callingConv[0] =="j"   : funcType = "int64 "
-                else                        : print "[E] calling Conv type Error"
-                '''
-                pass
-            elif "func $" in data : 
-                print data
-                if funcType == "" : funcType ="void"
-                if funcType : ray_code = "%s %s (" % (funcType,data.split(" ")[1])
-                if funcRet  : ray_code = "%s %s (" % (funcRet,data.split(" ")[1])
-                while operand : ray_code += " %s," % operand.pop()
-                ray_code = ray_code[0:-1]+" )\n{"
+               #while operand: ray_code = "return %s" %(operand.pop())
 
+            elif "type $" in data: pass
+
+            elif "func $" in data :
+                if not funcRet :
+                    while operand: aLineList.insert(0,operand.pop())
+                    funcRet ="void "
+                ray_code = "%s %s (" % (funcRet,data.split(" ")[1])
+                l = [] 
+                while operand : l.append("%s" % operand.pop())
+                ray_code = "%s%s)\n{" %(ray_code, ", ".join(l) )
+                #aLineList.insert(0,ray_code)
+                #ray_code=""
             ### [ Datatype conversions, truncations, reinterpretations, promotions, and demotions ] ###
-
-
             else: 
                 print "[D] Instruction is not define yet : %s " %(data)
                 raw_input("continue?>")
 
-            if ( ray_code and not operand ):
+            if ( ray_code ):
+                print "[D]rayCode " + ray_code
                 aLineList.insert(0,ray_code)
                 ray_code =""
 
         stack = []
-        '''
-        print "#######################################"
-        print aLineList
-        print "#######################################"
-        '''
         aLineList.append("}")
         return aLineList
 
@@ -217,7 +248,7 @@ class eoray():
         retList = []
         i = 0
         for line in _list :
-            if i >0 and i < (len(line)-1) : line = "\t" + line
+            if i >0 and i < (len(_list)-1) : line = "\t" + line
             if line.find("[") >0 and line.find("]") >0  :
                 variable = line.split("[")[1].split("]")[0]
                 strData  = _wastCook.getData(variable)
@@ -229,6 +260,9 @@ class eoray():
             i+=1
         return retList
 
+    def showSource(self, source):
+        print "\n".join(source);
+
 def main():
     w = wastCook()
     dic = w.wast("./hello.wast")
@@ -239,7 +273,7 @@ def main():
         hello = raw_input(">").strip()
         e = eoray(dic)
         stack = e.Postfix("".join(dic["func"][hello]))
-        print "\n".join(e.replaceStr(w, stack))
+        e.showSource(e.replaceStr(w, stack))
 
 if __name__ =="__main__":
     main()
