@@ -1,201 +1,245 @@
 from wastCook import *
 
-
 class eoray():
-    __func = {"$malloc":1,"$memset":3,"$memcpy":3,"$action_data_size":0 }
-    __source_code =""
-    rayList = []
-    ray_code = []
-    def __init__(self,fileName="./sample.wast"):
-        with open (fileName) as f : w = f.readlines()
-        for line in w :
-            self.__source_code += line.strip()
-            if self.__source_code.count("(")  == self.__source_code.count(")"):
-                break
-        #[D]
-        print self.__source_code
+    __func = {
+            # funcName [ Count of Number , returnFlag ]
+            "$_ZdlPv"   :[1,0],
+            "$_Znwj"    :[1,1],
+            }
+    def __init__(self,wastCook):
+        self.__wastCook = wastCook
+        #print "[D]"+self.__source_code
 
     def Postfix(self, function = "" ):
-        function = self.__source_code
+        retList = []
         left    = 0
         right   = 0 
-        loc     = 0
         tmp     = ""
         stack   = []
-        breakFlag = 0
-        while (loc < len(function)):
+        for loc in range(len(function)):
             if function[loc] == "(" :
                 left += 1
-                if tmp.strip(): stack.append(tmp.strip())
-                '''
-                ####################################################
-                if breakFlag == 1 : # dealing with function Name 
-                    self.rayList.extend(self.ray(stack)) # pass only function Name 
-                    loc     -= 1 # revert '('
-                    left    -= 1
-                    right   += 1 #Make trick for function end
-                    breakFlag = 0
-                ####################################################
-                if loc == 0 : breakFlag = 1 # dealing with function Name 
-                '''
-                tmp =""
+                if tmp.strip(): 
+                    stack.append(tmp.strip())
+                    tmp=""
             elif function[loc] == ")" :
                 right +=1
-                if tmp : stack.append(tmp.strip())
-                if left and right and (left == right):
-                    self.rayList.extend(self.ray(stack))
-                    print "[D] self ray list ->",
-                    print self.rayList
-                    raw_input("<<<")
-                tmp =""
+                if tmp : 
+                    stack.append(tmp.strip())
+                    tmp =""
+                if left and right and (left == right): 
+                    retList.extend(self.__ray(stack))
             else: tmp += function[loc]
             loc = loc +1 
-            #END WHILE#
+        return retList
 
-    def __getArguFromFunc(self, fName):
-        try : nRes = self.__func[fName]
-        except :
+    def __getCallingConv(self, fName):
+        retFlag = 0 
+        nRes    = -1
+        # DEFAULT FUNCTION TABLE CHECK
+        for i in self.__func.keys():
+            if fName == i : 
+                nRes    = self.__func[i][0]
+                retFlag = self.__func[i][1]
+
+        #IMPORT TABLE CHECK
+        if nRes == -1 :
+            for data in self.__wastCook["import"]:
+                if fName == "$"+data.split("import \"env\"")[1].split("\"")[1] :
+                    param = data[data.find("(param")::]
+                    if param.find("result")>0 : retFlag = 1
+                    if len(param)>0 :
+                        param   = param[0:param.find(")")]
+                        nRes    = param.count(" ")
+                        self.__func.update({fName:[nRes,retFlag]})
+                    else : nRes = 0 
+                    break
+        # CUSTOM FUNCTION TABLE CHECK 
+        if fName == "$__errno_location": print self.__wastCook["func"].keys()
+        if nRes == -1 :
+            for i in self.__wastCook["func"].keys():
+                if "$__errno_location" in i : print "[D] getCallingConv " + i
+                if fName == i :
+                    nRes = 0
+                    funcData = self.__wastCook["func"][i]
+                    for data in funcData : 
+                        nRes += data.count("(param")
+                        if data.find("(result")>0 : retFlag = 1 
+                    self.__func.update({fName:[nRes,retFlag]})
+                    break
+        if nRes == -1 : 
             print "[E] there is no data for function [__getArguFormFunc : %s ]" % fName
             raw_input("stop>")
-        return nRes
+        return nRes, retFlag
 
-    def ray( self , stack ):
-        print "[D] ray stack -> " ,
-        print stack
-        v = 0 ## variable count  
-        s = 0 ## stack variable count
-        lineFlag    = 0 # print line 
+    def __ray( self , stack ):
         operand     = []
         aLineList   = []
-        while 1:
-            if not stack : break;
+        ray_code    = ""
+        funcType    = ""
+        funcRet     = ""
+
+        while (stack):
             data = stack.pop()
-            print "[D] Current inst -> ",
-            print data 
+            print "[D] Current Stack-> ",
+            print operand 
+            print "[D] Current inst -> " +  data 
 
-            if "module" in data : print "[E] ray function is suppose to set only function"
+            if "module" in data         : print "[E] ray function is suppose to set only function"
 
-            elif "get_local" in data :
-                var = data.split(" ")[1]
-                operand.append(var)
+            ### [ Control constructs and instructions ] ###
+            elif "block" in data        : 
+                ray_code =".LABEL %s:" %(data.split(" ")[1])
+                while operand : ray_code += "\n\t\t" + operand.pop()
 
-            elif "set_local" in data:
-                var = data.split(" ")[1]
-                op = operand.pop()
-                self.ray_code = "%s = %s" % (var, op)
-                lineFlag = 1
+            elif "nop" in data          : ray_code ="\n;\n"
+            elif "br_if" in data        : ray_code  = "if ( %s ) { goto %s }" %(operand.pop(),data.split(" ")[1])
+            elif "loop" in data           : ray_code  = "loop %s" %(data.split(" ")[1])
+            elif "br" in data           : ray_code  = "goto %s" %(data.split(" ")[1])
+            elif "return" in data       :
+                if operand  : ray_code = "  return (operand.pop())"
+                else        : ray_code = "  return;"
 
+            ### [Local variables ] ###
+            elif "get_local" in data    : operand.append(data.split(" ")[1])
+            elif "set_local" in data    : ray_code = "%s = %s" % (data.split(" ")[1],operand.pop())
+            elif "set_local" in data    : ray_code = "%s = %s" %(data.split(" ")[1], operand.pop())
+            elif "tee_local" in data    : operand.append("(%s = %s)" %(data.split(" ")[1], operand.pop()))
+            elif "unreachable" in data  : ray_code ="(unreachable)";
 
-            ####################### FUNCTION #########################
-            elif "local $" in data:
-                _argu = data.split(" ")[1]
-                _type = data.split(" ")[2] 
-                self.ray_code  = "%s %s" % (_type, _argu)
-                lineFlag = 1
+            ### [Constants] ###
+            elif "i32.const" in data    : operand.append("[%s]" %(data.split(" ")[1]))
+            elif "i64.const" in data    : operand.append("%s" %(data.split(" ")[1]))
 
-            elif "param $" in data:
-                if(self.paramCnt):
-                    _argu = data.split(" ")[1]
-                    _type = data.split(" ")[2]
-                    self.ray_code = self.ray_code + "%s %s ," % (_type, _argu) 
-                    self.paramCnt -= 1
+            ### [ Type-parametric operators] ###
+            elif "drop" in data         : operand.pop()
+            elif "select" in data       : operand.append("( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop()))
 
-                    if not self.paramCnt : 
-                        self.ray_code = self.ray_code[0:-1] + ")"
-                        lineFlag = 1 
-                else : print "[E] Error in Param "
+            ### [ 32-bit Integer operators] ###
+            elif "i32.add" in data      : operand.append("(%s + %s)" %(operand.pop(), operand.pop()))
+            elif "i32.sub" in data      : operand.append("(%s - %s)" %(operand.pop(), operand.pop()))
+            elif "i32.or" in data       : operand.append("(%s | %s)" %(operand.pop(), operand.pop()))
+            elif "i32.eqz" in data      : operand.append("(%s == 0)" %(operand.pop()))
+            elif "i32.lt_u" in data     : operand.append("(%s <= %s)" %(operand.pop(), operand.pop()))
+            elif "i32.and" in data      : operand.append("(%s & %s)" %(operand.pop(), operand.pop()))
+            elif "i32.shr_u" in data    : operand.append("(%s >> %s)" %(operand.pop(), operand.pop()))
+            elif "i32.shl" in data      : operand.append("(%s << %s)" %(operand.pop(), operand.pop()))
+            elif "i32.ge_u" in data     : operand.append("((uint_32)%s >= (uint_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.gt_u" in data     : operand.append("((uint_32)%s > (uint_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.mul" in data      : operand.append("((int_32)%s * (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.lt_s" in data     : operand.append("((int_32)%s < (int_32)%s)" %(operand.pop(), operand.pop()))
+            ### [ Floating point operators ] ###
+            #???
 
+            ### [ Linear Memory Accesses ] ###
+                ## LOAD SOTRE NEED MODIFICATION
+            elif "i32.load8_u" in data  : operand.append( "*(int_8)(%s)" %(operand.pop()) )
+            elif "i32.load" in data     : 
+                if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
+                else                                : var = ""
+                if var  : operand.append("*(%s+[%s])" %(operand.pop(),var) )
+                else    : operand.append("*(%s)" %(operand.pop()))
 
-            elif "type $" in data:
-                callingConv = data.split("$")[-1]
-                if callingConv[0] == "v"    : self.ray_code = "void "  + self.ray_code + "( "
-                elif callingConv[0] =="i"   : self.ray_code = "int32 " + self.ray_code + "( "
-                elif callingConv[0] =="j"   : self.ray_code = "int64 " + self.ray_code + "( "
-                else                        : print "[E] calling Conv type Error"
-                self.paramCnt = len(callingConv)-1
-                if self.paramCnt<1: 
-                    self.ray_code = self.ray_code + ")"
-                    lineFlag = 1 
+            elif "i32.store" in data    : 
+                if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
+                else                                : var  = ""
+                if var  : ray_code = "(%s+[%s]) = %s" %(operand.pop(), var, operand.pop())
+                else    : ray_code = "(%s) = %s" %(operand.pop(), operand.pop()) 
 
-            elif "func $" in data:
-                fName = data.split(" ")[1]
-                self.ray_code = "%s" % fName
-
-            ###################### FUNCTION END #####################
-
-            elif "i32.lt_u" in data :
-                self.ray_code += "if (%s <= %s) : " %(operand.pop(), operand.pop())
-            
-            elif "br_if" in data :
-                var = data.split(" ")[1] 
-                self.ray_code += "JMP %s" %(var)
-
-
+            elif "i64.store" in data:
+                if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
+                else                                : var  = ""
+                if var  : ray_code = "(%s+[%s]) = %s" %(operand.pop(), var, operand.pop())
+                else    : ray_code = "(%s) = %s" %(operand.pop(), operand.pop()) 
                 pass
-            elif "i32.const" in data :
-                var = data.split(" ")[1]
-                operand.append(var)
 
-            elif "$var_" in data:
-                operand.append(data)
-    
-            elif "set_local" in data:
-                var = data.split(" ")[1]
-                self.ray_code = "%s = %s" %(var, operand.pop())
-                lineFlag = 1
-
+            ### [ Calls ] ###
             elif "call" in data:
-                var = data.split(" ")[1]
+                fName = data.split(" ")[1]
+                countArgument, retFlag = self.__getCallingConv(fName)
                 l = []
-                for i in range(self.__getArguFromFunc(var)): l.append(operand.pop())
-                self.ray_code = "%s(%s)" % (var, (",".join(l)))
-                drop = stack.pop()
+                for i in range(countArgument): l.append(operand.pop())
+                ray_code = "%s(%s)" % (fName, (", ".join(l)))
+                fName = fName.strip("$")
+                if retFlag == 1 : operand.append(ray_code)
 
-                v+=1
-                if(drop != "drop"): 
-                    #self.ray_code += "%s" %((v),self.ray_code)
-                    stack.append(drop)
-                    #astack.append("$var_%d"%(v))
-                    operand.append(self.ray_code)
+            ### [ FUNCTION Calling convention ###
+            elif "param" == data[0:5] : operand.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
+            elif "local" == data[0:5] :
+                while operand:
+                    ray_code = "%s" %(operand.pop())
+                    aLineList.insert(0,ray_code)
+                ray_code  = "%s %s" % (data.split(" ")[2], data.split(" ")[1])
 
-                else:
-                    lineFlag = 1
+            elif "result " in data : 
+                funcRet = data.split(" ")[1]
+                while operand:
+                    ray_code = "%s" %(operand.pop())
+                    aLineList.insert(0,ray_code)
+            elif "type $" in data:
+                '''
+                callingConv = data.split("$")[-1]
+                if callingConv[0] == "v"    : funcType = "void "
+                elif callingConv[0] =="i"   : funcType = "int32 "
+                elif callingConv[0] =="j"   : funcType = "int64 "
+                else                        : print "[E] calling Conv type Error"
+                '''
+                pass
+            elif "func $" in data : 
+                print data
+                if funcType == "" : funcType ="void"
+                if funcType : ray_code = "%s %s (" % (funcType,data.split(" ")[1])
+                if funcRet  : ray_code = "%s %s (" % (funcRet,data.split(" ")[1])
+                while operand : ray_code += " %s," % operand.pop()
+                ray_code = ray_code[0:-1]+" )\n{"
 
-            elif "br" in data:
-                var = data.split(" ")[1]
-                self.ray_code = "goto %s" % (var)
-                lineFlag = 1
+            ### [ Datatype conversions, truncations, reinterpretations, promotions, and demotions ] ###
 
-            elif "tee_local" in data:
-                var == data.split(" ")[1]
-            
-            else:
+
+            else: 
                 print "[D] Instruction is not define yet : %s " %(data)
+                raw_input("continue?>")
 
-            #print "[D] LINE CODE :%s , LINE_FLAG" + self.ray_code
-            if ( self.ray_code and lineFlag ):
-                aLineList.insert(0,self.ray_code)
-                print "[D] self.raycode ->",
-                print self.ray_code 
-                print "[D] operand ->",
-                print operand
-
-                self.ray_code =""
-                lineFlag = 0
+            if ( ray_code and not operand ):
+                aLineList.insert(0,ray_code)
+                ray_code =""
 
         stack = []
+        '''
         print "#######################################"
         print aLineList
         print "#######################################"
+        '''
+        aLineList.append("}")
         return aLineList
+
+    def replaceStr(self, _wastCook, _list ):
+        retList = []
+        i = 0
+        for line in _list :
+            if i >0 and i < (len(line)-1) : line = "\t" + line
+            if line.find("[") >0 and line.find("]") >0  :
+                variable = line.split("[")[1].split("]")[0]
+                strData  = _wastCook.getData(variable)
+                if len(strData) > 0 : 
+                    retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
+                    line += " // .data %s -> [\"%s\"]".rjust(30) % (variable,strData)
+                else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
+            retList.append(line)
+            i+=1
+        return retList
+
 def main():
     w = wastCook()
     dic = w.wast("./hello.wast")
-    hello = dic["func"]["hello2hi"]
-
-    # stack calc
-    e = eoray()
-    stack = e.Postfix()
+    print " ".join(dic["func"].keys())
+    hello = dic["func"]
+    while 1:
+        print "\n".join(dic["func"])
+        hello = raw_input(">").strip()
+        e = eoray(dic)
+        stack = e.Postfix("".join(dic["func"][hello]))
+        print "\n".join(e.replaceStr(w, stack))
 
 if __name__ =="__main__":
     main()
