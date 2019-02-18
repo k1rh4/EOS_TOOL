@@ -93,35 +93,67 @@ class eoray():
             elif "block" in data        :
                 raw_input("block>")
                 label = (data.split(" ")[1])
-                label =".LABEL %s:" 
-                for i in range(operand):
-                    operand(i) = "\t%s"%(operand(i))
+                #label =".LABEL %s:"
+                operand.append(".LEBEL %s:" %(label))
+                
+                for i in range(len(operand)):
+                    if operand[i].find("goto "+label) > 0 :
+                            break;
+                for j in range(i,len(operand)):
+                    operand[j] = "  %s"%(operand[j])
+                print "D",
+                print operand
                 '''
                 while operand : 
                     ray_code = ray_code + "\n %s -- %s" %(data.split(" ")[1],operand.pop())
                 '''
             elif "nop" in data          : ray_code ="\n;\n"
-            elif "loop" in data         : ray_code  = "loop %s" %(data.split(" ")[1])
+            elif "loop" in data         :
+                raw_input("loop>")
+                label = (data.split(" ")[1])
+                operand.append(".LOOP %s:" %(label))
+            
+                for i in range(len(operand)):
+                    if operand[i].find("goto "+label)>0:
+                        break;
+
+                for j in range(i,len(operand)):
+                    operand[j] = "  %s" %(operand[j])
+                print "D",
+                print operand
+                #ray_code  = "loop %s" %(data.split(" ")[1])
+                #while operand : 
+                #    aLineList.insert(0,operand.pop())
+
             elif "return" in data       : ray_code = "return->"
             elif "br_if" in data        : 
+                raw_input("br_if>")
                 operand.append("if ( %s ) { goto %s }" %(operand.pop(),data.split(" ")[1]))
             elif "br" in data           : 
                 operand.append("{goto %s}" %(data.split(" ")[1]))
 
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
-            elif "set_local" in data    : ray_code = "%s = %s" % (data.split(" ")[1],operand.pop())
-            elif "set_local" in data    : ray_code = "%s = %s" %(data.split(" ")[1], operand.pop())
+            elif "set_local" in data    : 
+                v1 = "%s = %s" % (data.split(" ")[1],operand.pop())
+                if not operand : ray_code = v1 
+                else : operand.append(v1)
             elif "tee_local" in data    : operand.append("(%s = %s)" %(data.split(" ")[1], operand.pop()))
-            elif "unreachable" in data  : ray_code ="(unreachable)";
+            elif "unreachable" in data  : operand.append("(unreachable)")
 
             ### [Constants] ###
             elif "i32.const" in data    : operand.append("[%s]" %(data.split(" ")[1]))
             elif "i64.const" in data    : operand.append("(int_64)%s" %(data.split(" ")[1]))
 
             ### [ Type-parametric operators] ###
-            elif "drop" in data         : ray_code = operand.pop()
-            elif "select" in data       : operand.append("( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop()))
+            elif "drop" in data         :
+                v1 = operand.pop()
+                if not operand : ray_code = v1
+                else : operand.append(v1)
+            elif "select" in data       :
+                v1 = "( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop())
+                if not operand : ray_code = v1 
+                else : operand.append(v1)
 
             ### [ 32-bit Integer operators] ###
             elif "i32.add" in data      : operand.append("(%s + %s)" %(operand.pop(), operand.pop()))
