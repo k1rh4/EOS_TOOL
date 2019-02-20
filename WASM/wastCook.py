@@ -1,12 +1,17 @@
 
 
 class wastCook():
-    __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{}}
+    __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{},"global":[]}
+
+        ### NOT implement yet ###
+    def getGlobal(self, variable):
+        raw_input("Not implement yet>");
+        pass
 
     def getData(self ,variable):
         v = "(i32.const %s)" % variable.strip()
         for _data in self.__DIC['data']:
-            if _data.find(v)>0 :
+            if v in _data :
                 _data = _data[_data.find(v)::]
                 _data = _data[_data.find("\"")+1:_data.find("\")")].strip()
                 return _data
@@ -68,15 +73,16 @@ class wastCook():
         i = 0;
         while (i < len(wastFile)):
             line = wastFile[i][0:8]
-            if(line.find("module") >0)  : pass
-            elif(line.find("type") >0)  : i = self.__readUntilEnd("type", wastFile, i)
-            elif(line.find("import") >0): i = self.__readUntilEnd("import", wastFile, i)
-            elif(line.find("table") >0) : i = self.__readUntilEnd("table", wastFile, i)
-            elif(line.find("elem") >0)  : i = self.__readUntilEnd("elem", wastFile, i)
-            elif(line.find("memory") >0): i = self.__readUntilEnd("memory", wastFile, i)
-            elif(line.find("data") >0)  : i = self.__readUntilEnd("data", wastFile, i)
-            elif(line.find("export") >0): i = self.__readUntilEnd("export", wastFile, i)
-            elif(line.find("func") >0)  : i = self.__readUntilEnd("func", wastFile, i)
+            if(   "module" in line ): pass
+            elif( "type" in line )      : i = self.__readUntilEnd("type", wastFile, i)
+            elif( "import" in line )    : i = self.__readUntilEnd("import", wastFile, i)
+            elif( "table" in line )     : i = self.__readUntilEnd("table", wastFile, i)
+            elif( "elem" in line )      : i = self.__readUntilEnd("elem", wastFile, i)
+            elif( "memory" in line )    : i = self.__readUntilEnd("memory", wastFile, i)
+            elif( "data" in line )      : i = self.__readUntilEnd("data", wastFile, i)
+            elif( "export" in line )    : i = self.__readUntilEnd("export", wastFile, i)
+            elif( "func" in line)       : i = self.__readUntilEnd("func", wastFile, i)
+            elif( "global" in line )    : i = self.__readUntilEnd("global", wastFile, i)
             else: pass
 
             i += 1
