@@ -19,17 +19,12 @@ class wastCook():
 
     def __deMangling(self, _key):
         import re 
-        #_key = _key.replace("$_ZdlPv","$delete")
-        #_key = _key.replace("$_Znwj","$new")
         _key = _key.replace("$_ZN5","$")
         _key = _key.replace("$_ZneRK11","$Zne_")
         _key = _key.replace("$_ZeqRK11","$Zeq_")
         _key = _key.replace("$_ZNKSt3","$")
         _key = re.sub(r"(eosio)[0-9]{2,}","",_key)
         _key = _key.replace("__","")
-        #if _key[-1] == "E" : _key = _key[:-1]
-        #if _key[-2] == "E" : _key = _key[:-2]
-        #_key = _key.replace("$","")
         return _key
 
     def __readUntilEnd(self, _type, _wastFile, _line ):

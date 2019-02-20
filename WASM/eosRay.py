@@ -10,10 +10,12 @@ class eosRay():
         self.__wastCook = wastCook
 
     def Postfix(self, function = "" ):
-        left    = 0
-        right   = 0 
-        tmp     = ""
-        stack   = []
+        left        = 0
+        right       = 0 
+        tmp         = ""
+        label_dic   ={}
+        stack       = []
+        key         = ""
         if type(function) == list       : function = "".join(function)
         elif type(function) == str      : pass
         else                            : return -1
@@ -22,11 +24,25 @@ class eosRay():
             if function[loc] == "(" :
                 left += 1
                 tmp = tmp.strip()
+                # Marking block and loop
+                if "block $" in tmp:
+                    key = tmp.split(" $")[1]
+                    if key in label_dic.keys(): raw_input("[E]Postfix label error>")
+                    else : label_dic.update({key:1})
+                for i in label_dic.keys(): label_dic[i] += 1
                 if tmp : stack.append(tmp); tmp=""
+
             elif function[loc] == ")" :
                 right +=1
                 tmp = tmp.strip()
-                if tmp : stack.append(tmp); tmp =""
+                if tmp : stack.append(tmp)
+                for i in label_dic.keys(): label_dic[i] -= 1
+                for i in label_dic.keys() :
+                    if label_dic[i] == 0:
+                        stack.append("\n.LABEL_$"+i)
+                        del label_dic[i]
+
+                tmp =""
                 if left and right and (left == right):
                     break
             else: tmp += function[loc]
@@ -129,42 +145,34 @@ class eosRay():
         aLineList   = []
         paramList   = []
         typeList    = ""
+        funcNum     = 1
 
         while (stack):
             data = stack.pop()
-            print "[D] Operand Stack-> ",
+            print "[D] Source->",
+            print sourceList 
+            print "[D]   Operand-> ",
             print operand 
-            print "[D] Current inst -> " +  data 
+            print 
+            print "[D]      inst -> " +  data 
 
             ### [error code ] ### 
             if "module" in data         : print "[E] ray function is suppose to set only function"
 
             ### [ Control constructs and instructions ] ###
-            elif "block" in data        :
-                label = (data.split(" ")[1])
-                operand.append(".LABEL %s:" %(label))
-                for i in range(len(operand)):
-                    if ("goto " + label) in operand[i] :break;
-            elif "nop" in data          : operand.append(";")
-            elif "loop" in data         :
-                label = (data.split(" ")[1])
-                operand.append(".LOOP %s:" %(label))
-                for i in range(len(operand)):
-                    if ("goto " + label) in operand[i] :break;
+            elif "block" in data        : pass
+            elif "nop" in data          : sourceList.append(";")
+            elif "loop" in data         : sourceList.append("\n.LOOP %s:" %(data.split(" ")[1]))
 
-            elif "return" in data       : operand.append("return %s" % operand.pop()) if operand else operand.append("return ")
-            elif "br_if" in data        : 
-                raw_input(">")
-                condition = operand.pop()
-                operand.append("else : ")
-                operand.append("if ( %s ): goto %s " % (condition, data.split(" ")[1]))
-            elif "br" in data           : operand.append(" goto %s " %(data.split(" ")[1]))
+            elif "return" in data       : sourceList.append("return %s" % operand.pop()) if operand else sourceList.append("return ")
+            elif "br_if" in data        : sourceList.append("if ( %s ){ goto %s }" % (operand.pop(), data.split(" ")[1]))
+            elif "br" in data           : sourceList.append("goto %s " %(data.split(" ")[1]))
 
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
             elif "get_global" in data   : operand.append(data.split(" ")[1])
-            elif "set_global" in data   : operand.append( "%s = %s" % (data.split(" ")[1],operand.pop()))
-            elif "set_local" in data    : operand.append( "%s = %s" % (data.split(" ")[1],operand.pop()))
+            elif "set_global" in data   : sourceList.append( "%s = %s" % (data.split(" ")[1],operand.pop()))
+            elif "set_local" in data    : sourceList.append( "%s = %s" % (data.split(" ")[1],operand.pop()))
             elif "tee_local" in data    : operand.append("(%s = %s)" %(data.split(" ")[1], operand.pop()))
             elif "unreachable" in data  : operand.append("(unreachable)")
 
@@ -174,7 +182,7 @@ class eosRay():
             elif "f64.const" in data    : operand.append("(float_64)%s" %(data.split(" ")[1])) 
 
             ### [ Type-parametric operators] ###
-            elif "drop" in data         : operand.append(operand.pop())
+            elif "drop" in data         : operand.pop() # drop value of function
             elif "select" in data       : operand.append("( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop()))
 
             ### [ 32-bit Integer operators] ###
@@ -257,8 +265,8 @@ class eosRay():
             elif ".store" in data    : 
                 if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
                 else                                : var  = ""
-                if var  : operand.append("(%s+[%s]) = %s" %(operand.pop(), var, operand.pop()))
-                else    : operand.append("*(%s) = %s" %(operand.pop(), operand.pop()))
+                if var  : sourceList.append("(%s+[%s]) = %s" %(operand.pop(), var, operand.pop()))
+                else    : sourceList.append("*(%s) = %s" %(operand.pop(), operand.pop()))
 
             ### [ Calls ] ###
             ### NOT IMPLEMENT YET (CALL_INDIRECT) ###
@@ -274,8 +282,8 @@ class eosRay():
                         if typeList[i] =="i" : l.append("(int_32 %s)" % (operand.pop()))
                         if typeList[i] =="j" : l.append("(int_64 %s)" % (operand.pop()))
 
-                    function = "call %s(%s)" %(function, ', '.join(l))
-                    operand.append(function)
+                    function = "$func_%d = %s(%s)" %(funcNum, function, ', '.join(l))
+                    sourceList.append(function)
                     typeList = ""
 
                 else: raw_input("[E] Call_indirect:There is no type >")
@@ -285,11 +293,11 @@ class eosRay():
                 countArgument, retFlag = self.__getCallingConv(fName)
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
-                operand.append("call  %s(%s)" % (fName, (", ".join(l))))
-
+                sourceList.append("$func_%d = %s(%s)" % (funcNum ,fName, (", ".join(l))))
+                operand.append("$func_%d" %(funcNum))
             ### [ Functaion Calling Convention ###
             elif "param" == data[0:5]   : paramList.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
-            elif "local" == data[0:5]   : operand.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
+            elif "local" == data[0:5]   : sourceList.append("%s %s" % (data.split(" ")[2], data.split(" ")[1]))
             elif "result " in data      : typeList ="i" #operand.append("return %s" % (data.split(" ")[1]))
 
             ### INDIRECT CALL .....###
@@ -306,11 +314,14 @@ class eosRay():
                     if typeList[0] =="v" : function ="void %s" % (function)
                     if typeList[0] =="i" : function ="int_32 %s" % (function)
                     if typeList[0] =="j" : function ="int_64 %s" % (function)
-                while operand:
-                    l = operand.pop()
-                    if (("return " in l) and (not typeList)) : function = "%s %s" % (l.split(" ")[1], function)
+                while sourceList:
+                    l = sourceList.pop()
+                    if (("return " in l) and (not typeList)) : 
+                        function = "%s %s" % (l.split(" ")[1], function)
                     else : aLineList.append(l);
                 aLineList.insert(0,function)
+
+            elif "label" in data : sourceList.append(data)
             else: 
                 print "[D] Instruction is not define yet : %s " %(data)
                 raw_input("continue?>")

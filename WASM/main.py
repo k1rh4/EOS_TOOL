@@ -15,6 +15,7 @@ def main():
         e = eosRay(dic)
         stack = e.Postfix(dic["func"][hello])
 
+        #print stack
         source = e.ray(stack)
         ### beatiful source ###
         e.showSource(e.replaceStr(w, source))
