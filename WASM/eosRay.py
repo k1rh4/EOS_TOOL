@@ -106,7 +106,6 @@ class eosRay():
                         self.__func.update({fName:[nRes,retFlag]})
                     else : nRes = 0 
                     break
-                    
         # CUSTOM FUNCTION TABLE CHECK 
         if nRes == -1 :
             for i in self.__wastCook["func"].keys():
@@ -125,6 +124,7 @@ class eosRay():
         return nRes, retFlag
 
     def ray( self , stack ):
+        sourceList  = []
         operand     = []
         aLineList   = []
         paramList   = []
@@ -142,7 +142,7 @@ class eosRay():
             ### [ Control constructs and instructions ] ###
             elif "block" in data        :
                 label = (data.split(" ")[1])
-                operand.append(".LEBEL %s:" %(label))
+                operand.append(".LABEL %s:" %(label))
                 for i in range(len(operand)):
                     if ("goto " + label) in operand[i] :break;
             elif "nop" in data          : operand.append(";")
@@ -153,8 +153,12 @@ class eosRay():
                     if ("goto " + label) in operand[i] :break;
 
             elif "return" in data       : operand.append("return %s" % operand.pop()) if operand else operand.append("return ")
-            elif "br_if" in data        : operand.append("if ( %s ) { goto %s }" %(operand.pop(),data.split(" ")[1]))
-            elif "br" in data           : operand.append("{goto %s}" %(data.split(" ")[1]))
+            elif "br_if" in data        : 
+                raw_input(">")
+                condition = operand.pop()
+                operand.append("else : ")
+                operand.append("if ( %s ): goto %s " % (condition, data.split(" ")[1]))
+            elif "br" in data           : operand.append(" goto %s " %(data.split(" ")[1]))
 
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
