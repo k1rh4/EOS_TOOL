@@ -94,10 +94,8 @@ class eosRay():
                     if label_dic[i] == 0:
                         stack.append("\n.LABEL $"+i)
                         del label_dic[i]
-
                 tmp =""
-                if left and right and (left == right):
-                    break
+                if left and right and (left == right): break
             else: tmp += function[loc]
         return stack
 
@@ -129,7 +127,7 @@ class eosRay():
                         else                    : pass
         return retData
 
-    def __getGlobal(self , value ):
+    def __getGlobal( self , value ):
         retData = ""
         for data in self.__wastCook['global']:
             if value in data :
@@ -143,7 +141,7 @@ class eosRay():
                 else                    : raw_input("ERROR:__getGlobal >")
         return retData 
 
-    def __getCallingConv(self, fName):
+    def __getCallingConv( self, fName ):
         fName = self.__getFuncName(fName)
         retFlag = 0 
         nRes    = -1
@@ -410,7 +408,7 @@ class eosRay():
         return aLineList
 
     ### Change .data to strings 
-    def replaceStr(self, _list ):
+    def replaceStr( self, _list ):
         retList = []
         i = 0
         for line in _list :
@@ -432,7 +430,7 @@ class eosRay():
             i+=1
         return retList
 
-    def showSource(self, source):
+    def showSource( self, source ):
         indentFlag = 0
         source.insert(0,"\n");
         for i in range(len(source)) :

@@ -6,7 +6,7 @@ class wastCook():
         ### NOT implement yet ###
 
 
-    def __deMangling(self, _key):
+    def __deMangling( self, _key ):
         import re 
         _key = _key.replace("$_ZN5","$")
         _key = _key.replace("$_ZneRK11","$Zne_")
@@ -16,7 +16,7 @@ class wastCook():
         _key = _key.replace("__","")
         return _key
 
-    def __readUntilEnd(self, _type, _wastFile, _line ):
+    def __readUntilEnd( self, _type, _wastFile, _line ):
         l       = []
         right   = 0
         left    = 0
@@ -52,7 +52,7 @@ class wastCook():
 
         return _line
 
-    def getWast(self, _fileName):
+    def getWast( self, _fileName ):
         DAPP = _fileName
         with open(DAPP,"r") as f: 
             readData = f.read(7)
@@ -62,7 +62,7 @@ class wastCook():
                 import os
                 os.popen(CMD)
             elif "(module" in readData : pass
-            else : print "[E]WASTCOOK -> %s is not DAPP(wast or wasm) FILE."; return -1
+            else : raw_input("[E]WASTCOOK -> %s is not DAPP(wast or wasm) FILE.>"); return -1
 
         with open(DAPP,"r") as f: wastFile = f.readlines()
         i = 0;
@@ -79,8 +79,8 @@ class wastCook():
             elif( "func" in line)       : i = self.__readUntilEnd("func", wastFile, i)
             elif( "global" in line )    : i = self.__readUntilEnd("global", wastFile, i)
             else: pass
-
             i += 1
+
         return self.__DIC
 '''
 def main():
