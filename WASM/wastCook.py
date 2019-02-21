@@ -1,9 +1,10 @@
 
+WASM_DIS = "/Users/k1rh4/GIT/EOS_TOOL/TOOLS/wasm-dis"
 
 class wastCook():
     __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{},"global":[]}
-
         ### NOT implement yet ###
+
     def getGlobal(self, variable):
         raw_input("Not implement yet>");
         pass
@@ -63,8 +64,19 @@ class wastCook():
 
         return _line
 
-    def wast(self, _fileName):
-        with open(_fileName,"r") as f: wastFile = f.readlines()
+    def getWast(self, _fileName):
+        DAPP = _fileName
+        with open(DAPP,"r") as f: 
+            readData = f.read(7)
+            if "asm" in readData : 
+                CMD = "%s %s -o %s.wast" % (WASM_DIS, DAPP, DAPP)
+                DAPP = "%s.wast" %(DAPP)
+                import os
+                os.popen(CMD)
+            elif "(module" in readData : pass
+            else : print "[E]WASTCOOK -> %s is not DAPP(wast or wasm) FILE."; return -1
+
+        with open(DAPP,"r") as f: wastFile = f.readlines()
         i = 0;
         while (i < len(wastFile)):
             line = wastFile[i][0:8]
