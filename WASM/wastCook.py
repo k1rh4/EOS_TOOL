@@ -5,18 +5,6 @@ class wastCook():
     __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{},"global":[]}
         ### NOT implement yet ###
 
-    def getGlobal(self, variable):
-        raw_input("Not implement yet>");
-        pass
-
-    def getData(self ,variable):
-        v = "(i32.const %s)" % variable.strip()
-        for _data in self.__DIC['data']:
-            if v in _data :
-                _data = _data[_data.find(v)::]
-                _data = _data[_data.find("\"")+1:_data.find("\")")].strip()
-                return _data
-        return ""
 
     def __deMangling(self, _key):
         import re 

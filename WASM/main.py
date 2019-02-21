@@ -1,25 +1,26 @@
 from wastCook import *
 from eosRay import *
 
+PRJ = "eos3dio12345"
 def main():
     w = wastCook()
-    dic = w.getWast("./test.wast")
+    dic = w.getWast("./%s.wasm"%(PRJ))
+    e = eosRay(dic)
+    #e.Flair("./test.abi")
+
+    ## DECOMPILE ALL OF THINGS AND SAVE
+    e.save("./%s.decompile"%(PRJ))
+    raw_input(">")
 
     while 1:
-        ### SHOW FUNCTIONS FROM wastCook ###
         print ", ".join(dic["func"])
-
-        ### CHOOSE FUNCTION ###
-        hello = raw_input(">").strip()
-
-        e = eosRay(dic)
-        stack = e.Postfix(dic["func"][hello])
-
+        select = raw_input("CHOOSE FUNCTION>")
+        stack = e.Postfix(dic["func"][select])
         #print stack
         source = e.ray(stack)
         ### beatiful source ###
-        restore = e.replaceStr(w, source)
-        e.showSource(restore)
+        restore = e.replaceStr(source)
+        #print e.showSource(restore)
 
 if __name__ =="__main__":
     main()

@@ -8,6 +8,59 @@ class eosRay():
             }
     def __init__(self,wastCook):
         self.__wastCook = wastCook
+    
+    # 2019.02.21 ...  Not finished yet. I,m sick of this logic.... 
+    def Flair(self, abiFile):
+        import os
+        if not os.path.exists(abiFile) : return -1
+        with open (abiFile) as f : abiData = f.read()
+        import json
+        abiJson = json.loads(abiData)
+        _structs = abiJson['structs']
+        _actions = abiJson['actions']
+
+
+        fName = _actions[0]['name']
+        ftype = _actions[0]['type']
+
+        fieldNum = 0
+        for iterator in _structs:
+            if iterator['name'] == ftype :
+                fieldNum =  len(iterator['fields'])
+
+        callingConv = ""
+        for elem in self.__wastCook['elem'][0].split(" "):
+            for func in self.__wastCook['func'].keys():
+                if elem in func : 
+                    param, ret  = self.__getCallingConv(elem)
+                    if param == fieldNum:
+                        pass
+
+    def save(self, fileName):
+        f = open(fileName,"w")
+        f.write('\n'.join(self.__wastCook['data'])+"\n")
+        f.write('\n'.join(self.__wastCook['import'])+"\n")
+        f.write('\n'.join(self.__wastCook['export'])+"\n")
+        f.write('\n'.join(self.__wastCook['table'])+"\n")
+        f.write('\n'.join(self.__wastCook['elem'])+"\n")
+        f.write('\n'.join(self.__wastCook['global'])+"\n")
+
+        if not self.__wastCook : return -1
+        for func in self.__wastCook['func'].keys():
+            stack = self.Postfix(self.__wastCook['func'][func])
+            source = self.ray(stack)
+            restore = self.replaceStr(source)
+            f.write(self.showSource(restore))
+        f.close()
+
+    def __getData(self, variable):
+        v = "(i32.const %s)" % variable.strip()
+        for _data in self.__wastCook['data']:
+            if v in _data :
+                _data = _data[_data.find(v)::]
+                _data = _data[_data.find("\"")+1:_data.find("\")")].strip()
+                return _data
+        return ""
 
     def Postfix(self, function = "" ):
         left        = 0
@@ -126,9 +179,7 @@ class eosRay():
                         if "(result" in data : retFlag = 1 
                     self.__func.update({fName:[nRes,retFlag]})
                     break
-        if nRes == -1 : 
-            print "[E] there is no data for function [__getArguFormFunc : %s ]" % fName
-            raw_input("stop>")
+        if nRes == -1 : raw_input ("[E] No data in [__getArguFormFunc : %s ]" % fName)
 
         return nRes, retFlag
 
@@ -144,13 +195,14 @@ class eosRay():
         while (stack):
             data = stack.pop()
             # DEBUGGING #
+            '''
             print "[D] Source->",
             print sourceList 
             print "[D]   Operand-> ",
             print operand 
             print 
             print "[D]inst -> " +  data 
-
+            '''
             ### [error code ] ### 
             if "module" in data         : print "[E] ray function is suppose to set only function"
             ### [ Control constructs and instructions ] ###
@@ -184,12 +236,13 @@ class eosRay():
             elif "i32.shr_s" in data    : operand.append("int_32(%s >> %s)" %(operand.pop(), operand.pop()))
             elif "i32.rotl" in data     : operand.append("(rotl((int_32) %s))" %(operand.pop()))
             elif "i32.ge_u" in data     : operand.append("((uint_32)%s >= (uint_32)%s)" %(operand.pop(), operand.pop()))
-            elif "i32.gt_s" in data     : operand.append("((int_32)%s > (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.ge_s" in data     : operand.append("((int_32)%s >= (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.lt_u" in data     : operand.append("(%s <= %s)" %(operand.pop(), operand.pop()))
             elif "i32.lt_s" in data     : operand.append("((int_32)%s < (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.gt_u" in data     : operand.append("((uint_32)%s > (uint_32)%s)" %(operand.pop(), operand.pop()))
-            elif "i32.ge_u" in data     : operand.append32("((uint_32)%s >= (uint_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.gt_s" in data     : operand.append("((int_32)%s > (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.le_u" in data     : operand.append("((uint_32)%s <= (uint_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.le_s" in data     : operand.append("((int_32)%s <= (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.rem_u" in data    : operand.append("((uint_32)%s %% (uint_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.rem_s" in data    : operand.append("((int_32)%s %% (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.abs" in data      : operand.append("(int_32)|%s|" %(operand.pop()))
@@ -203,7 +256,10 @@ class eosRay():
             elif "i32.or" in data       : operand.append("(%s | %s)" %(operand.pop(), operand.pop()))
             elif "i32.eq" in data       : operand.append("((int_32)%s == (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.ne" in data       : operand.append("((int_32)%s != (int_32)%s)" %(operand.pop(), operand.pop()))
+            
             ### [ 64-bit Integer operators] ###
+            #i64.trunc_u/f64
+            elif "i64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
             elif "i64.extend_u/i32" in data : operand.append("(CASTING uint_64)(uint_32 %s)" %(operand.pop()))
             elif "i64.shr_s" in data    : operand.append("(int_64)%s >> (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.shr_u" in data    : operand.append("(uint_64)%s >> (uint_64)%s)" %(operand.pop(), operand.pop()))
@@ -211,10 +267,12 @@ class eosRay():
             elif "i64.div_u" in data    : operand.append("((uint_64)%s / (uint_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.lt_u" in data     : operand.append("(uint_64)(%s <= %s)" %(operand.pop(), operand.pop()))
             elif "i64.lt_s" in data     : operand.append("((int_64)%s < (int_64)%s)" %(operand.pop(), operand.pop()))
-            elif "i64.gt_s" in data     : operand.append("((int_64)%s > (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.gt_u" in data     : operand.append("((uint_64)%s > (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.gt_s" in data     : operand.append("((int_64)%s > (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.ge_u" in data     : operand.append("((uint_64)%s >= (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.ge_s" in data     : operand.append("((int_64)%s >= (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.le_u" in data     : operand.append("((uint_64)%s <= (uint_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.le_s" in data     : operand.append("((int_64)%s <= (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.rem_u" in data    : operand.append("((uint_64)%s %% (uint_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.rem_s" in data    : operand.append("((int_64)%s %% (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.abs" in data      : operand.append("(int_64)|%s|" %(operand.pop()))
@@ -229,6 +287,8 @@ class eosRay():
             elif "i64.or" in data       : operand.append("((int_64)%s | (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.ne" in data       : operand.append("((int_64)%s != (int_64)%s)" %(operand.pop(), operand.pop()))
             ### [64-bit float operators ] ###
+            elif "f64.convert_s/i64" in data: operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
+            elif "f64.convert_u/i64" in data: operand.append("(CASTING float_64)(uint_64 %s)" %(operand.pop()))
             elif "f64.convert_s/i32" in data: operand.append("(CASTING float_64)(int_32 %s)" %(operand.pop()))
             elif "f64.convert_u/i32" in data: operand.append("(CASTING float_64)(uint_32 %s)" %(operand.pop()))
             elif "f64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
@@ -248,11 +308,6 @@ class eosRay():
             elif "f64.ge" in data       : operand.append("((float_64)%s >= (float_64)%s)" %(operand.pop(), operand.pop()))
             ## [ Resizing ] ###
             elif "current_memory" in data   : operand.append("(current_memory)")
-
-
-            ### [ Linear Memory Accesses ] ### ->  NOT IMPLEMENT YET... IS IT NESSESARY? ###
-            ###################################################################################
-            #elif "i32.load8_s" in data     : pass
             #elif "i32.load8_u" in data     : operand.append( "*(int_8)(%s)" %(operand.pop()) )
             #elif "i32.load16_s" in data    : pass
             #elif "i32.load16_u" in data    : pass
@@ -323,20 +378,16 @@ class eosRay():
             elif "func $" in data :
                 fName = data.split(" ")[1]
                 fName = self.__getFuncName(fName)
-                l = []
+                remainStack = []
                 # PARAMETER 
-                while localList :
-                    l.append(localList.pop())
-                while operand : 
+                while localList : remainStack.append(localList.pop())
+                while operand   : 
                     remainOperand = operand.pop()
-                    if "CALL" in remainOperand:
-                        l.append(remainOperand)
-                    else : 
-                        sourceList.insert(0,remainOperand)
-                while l : sourceList.append(l.pop())
-                while paramList :
-                    l.append(paramList.pop())
-                function = "%s (%s)\n{" %(fName, ', '.join(l))
+                    if "CALL" in remainOperand : remainStack.append(remainOperand)
+                    else                        : sourceList.insert(0,remainOperand)
+                while remainStack : sourceList.append(remainStack.pop())
+                while paramList : remainStack.append(paramList.pop())
+                function = "%s (%s)\n{" %(fName, ', '.join(remainStack))
                 if typeList :
                     if typeList[0] =="v" : function ="void %s" % (function)
                     if typeList[0] =="i" : function ="int_32 %s" % (function)
@@ -344,16 +395,14 @@ class eosRay():
                 # STACK CONSUME # -> NEED SOMETHING CHANGE.... I DON'T UNDERSTAND WHY STACK REMAIN ( It used to return value )
                 # MAKE SOURCE
                 while sourceList:
-                    l = sourceList.pop()
-                    if (("return " in l) and (not typeList)) : 
-                        function = "%s %s" % (l.split(" ")[1], function)
-                    else : aLineList.append(l)
+                    remainStack = sourceList.pop()
+                    if (("return " in remainStack) and (not typeList)) : 
+                        function = "%s %s" % (remainStack.split(" ")[1], function)
+                    else : aLineList.append(remainStack)
                 aLineList.insert(0,function)
-            elif "label" in data : sourceList.append(data)
-            elif data.count(";")>1 : pass
-            else: 
-                print "[D] Instruction is not define yet : %s " %(data)
-                raw_input("continue?>")
+            elif "label" in data    : sourceList.append(data)
+            elif data.count(";")>1  : pass
+            else                    : raw_input ("[D] Instruction is not define yet : %s " %(data))
         # MAKE RETURN VALUE #
         if typeList : 
             if typeList[0] != "v" : aLineList.append("return %s" % aLineList.pop().strip())
@@ -361,13 +410,13 @@ class eosRay():
         return aLineList
 
     ### Change .data to strings 
-    def replaceStr(self, _wastCook, _list ):
+    def replaceStr(self, _list ):
         retList = []
         i = 0
         for line in _list :
             if "[" in line  and "]" in line :
                 variable = line.split("[")[1].split("]")[0]
-                strData  = _wastCook.getData(variable)
+                strData  = self.__getData(variable)
                 if len(strData) > 0 : 
                     retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
                     line += " // .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
@@ -391,8 +440,8 @@ class eosRay():
             indentFlag  += source[i].count("{")
             indentFlag  -= source[i].count("}")
             if indentFlag == 0 : source[i] = source[i].strip("\t");
-            print source[i]
-        return source
+
+        return "\n".join(source)
 '''
 def main():
     w = wastCook()
