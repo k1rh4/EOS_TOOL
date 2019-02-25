@@ -2,9 +2,12 @@
 
 class eosRay():
     __func = {
-            # funcName [ Count of Number , returnFlag ]
+            # funcName [ Count of arguments , returnFlag ]
             "$_ZdlPv"   :[1,0],
             "$_Znwj"    :[1,1],
+            "$malloc"   :[1,1],
+            "$free"     :[1,0],
+            "$memcmp"   :[3,1],
             }
     def __init__(self,wastCook):
         self.__wastCook = wastCook
@@ -104,9 +107,10 @@ class eosRay():
             for data in self.__wastCook['import']:
                 if (" "+string) in data:
                     return "$"+data.split("(import \"env\" \"")[1].split(" (func")[0].strip("\"")
-            for data in self.__wastCook['export']:
-                if (" "+string) in data:
-                    return "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
+        for data in self.__wastCook['export']:
+            if (" "+string) in data:
+                t1 = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
+                return t1
         return string
 
     def __getType( self, string ):
@@ -387,9 +391,9 @@ class eosRay():
                 while paramList : remainStack.append(paramList.pop())
                 function = "%s (%s)\n{" %(fName, ', '.join(remainStack))
                 if typeList :
-                    if typeList[0] =="v" : function ="void %s" % (function)
-                    if typeList[0] =="i" : function ="int_32 %s" % (function)
-                    if typeList[0] =="j" : function ="int_64 %s" % (function)
+                    if typeList[0] =="v" : function =".FUNC\nvoid .FUNC %s" % (function)
+                    if typeList[0] =="i" : function =".FUNC\nint_32 .FUNC %s" % (function)
+                    if typeList[0] =="j" : function =".FUNC\nint_64 .FUNC %s" % (function)
                 # STACK CONSUME # -> NEED SOMETHING CHANGE.... I DON'T UNDERSTAND WHY STACK REMAIN ( It used to return value )
                 # MAKE SOURCE
                 while sourceList:
@@ -416,7 +420,8 @@ class eosRay():
                 variable = line.split("[")[1].split("]")[0]
                 strData  = self.__getData(variable)
                 if len(strData) > 0 : 
-                    retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
+                    if not ".data %s -> [\"%s\"]"%(variable, strData) in retList:
+                        retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
                     line += " // .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
             line = line.replace("(int_64)(int_64)","(int_64)")
