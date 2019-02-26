@@ -29,7 +29,8 @@ def main(accountName, IP="127.0.0.1:8888"):
                 os.mkdir("./CONTRACT/"+accountName)
                 decodeWasm = base64.b64decode(resData["wasm"])
 
-                PATH_FILE = "./CONTRACT/"+accountName + "/" + accountName
+                PATH = "./CONTRACT/"+accountName + "/"
+                PATH_FILE = PATH + "/" + accountName
                 with open(PATH_FILE+".wasm","w+") as f : f.write(decodeWasm)
                 print "[!] Save wasm file [%s.wasm] " % accountName
                 os.system(DISAS %(PATH_FILE+".wasm", PATH_FILE+".wast"))
@@ -40,7 +41,7 @@ def main(accountName, IP="127.0.0.1:8888"):
                 with open(PATH_FILE+".abi.down","w+") as f: f.write(decodeAbi)
                 print "[!] Save wast file [%s.abi] " % accountName
 
-                os.chdir(PATH_FILE)
+                os.chdir(PATH)
                 cmd = "/EOS/cleos -u %s get code %s -a %s.abi" %(IP, USER_NAME, USER_NAME)
                 os.poen(cmd)
                 os.chdir("../../")
