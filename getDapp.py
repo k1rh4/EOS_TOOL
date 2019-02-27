@@ -42,8 +42,8 @@ def main(accountName, IP="127.0.0.1:8888"):
                 print "[!] Save wast file [%s.abi] " % accountName
 
                 os.chdir(PATH)
-                cmd = "/EOS/cleos -u %s get code %s -a %s.abi" %(IP, USER_NAME, USER_NAME)
-                os.poen(cmd)
+                cmd = "%s -u %s get code %s -a %s.abi" %(CLEOS, IP, USER_NAME, USER_NAME)
+                os.popen(cmd)
                 os.chdir("../../")
 
 
