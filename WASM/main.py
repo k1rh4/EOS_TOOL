@@ -10,18 +10,9 @@ def main():
     w = wastCook()
     dic = w.getWast("./%s"%(PRJ))
     e = eosRay(dic)
-    #e.Flair("./%s.abi"%(PRJ))
 
     ## DECOMPILE ALL OF THINGS AND SAVE
     e.save("./%s.decompile"%(PRJ))
-
-
-
-
-
-
-
-
 
 
     '''

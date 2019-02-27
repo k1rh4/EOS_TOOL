@@ -8,6 +8,7 @@ class eosRay():
             "$malloc"   :[1,1],
             "$free"     :[1,0],
             "$memcmp"   :[3,1],
+            "$strlen"   :[1,1],
             }
     def __init__(self,wastCook):
         self.__wastCook = wastCook
@@ -339,7 +340,7 @@ class eosRay():
             elif ".store" in data    : 
                 if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
                 else                                : var  = ""
-                if var  : sourceList.append("(%s+[%s]) = %s" %(operand.pop(), var, operand.pop()))
+                if var  : sourceList.append("*(%s+[%s]) = %s" %(operand.pop(), var, operand.pop()))
                 else    : sourceList.append("*(%s) = %s" %(operand.pop(), operand.pop()))
 
             ### [ Calls ] ###
