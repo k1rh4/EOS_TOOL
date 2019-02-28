@@ -1,5 +1,5 @@
 #from wastCook import *
-
+import re
 class eosRay():
     __func = {
             # funcName [ Count of arguments , returnFlag ]
@@ -147,7 +147,7 @@ class eosRay():
         return retData 
 
     def __getCallingConv( self, fName ):
-        fName = self.__getFuncName(fName)
+        #fName = self.__getFuncName(fName)
         retFlag = 0 
         nRes    = -1
         # DEFAULT FUNCTION TABLE CHECK
@@ -171,6 +171,16 @@ class eosRay():
                         self.__func.update({fName:[nRes,retFlag]})
                     else : nRes = 0 
                     break
+
+        # EXPORT FUNCTION CHECK
+        if nRes == -1 :
+
+            for data in self.__wastCook["export"]:
+                #name = re.findall("\$[0-9]+",data)[0]
+                f = re.findall("(?<=\").+?(?=\")",data)[0]
+                alias = re.findall("\$[0-9]+",data)[0]
+                if f in fName: fName = alias 
+
         # CUSTOM FUNCTION TABLE CHECK 
         if nRes == -1 :
             for i in self.__wastCook["func"].keys():
@@ -264,6 +274,7 @@ class eosRay():
             #i64.trunc_u/f64
             elif "i64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
             elif "i64.extend_u/i32" in data : operand.append("(CASTING uint_64)(uint_32 %s)" %(operand.pop()))
+            elif "i64.extend_s/i32" in data : operand.append("(CASTING sint_64)(sint_32 %s)" %(operand.pop()))
             elif "i64.shr_s" in data    : operand.append("(int_64)%s >> (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.shr_u" in data    : operand.append("(uint_64)%s >> (uint_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.div_s" in data    : operand.append("((int_64)%s / (int_64)%s)" %(operand.pop(), operand.pop()))
@@ -403,8 +414,9 @@ class eosRay():
                         function = "%s %s" % (remainStack.split(" ")[1], function)
                     else : aLineList.append(remainStack)
                 aLineList.insert(0,function)
-            elif "label" in data    : sourceList.append(data)
-            elif data.count(";")>1  : pass
+            elif "label" in data        : sourceList.append(data)
+            elif data.count(";")>1      : pass
+            elif "grow_memory" in data  : pass
             else                    : raw_input ("[D] Instruction is not define yet : %s " %(data))
         # MAKE RETURN VALUE #
         if typeList : 
