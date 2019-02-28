@@ -26,13 +26,13 @@ class wastCook():
         if ("(func" in w[0:5]):
             _key = [s for s in w.split(" ") if "$" in s][0].strip()
             isFunc = 1
-
         while True:
             w = self.__deMangling(_wastFile[_line].strip())
-            # [!] Data section could include token...#
+            # I GUESS DATA IS ALWAYS BEING ONE LINE. 
             if _type == "data" :
-                right += w.count(") \"")
-                left  += w.count("\")")
+                break
+                #right += w.count(") \"")
+                #left  += w.count("\")")
             else:
                 right += w.count("(")
                 left  += w.count(")")
