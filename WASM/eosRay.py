@@ -269,10 +269,10 @@ class eosRay():
             elif "i32.or" in data       : operand.append("(%s | %s)" %(operand.pop(), operand.pop()))
             elif "i32.eq" in data       : operand.append("((int_32)%s == (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.ne" in data       : operand.append("((int_32)%s != (int_32)%s)" %(operand.pop(), operand.pop()))
-            
             ### [ 64-bit Integer operators] ###
             #i64.trunc_u/f64
             elif "i64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
+            elif "i64.reinterpret/f64" in data: operand.append("(CASTING int_64)(float_64 %s)" %(operand.pop()))
             elif "i64.extend_u/i32" in data : operand.append("(CASTING uint_64)(uint_32 %s)" %(operand.pop()))
             elif "i64.extend_s/i32" in data : operand.append("(CASTING sint_64)(sint_32 %s)" %(operand.pop()))
             elif "i64.shr_s" in data    : operand.append("(int_64)%s >> (int_64)%s)" %(operand.pop(), operand.pop()))
@@ -300,7 +300,12 @@ class eosRay():
             elif "i64.eq" in data       : operand.append("((int_64)%s == (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.or" in data       : operand.append("((int_64)%s | (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.ne" in data       : operand.append("((int_64)%s != (int_64)%s)" %(operand.pop(), operand.pop()))
+            ### [32-bit float operators ] ###
+            elif "f32.convert_u/i64" in data: operand.append("(CASTING float_32)(uint_64 %s)" %(operand.pop()))
+            elif "f32.convert_s/i64" in data: operand.append("(CASTING float_32)(int_64 %s)" %(operand.pop()))
             ### [64-bit float operators ] ###
+            #reinterpret the bits of a 32-bit float as a 32-bit integer
+            elif "f64.reinterpret/i64" in data: operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
             elif "f64.convert_s/i64" in data: operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
             elif "f64.convert_u/i64" in data: operand.append("(CASTING float_64)(uint_64 %s)" %(operand.pop()))
             elif "f64.convert_s/i32" in data: operand.append("(CASTING float_64)(int_32 %s)" %(operand.pop()))
