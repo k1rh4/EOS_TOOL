@@ -109,9 +109,18 @@ class eosRay():
                 if (" "+string) in data:
                     return "$"+data.split("(import \"env\" \"")[1].split(" (func")[0].strip("\"")
         for data in self.__wastCook['export']:
-            if (" "+string) in data:
-                t1 = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
-                return t1
+            t1 = string
+            if ("(global" in data) and (string in data):
+                t1 = "$"+data.split("(export \"")[1].split(" (global")[0].strip("\"")
+
+            elif "(func" in data:
+                fName = re.findall("\$[0-9]+",data)[0]
+                if fName == string :
+                    t1 = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
+            else:
+                pass
+
+            return t1
         return string
 
     def __getType( self, string ):
@@ -161,7 +170,7 @@ class eosRay():
             for data in self.__wastCook["import"]:
                 #print fName
                 #print"$"+data.split("import \"env\"")[1].split("\"")[1]
-                if fName in "$"+data.split("import \"env\"")[1].split("\"")[1] :
+                if fName == "$"+data.split("import \"env\"")[1].split("\"")[1] :
                     param =""
                     if "(result" in data    : retFlag = 1
                     if "(param" in data     : param = data[data.find("(param")::]
@@ -178,7 +187,7 @@ class eosRay():
             for data in self.__wastCook["export"]:
                 #name = re.findall("\$[0-9]+",data)[0]
                 f = re.findall("(?<=\").+?(?=\")",data)[0]
-                alias = re.findall("\$[0-9]+",data)[0]
+                alias = re.findall("\$[0-9a-zA-Z]+",data)[0]
                 if f in fName: fName = alias 
 
         # CUSTOM FUNCTION TABLE CHECK 
@@ -214,7 +223,9 @@ class eosRay():
             print "[D]   Operand-> ",
             print operand 
             print 
-            print "[D]inst -> " +  data 
+            print "[D]inst -> " +  data
+            if "call" in data :
+                raw_input("ray break >")
             '''
             ### [error code ] ### 
             if "module" in data         : print "[E] ray function is suppose to set only function"
@@ -235,11 +246,15 @@ class eosRay():
             ### [Constants] ###
             elif "i32.const" in data    : operand.append("[%s]" %(data.split(" ")[1]))
             elif "i64.const" in data    : operand.append("(int_64)%s" %(data.split(" ")[1]))
+            elif "f32.const" in data    : operand.append("(float_32)%s" %(data.split(" ")[1])) 
             elif "f64.const" in data    : operand.append("(float_64)%s" %(data.split(" ")[1])) 
             ### [ Type-parametric operators] ###
             elif "drop" in data         : sourceList.append(operand.pop()) # drop value of function
             elif "select" in data       : operand.append("( %s ? %s : %s )" %(operand.pop(),operand.pop(),operand.pop()))
             ### [ 32-bit Integer operators] ###
+            elif "i32.reinterpret/f32" in data  : operand.append("(CASTING int_32)(float_32 %s)" %(operand.pop()))
+            elif "i32.trunc_s/f32" in data : operand.append("(CASTING int_32)(float_32 %s)" %(operand.pop()))
+            elif "i32.trunc_u/f32" in data : operand.append("(CASTING uint_32)(float_32 %s)" %(operand.pop()))
             elif "i32.trunc_s/f64" in data : operand.append("(CASTING int_32)(float_64 %s)" %(operand.pop()))
             elif "i32.trunc_u/f64" in data : operand.append("(CASTING uint_32)(float_64 %s)" %(operand.pop()))
             elif "i32.wrap/i64" in data : operand.append("(CASTING uint_32)(uint_64 %s)" %(operand.pop()))
@@ -248,6 +263,7 @@ class eosRay():
             elif "i32.shr_u" in data    : operand.append("uint_32(%s >> %s)" %(operand.pop(), operand.pop()))
             elif "i32.shr_s" in data    : operand.append("int_32(%s >> %s)" %(operand.pop(), operand.pop()))
             elif "i32.rotl" in data     : operand.append("(rotl((int_32) %s))" %(operand.pop()))
+            elif "i32.rotr" in data     : operand.append("(rotr((int_32) %s))" %(operand.pop()))
             elif "i32.ge_u" in data     : operand.append("((uint_32)%s >= (uint_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.ge_s" in data     : operand.append("((int_32)%s >= (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.lt_u" in data     : operand.append("(%s <= %s)" %(operand.pop(), operand.pop()))
@@ -258,6 +274,7 @@ class eosRay():
             elif "i32.le_s" in data     : operand.append("((int_32)%s <= (int_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.rem_u" in data    : operand.append("((uint_32)%s %% (uint_32)%s)" %(operand.pop(), operand.pop()))
             elif "i32.rem_s" in data    : operand.append("((int_32)%s %% (int_32)%s)" %(operand.pop(), operand.pop()))
+            elif "i32.neg" in data      : operand.append("!(int_32)%s" %(operand.pop()))
             elif "i32.abs" in data      : operand.append("(int_32)|%s|" %(operand.pop()))
             elif "i32.add" in data      : operand.append("(%s + %s)" %(operand.pop(), operand.pop()))
             elif "i32.eqz" in data      : operand.append("(%s == 0)" %(operand.pop()))
@@ -274,8 +291,9 @@ class eosRay():
             elif "i64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
             elif "i64.reinterpret/f64" in data: operand.append("(CASTING int_64)(float_64 %s)" %(operand.pop()))
             elif "i64.extend_u/i32" in data : operand.append("(CASTING uint_64)(uint_32 %s)" %(operand.pop()))
-            elif "i64.extend_s/i32" in data : operand.append("(CASTING sint_64)(sint_32 %s)" %(operand.pop()))
+            elif "i64.extend_s/i32" in data : operand.append("(CASTING int_64)(int_32 %s)" %(operand.pop()))
             elif "i64.shr_s" in data    : operand.append("(int_64)%s >> (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.rotl" in data     : operand.append("(rotl((int_64) %s))" %(operand.pop()))
             elif "i64.shr_u" in data    : operand.append("(uint_64)%s >> (uint_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.div_s" in data    : operand.append("((int_64)%s / (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.div_u" in data    : operand.append("((uint_64)%s / (uint_64)%s)" %(operand.pop(), operand.pop()))
@@ -289,6 +307,7 @@ class eosRay():
             elif "i64.le_s" in data     : operand.append("((int_64)%s <= (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.rem_u" in data    : operand.append("((uint_64)%s %% (uint_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.rem_s" in data    : operand.append("((int_64)%s %% (int_64)%s)" %(operand.pop(), operand.pop()))
+            elif "i64.neg" in data      : operand.append("!(int_64)%s" %(operand.pop()))
             elif "i64.abs" in data      : operand.append("(int_64)|%s|" %(operand.pop()))
             elif "i64.add" in data      : operand.append("((int_64)%s + (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.eqz" in data      : operand.append("(int_64)(%s == 0)" %(operand.pop()))
@@ -301,16 +320,43 @@ class eosRay():
             elif "i64.or" in data       : operand.append("((int_64)%s | (int_64)%s)" %(operand.pop(), operand.pop()))
             elif "i64.ne" in data       : operand.append("((int_64)%s != (int_64)%s)" %(operand.pop(), operand.pop()))
             ### [32-bit float operators ] ###
+            elif "f32.reinterpret/i32" in data  : operand.append("(CASTING float_32)(int_32 %s)" %(operand.pop()))
             elif "f32.convert_u/i64" in data: operand.append("(CASTING float_32)(uint_64 %s)" %(operand.pop()))
             elif "f32.convert_s/i64" in data: operand.append("(CASTING float_32)(int_64 %s)" %(operand.pop()))
+            elif "f32.convert_u/i32" in data: operand.append("(CASTING float_32)(uint_32 %s)" %(operand.pop()))
+            elif "f32.convert_s/i32" in data: operand.append("(CASTING float_32)(int_32 %s)" %(operand.pop()))
+                #f32.demote/f64 # it could be security issue...
+            elif "f32.demote/f64" in data   : operand.append("(DEMOTE float_32)(float_64 %s)" %(operand.pop()))
+            elif "f32.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
+            elif "f32.neg" in data      : operand.append("!(float_32)%s" %(operand.pop()))
+            elif "f32.mul" in data      : operand.append("((float_32)%s * (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.abs" in data      : operand.append("(float_32)|%s|" %(operand.pop()))
+            elif "f32.add" in data      : operand.append("((float_32)%s + (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.eqz" in data      : operand.append("(float_32)(%s == 0)" %(operand.pop()))
+            elif "f32.shl" in data      : operand.append("((float_32)%s << (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.and" in data      : operand.append("((float_32)%s & (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.mul" in data      : operand.append("((float_32)%s * (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.sub" in data      : operand.append("(float_32))(%s - %s)" %(operand.pop(), operand.pop()))
+            elif "f32.div" in data      : operand.append("((float_32)%s / (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.eq" in data       : operand.append("((float_32)%s == (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.gt" in data       : operand.append("((float_32)%s > (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.ne" in data       : operand.append("((float_32)%s != (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.le" in data       : operand.append("((float_32)%s <= (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.lt" in data       : operand.append("((float_32)%s < (float_32)%s)" %(operand.pop(), operand.pop()))
+            elif "f32.ge" in data       : operand.append("((float_32)%s >= (float_32)%s)" %(operand.pop(), operand.pop()))
             ### [64-bit float operators ] ###
-            #reinterpret the bits of a 32-bit float as a 32-bit integer
-            elif "f64.reinterpret/i64" in data: operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
-            elif "f64.convert_s/i64" in data: operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
-            elif "f64.convert_u/i64" in data: operand.append("(CASTING float_64)(uint_64 %s)" %(operand.pop()))
-            elif "f64.convert_s/i32" in data: operand.append("(CASTING float_64)(int_32 %s)" %(operand.pop()))
-            elif "f64.convert_u/i32" in data: operand.append("(CASTING float_64)(uint_32 %s)" %(operand.pop()))
+            #reinterpret the bits of a 32-bit float as a 32-bit Integer
+            #f64.promote/f32
+            elif "f64.promote/f32" in data      : operand.append("(PROMOTE float_64)(float_32 %s)" %(operand.pop()))
+            elif "f64.reinterpret/i64" in data  : operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
+            elif "f64.convert_s/i64" in data    : operand.append("(CASTING float_64)(int_64 %s)" %(operand.pop()))
+            elif "f64.convert_u/i64" in data    : operand.append("(CASTING float_64)(uint_64 %s)" %(operand.pop()))
+            elif "f64.convert_s/i32" in data    : operand.append("(CASTING float_64)(int_32 %s)" %(operand.pop()))
+            elif "f64.convert_u/i32" in data    : operand.append("(CASTING float_64)(uint_32 %s)" %(operand.pop()))
             elif "f64.trunc" in data    : operand.append("(Rounds 0)(%s)" %(operand.pop()))
+            elif "f64.min" in data      : operand.append("min ( (float_64)%s , (float_64)%s )" %(operand.pop(),operand.pop()))
+            elif "f64.max" in data      : operand.append("max ( (float_64)%s , (float_64)%s )" %(operand.pop(),operand.pop()))
+            elif "f64.neg" in data      : operand.append("!(float_64)%s" %(operand.pop()))
             elif "f64.abs" in data      : operand.append("(float_64)|%s|" %(operand.pop()))
             elif "f64.add" in data      : operand.append("((float_64)%s + (float_64)%s)" %(operand.pop(), operand.pop()))
             elif "f64.eqz" in data      : operand.append("(float_64)(%s == 0)" %(operand.pop()))
@@ -382,6 +428,7 @@ class eosRay():
                 fName = data.split(" ")[1]
                 fName = self.__getFuncName(fName)
                 countArgument, retFlag = self.__getCallingConv(fName)
+
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
                 if retFlag  : operand.append("CALL %s(%s)" % (fName, (", ".join(l))))
