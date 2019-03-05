@@ -30,12 +30,13 @@ class wastCook():
             w = self.__deMangling(_wastFile[_line].strip())
             # I GUESS DATA IS ALWAYS BEING ONE LINE. 
             if _type == "data" :
-                break
+                pass
                 #right += w.count(") \"")
                 #left  += w.count("\")")
             else:
                 right += w.count("(")
                 left  += w.count(")")
+
             l.append(w)
             if right == left : break;
             _line +=  1
@@ -46,8 +47,8 @@ class wastCook():
             self.__DIC["func"][_key].extend(l)
 
         else :
-            #print _type
-            if _type not in self.__DIC.keys() : self.__DIC.update({_type:[]})
+            if _type not in self.__DIC.keys() :
+                self.__DIC.update({_type:[]})
             self.__DIC[_type].extend(l)
 
         return _line
