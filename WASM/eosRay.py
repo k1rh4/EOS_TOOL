@@ -1,6 +1,7 @@
 #from wastCook import *
 import re
 class eosRay():
+    __wastCook=[]
     __func = {
             # funcName [ Count of arguments , returnFlag ]
             "$_ZdlPv"   :[1,0],
@@ -58,7 +59,7 @@ class eosRay():
         f.close()
 
     def __getData(self, variable):
-        v = "(i32.const %s)" % variable.strip()
+        v = "(i32.const %s)" % variable
         for _data in self.__wastCook['data']:
             if v in _data :
                 _data = _data[_data.find(v)::]
@@ -114,7 +115,7 @@ class eosRay():
                 t1 = "$"+data.split("(export \"")[1].split(" (global")[0].strip("\"")
 
             elif "(func" in data:
-                fName = re.findall("\$[0-9]+",data)[0]
+                fName = re.findall("\$[0-9]+",data)[0] # parsing $num
                 if fName == string :
                     t1 = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
             else:
@@ -183,11 +184,9 @@ class eosRay():
 
         # EXPORT FUNCTION CHECK
         if nRes == -1 :
-
             for data in self.__wastCook["export"]:
-                #name = re.findall("\$[0-9]+",data)[0]
-                f = re.findall("(?<=\").+?(?=\")",data)[0]
-                alias = re.findall("\$[0-9a-zA-Z]+",data)[0]
+                f = re.findall("(?<=\").+?(?=\")",data)[0] #parsing "data"
+                alias = re.findall("\$[0-9a-zA-Z]+",data)[0] #parsing $init
                 if f in fName: fName = alias 
 
         # CUSTOM FUNCTION TABLE CHECK 
@@ -478,17 +477,29 @@ class eosRay():
 
     ### Change .data to strings 
     def replaceStr( self, _list ):
+        arguList = [] 
         retList = []
         i = 0
         for line in _list :
-            if "[" in line  and "]" in line :
-                variable = line.split("[")[1].split("]")[0]
+            if ".FUNC" in line:
+                arguList = re.findall("\$[0-9]",line[line.find("(")::]) # parsing $num
+            if ".LOOP" in line or ".LABEL" in line :
+                pass
+            else :
+                if arguList :
+                    paramNum = len(arguList)-1
+                    # Care about -> param $12,$123,$1, $global$1
+                    # Do not change Arg\1 -> Arg[\1] 
+                    re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
+
+            for variable in re.findall("(?<=\[).+?(?=\])",line): # parsing [ ] 
                 strData  = self.__getData(variable)
                 if len(strData) > 0 : 
                     if not ".data %s -> [\"%s\"]"%(variable, strData) in retList:
                         retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
                     line += " // .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
+            
             line = line.replace("(int_64)(int_64)","(int_64)")
             line = line.replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ")

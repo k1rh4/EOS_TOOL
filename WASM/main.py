@@ -3,7 +3,7 @@ from eosRay import *
 import sys
 
 def main():
-    PRJ = "../CONTRACT/dgatepokergc/dgatepokergc.wasm"
+    PRJ = "../CONTRACT/hello/test.wasm"
     if len(sys.argv) > 1 :
         PRJ = sys.argv[1]
 
@@ -13,14 +13,13 @@ def main():
 
     ## DECOMPILE ALL OF THINGS AND SAVE
     e.save("./%s.decompile"%(PRJ))
-
     '''
     i = 0
     while 1:
         ### $73
         #print ", ".join(dic["func"])
         f = dic["func"].keys()[i]
-        f="$49"
+        #f="$49"
         select = raw_input("CHOOSE FUNCTION> %s " %(f))
         select = f
         #select = raw_input("CHOOSE FUNCTION>")
@@ -28,7 +27,7 @@ def main():
         source = e.ray(stack)
         ### beatiful source ###
         restore = e.replaceStr(source)
-        #print e.showSource(restore)
+        print e.showSource(restore)
         i+=1
     '''
 if __name__ =="__main__":
