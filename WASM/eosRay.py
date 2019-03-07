@@ -42,6 +42,7 @@ class eosRay():
                         pass
 
     def save(self, fileName):
+        sRes = ""
         f = open(fileName,"w")
         f.write('\n'.join(self.__wastCook['data'])+"\n")
         f.write('\n'.join(self.__wastCook['import'])+"\n")
@@ -56,7 +57,9 @@ class eosRay():
             source = self.ray(stack)
             restore = self.replaceStr(source)
             f.write(self.showSource(restore))
+            sRes += self.showSource(restore)
         f.close()
+        return sRes
 
     def __getData(self, variable):
         v = "(i32.const %s)" % variable
@@ -109,19 +112,21 @@ class eosRay():
             for data in self.__wastCook['import']:
                 if (" "+string) in data:
                     return "$"+data.split("(import \"env\" \"")[1].split(" (func")[0].strip("\"")
-        for data in self.__wastCook['export']:
-            t1 = string
+
+        exportList = self.__wastCook['export']
+        for data in exportList:
             if ("(global" in data) and (string in data):
-                t1 = "$"+data.split("(export \"")[1].split(" (global")[0].strip("\"")
+                return "$"+data.split("(export \"")[1].split(" (global")[0].strip("\"")
 
             elif "(func" in data:
-                fName = re.findall("\$[0-9]+",data)[0] # parsing $num
+                fName = re.findall("\$[0-9]+",data)[0] # parsing $numa
                 if fName == string :
-                    t1 = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
+                    
+                    t = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
+                    return t
             else:
                 pass
 
-            return t1
         return string
 
     def __getType( self, string ):
@@ -157,6 +162,7 @@ class eosRay():
         return retData 
 
     def __getCallingConv( self, fName ):
+
         #fName = self.__getFuncName(fName)
         retFlag = 0 
         nRes    = -1
@@ -169,9 +175,11 @@ class eosRay():
         #IMPORT TABLE CHECK
         if nRes == -1 :
             for data in self.__wastCook["import"]:
-                #print fName
-                #print"$"+data.split("import \"env\"")[1].split("\"")[1]
-                if fName == "$"+data.split("import \"env\"")[1].split("\"")[1] :
+                #(import "env" "memcpy" (func $fimport$12 (param i32 i32 i32) (result i32)))
+                f1  = "$"+data.split("import \"env\"")[1].split("\"")[1]
+                f2  = re.findall("\$fimport\$[0-9]+",data)
+                if len(f2) > 0 : f2 = f2[0]
+                if fName == f1 or fName == f2:
                     param =""
                     if "(result" in data    : retFlag = 1
                     if "(param" in data     : param = data[data.find("(param")::]
@@ -200,7 +208,9 @@ class eosRay():
                         if "(result" in data : retFlag = 1 
                     self.__func.update({fName:[nRes,retFlag]})
                     break
-        if nRes == -1 : raw_input ("[E] No data in [__getArguFormFunc : %s ]" % fName)
+        if nRes == -1 :
+            print self.__wastCook['import']
+            raw_input ("[E] No data in [__getArguFromFunc : %s ]" % fName)
 
         return nRes, retFlag
 
@@ -425,8 +435,8 @@ class eosRay():
                 else: raw_input("[E] Call_indirect:There is no type >")
             elif "call" in data:
                 fName = data.split(" ")[1]
-                fName = self.__getFuncName(fName)
                 countArgument, retFlag = self.__getCallingConv(fName)
+                fName = self.__getFuncName(fName)
 
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
@@ -481,16 +491,17 @@ class eosRay():
         retList = []
         i = 0
         for line in _list :
-            if ".FUNC" in line:
-                arguList = re.findall("\$[0-9]",line[line.find("(")::]) # parsing $num
+
             if ".LOOP" in line or ".LABEL" in line :
                 pass
-            else :
-                if arguList :
-                    paramNum = len(arguList)-1
-                    # Care about -> param $12,$123,$1, $global$1
-                    # Do not change Arg\1 -> Arg[\1] 
-                    re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
+
+            if ".FUNC" in line:
+                arguList = re.findall("\$[0-9]",line[line.find("("):line.find(")")]) # parsing $num
+
+            if arguList :
+                paramNum = len(arguList)-1
+                # Do not change Arg\1 -> Arg[\1] 
+                line = re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
 
             for variable in re.findall("(?<=\[).+?(?=\])",line): # parsing [ ] 
                 strData  = self.__getData(variable)

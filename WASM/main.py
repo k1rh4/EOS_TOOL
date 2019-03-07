@@ -3,7 +3,7 @@ from eosRay import *
 import sys
 
 def main():
-    PRJ = "../CONTRACT/hello/test.wasm"
+    PRJ = "../CONTRACT/zoltanfrnczf/zoltanfrnczf.wasm"
     if len(sys.argv) > 1 :
         PRJ = sys.argv[1]
 
