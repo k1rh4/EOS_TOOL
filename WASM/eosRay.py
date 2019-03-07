@@ -55,7 +55,7 @@ class eosRay():
         for func in self.__wastCook['func'].keys():
             stack = self.Postfix(self.__wastCook['func'][func])
             source = self.ray(stack)
-            restore = self.replaceStr(source)
+            restore = self.beautifulSrc(source)
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
@@ -406,12 +406,12 @@ class eosRay():
             elif ".load" in data     : 
                 if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
                 else                                : var = ""
-                if var  : operand.append("*(%s+[%s])" %(operand.pop(),var) )
+                if var  : operand.append("*(%s + [%s])" %(operand.pop(),var) )
                 else    : operand.append("*(%s)" %(operand.pop()))
             elif ".store" in data    : 
                 if len(data.split("offset=")) > 1   : var  = data.split("offset=")[1]
                 else                                : var  = ""
-                if var  : sourceList.append("*(%s+[%s]) = %s" %(operand.pop(), var, operand.pop()))
+                if var  : sourceList.append("*(%s + [%s]) = %s" %(operand.pop(), var, operand.pop()))
                 else    : sourceList.append("*(%s) = %s" %(operand.pop(), operand.pop()))
 
             ### [ Calls ] ###
@@ -486,7 +486,7 @@ class eosRay():
         return aLineList
 
     ### Change .data to strings 
-    def replaceStr( self, _list ):
+    def beautifulSrc( self, _list ):
         arguList = [] 
         retList = []
         i = 0
@@ -510,7 +510,6 @@ class eosRay():
                         retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
                     line += " // .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
-            
             line = line.replace("(int_64)(int_64)","(int_64)")
             line = line.replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ")
@@ -518,9 +517,41 @@ class eosRay():
             line = line.replace("i64","int_64")
             line = line.replace("f32","float_32")
             line = line.replace("f64","float_64")
+
+
+            while 1:
+                value, semantic = self.__takeOutArgu(line)
+                if value and semantic :
+                    retList.append(semantic)
+                    line = line.replace(semantic,value)
+                else: break
             retList.append(line)
             i+=1
         return retList
+
+    def __takeOutArgu(self, line):
+        if " = " in line :
+            loc = line.find(" = ")
+            c   = loc
+            while loc > 0 :
+                loc  -= 1
+                if "(" == line[loc]: break
+                if ")" == line[loc]:
+                    loc = 0
+                    break;
+            if loc != 0 :
+                value = line[loc+1:c]
+                left    = 1
+                right   = 0
+                start = loc
+                while 1:
+                    loc +=1
+                    if "(" == line[loc] : left  +=1
+                    if ")" == line[loc] : right +=1
+                    if left == right : break
+                semantic = line[start:loc+1]
+                return value, semantic
+        return "",""
 
     def showSource( self, source ):
         indentFlag = 0
@@ -543,7 +574,7 @@ def main():
         hello = raw_input(">").strip()
         e = eosRay(dic)
         stack = e.Postfix("".join(dic["func"][hello]))
-        e.showSource(e.replaceStr(w, stack))
+        e.showSource(e.beautifulSrc(w, stack))
 
 if __name__ =="__main__":
     main()
