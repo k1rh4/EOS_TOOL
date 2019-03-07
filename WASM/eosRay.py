@@ -464,9 +464,9 @@ class eosRay():
                 while paramList : remainStack.append(paramList.pop())
                 function = "%s (%s)\n{" %(fName, ', '.join(remainStack))
                 if typeList :
-                    if typeList[0] =="v" : function =".FUNC\nvoid .FUNC %s" % (function)
-                    if typeList[0] =="i" : function =".FUNC\nint_32 .FUNC %s" % (function)
-                    if typeList[0] =="j" : function =".FUNC\nint_64 .FUNC %s" % (function)
+                    if typeList[0] =="v" : function ="void .FUNC %s" % (function)
+                    if typeList[0] =="i" : function ="int_32 .FUNC %s" % (function)
+                    if typeList[0] =="j" : function ="int_64 .FUNC %s" % (function)
                 # STACK CONSUME # -> NEED SOMETHING CHANGE.... I DON'T UNDERSTAND WHY STACK REMAIN ( It used to return value )
                 # MAKE SOURCE
                 while sourceList:
@@ -518,7 +518,6 @@ class eosRay():
             line = line.replace("f32","float_32")
             line = line.replace("f64","float_64")
 
-
             while 1:
                 value, semantic = self.__takeOutArgu(line)
                 if value and semantic :
@@ -531,7 +530,7 @@ class eosRay():
 
     def __takeOutArgu(self, line):
         if " = " in line :
-            loc = line.find(" = ")
+            loc = line.rfind(" = ")
             c   = loc
             while loc > 0 :
                 loc  -= 1
