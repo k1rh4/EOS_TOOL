@@ -508,7 +508,7 @@ class eosRay():
                 if len(strData) > 0 : 
                     if not ".data %s -> [\"%s\"]"%(variable, strData) in retList:
                         retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
-                    line += " // .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
+                    line += " # .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
             line = line.replace("(int_64)(int_64)","(int_64)")
             line = line.replace("(int_32)(int_32)","(int_64)")
