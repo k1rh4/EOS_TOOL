@@ -7,7 +7,7 @@ MAINTAINER efuss <efuzz@gmail.com>
 RUN sed -i 's/security.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
 RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
 RUN apt-get update
-
+RUN apt-get install -y apt-utils
 RUN apt-get install -y vim
 RUN apt-get install -y python
 RUN apt-get install -y python-pip
@@ -18,7 +18,7 @@ RUN apt-get install -y strace
 RUN apt-get install -y clang
 RUN apt-get install -y openssh-server
 RUN apt-get install -y net-tools
-RUN pip install psutil
+RUN pip2.7 install psutil
 
 RUN apt-get install -y cron
 RUN apt-get install -y nodejs
