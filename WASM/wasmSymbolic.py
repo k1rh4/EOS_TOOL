@@ -33,7 +33,6 @@ class wasmSymbolic:
             if "(elem" in fileData[i] :
                 self.__elem.extend(re.findall("\$[0-9]+",fileData[i]))
 
-
             data = fileData[i]
             if ".FUNC $" in data:
                 fName = data.split(".FUNC ")[1].split(" (")[0]
@@ -56,7 +55,7 @@ class wasmSymbolic:
     def forwardSymbolic(self, fName="", argv="", targetFunc="", arguNum=0):
         if fName in self.__callStack : return 0
         else :  self.__callStack.append(fName)
-        #print "\t\t[+] Btace: " + "-> ".join(self.__callStack)
+        print "\t\t[+] Btace: " + "-> ".join(self.__callStack)
         nRet    = 0 
         taint   = []
         taint.append(argv)
@@ -67,17 +66,29 @@ class wasmSymbolic:
         ### READ FUNCTION SOURCE ###
         for line in self.__dic[fName]:
             line = line.strip()
-            
+
             if( "require_auth" in line and "Arg$0" in line ):
-                print "[-] require_auth(self) detected" 
+                #print "[-] require_auth(self) detected" 
                 self.__callStack.pop()
                 return 0 # require filter
             
-            ## recursive 
+            if( "eosio_assert" in line ):
+                calline = line[line.find("("):line.rfind(")")]
+                callArguList = self.__getArgu(calline)
+                for callArgu in callArguList:
+                    if callArgu in taint:
+                        print "[-] eosio_assert %s " % line
+                        self.__callStack.pop()
+                        return 0
+
+                #print "[-] require_auth(self) detected" 
+                self.__callStack.pop()
+                return 0 # require filter
+            
             if ( "CALL" in line ):
                 if targetFunc in line :
                     caline = line[line.find("("):line.rfind(")")]
-                    callArguList = re.findall("\$[0-9]+",caline)
+                    callArguList = self.__getArgu(caline)
                     for callArgu in callArguList:
                         if callArgu in taint:
                             print "[I] "+line
@@ -92,10 +103,20 @@ class wasmSymbolic:
                     while len(callArguList) > cnt :
                         if callArguList[cnt] in taint :
                             if self.forwardSymbolic(callName, "$%d"%(cnt), targetFunc, arguNum):
-                                print "[I] "+line
                                 return 1
                             pass
                         cnt += 1
+            
+            if " / " in line and "eosio_assert" not in line:
+                Operator = line.split(" / ")[1]
+                arguList = self.__getArgu(Operator)
+                for argu in arguList :
+                    if argu in taint :
+                        print "[!] %s " % line
+                        print "[-] divided by Zero "
+                        return 1
+            
+            ## recursive 
             if (" = " in line) :
                 paramList =  self.__getArgu(line);
                 if len(paramList) > 1 :
@@ -110,7 +131,6 @@ class wasmSymbolic:
         #print "[+] Try.. function [%s] " % fName
         #self.tryAllArgu(fName, "strcpy", 1)
 
-        
         for fName in self.__elem:
             if fName in self.__dic.keys() and len(self.__dic[fName]) > 10 :
                 print "\t[+] Try.. function [%s] " % fName
@@ -119,7 +139,6 @@ class wasmSymbolic:
                 self.tryAllArgu(fName, "db_update", 1)
                 #self.tryAllArgu(fName, "memcpy",2)
                 #self.tryAllArgu(fName, "memcpy",1)
-                
 
     
     def tryAllArgu(self, startFunc, targetFunc, targetArguNum):

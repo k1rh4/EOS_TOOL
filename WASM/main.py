@@ -3,7 +3,7 @@ from eosRay import *
 import sys
 
 def main():
-    PRJ = "../CONTRACT/zoltanfrnczf/zoltanfrnczf.wasm"
+    PRJ = "../CONTRACT/fastwindice3/fastwindice3.wasm"
     if len(sys.argv) > 1 :
         PRJ = sys.argv[1]
 
@@ -26,7 +26,7 @@ def main():
         stack = e.Postfix(dic["func"][select])
         source = e.ray(stack)
         ### beatiful source ###
-        restore = e.replaceStr(source)
+        restore = e.beautifulSrc(source)
         print e.showSource(restore)
         i+=1
     '''
