@@ -32,3 +32,50 @@ WASM
 └── wastCook.py         // WAST parsor for eosRay.py
 
 ```
+
+
+```
+Docker
+├── Dockerfile
+├── EOS
+│   ├── Disassemble
+│   ├── cleos
+│   ├── cleos_without_wast
+│   ├── eosio-wast2wasm
+│   ├── keosd
+│   └── nodeos
+├── FUZZ # YOU DONT HAVE TO USE THIS..
+│   ├── apiCook.py
+│   ├── apiList.txt
+│   ├── config.ini
+│   ├── configParsor.py
+│   ├── fuzz.py 
+│   ├── hello
+│   ├── monitor.py
+│   ├── mutator.py
+│   ├── nodeos.py
+│   ├── radamsa
+│   ├── replay
+│   ├── runNode.py
+│   └── wastCook.py
+├── SHARE # ONLY USE THIS 
+│   ├── CONTRACT
+│   ├── eosio.token     ## EOS TOKEN CONTRACT
+│   ├── getAccount.js
+│   ├── getRaminfo.sh   ## GET RAM INFOMATION FROM USERS
+│   ├── makeMoney.sh    ## MAKE TOKEN
+│   ├── makeUser.sh     ## MAKE 3 USERS (Only if Nodeos is running)
+│   ├── node_modules
+│   ├── push_transaction.sh
+│   ├── runNode.sh      ## RUN TEST NODEOS
+│   ├── setContract.sh  ## SET CONTRACT INTO NODEOS
+│   ├── setPush.js
+│   └── userInfo.db
+├── TEST    
+│   ├── abort.c
+│   └── segfault.c
+├── entry.sh    
+├── run_docker.sh   ## usage [ ./run_docker.sh efuzz ]
+└── stop.sh
+
+```
