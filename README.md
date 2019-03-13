@@ -35,7 +35,7 @@ WASM
 
 
 ```
-Docker
+Docker                  # FOR TESTING SMART CONRACT t
 ├── Dockerfile
 ├── EOS
 │   ├── Disassemble
@@ -44,7 +44,7 @@ Docker
 │   ├── eosio-wast2wasm
 │   ├── keosd
 │   └── nodeos
-├── FUZZ # YOU DONT HAVE TO USE THIS..
+├── FUZZ                    # YOU DONT HAVE TO USE THIS..
 │   ├── apiCook.py
 │   ├── apiList.txt
 │   ├── config.ini
@@ -58,7 +58,7 @@ Docker
 │   ├── replay
 │   ├── runNode.py
 │   └── wastCook.py
-├── SHARE # ONLY USE THIS 
+├── SHARE               # ONLY USE THIS 
 │   ├── CONTRACT
 │   ├── eosio.token     ## EOS TOKEN CONTRACT
 │   ├── getAccount.js
