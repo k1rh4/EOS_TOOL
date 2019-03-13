@@ -4,8 +4,8 @@ MAINTAINER efuss <efuzz@gmail.com>
 ###### SERVER SETTING ########
 #RUN apt-get install -y openssh-server
 
-RUN sed -i 's/security.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
-RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
+#RUN sed -i 's/security.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
+#RUN sed -i 's/archive.ubuntu.com/ftp.daumkakao.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get install -y vim
