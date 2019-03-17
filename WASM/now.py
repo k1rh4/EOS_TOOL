@@ -3,6 +3,7 @@ import os
 import sys
 import json 
 
+PATH=""
 class wasmSymbolic:
     __callStack = []
     __dic = {}
@@ -55,7 +56,7 @@ class wasmSymbolic:
     def forwardSymbolic(self, fName="", argv="", targetFunc="", arguNum=0):
         if fName in self.__callStack : return 0
         else :  self.__callStack.append(fName)
-        print "\t\t[+] Btace: " + "-> ".join(self.__callStack)
+        #print "\t\t[+] Btrace: " + "-> ".join(self.__callStack)
         nRet    = 0 
         taint   = []
         taint.append(argv)
@@ -71,7 +72,7 @@ class wasmSymbolic:
                 #print "[-] require_auth(self) detected" 
                 self.__callStack.pop()
                 return 0 # require filter
-            
+        
             if( "eosio_assert" in line ):
                 calline = line[line.find("("):line.rfind(")")]
                 callArguList = self.__getArgu(calline)
@@ -106,7 +107,7 @@ class wasmSymbolic:
                                 return 1
                             pass
                         cnt += 1
-            
+            '''
             if " / " in line and "eosio_assert" not in line:
                 Operator = line.split(" / ")[1]
                 arguList = self.__getArgu(Operator)
@@ -115,13 +116,14 @@ class wasmSymbolic:
                         print "[!] %s " % line
                         print "[-] divided by Zero "
                         return 1
-            
+            '''
             ## recursive 
             if (" = " in line) :
                 paramList =  self.__getArgu(line);
                 if len(paramList) > 1 :
-                    if argv in paramList[1::]:
-                        taint.append(paramList[0])
+                    if argv in paramList[1::]   : taint.append(paramList[0])
+                    elif paramList[0] in taint  : taint.remove(paramList[0])
+                    else                        : pass
                 else: pass
         self.__callStack.pop()
         return 0
@@ -133,10 +135,11 @@ class wasmSymbolic:
 
         for fName in self.__elem:
             if fName in self.__dic.keys() and len(self.__dic[fName]) > 10 :
-                print "\t[+] Try.. function [%s] " % fName
+                #rint "\t[+] Try.. function [%s] " % fName
                 self.tryAllArgu(fName, "strcpy", 0)
                 self.tryAllArgu(fName, "strcpy", 1)
                 self.tryAllArgu(fName, "db_update", 1)
+                self.tryAllArgu(fName, "db_update", 2)
                 #self.tryAllArgu(fName, "memcpy",2)
                 #self.tryAllArgu(fName, "memcpy",1)
 
@@ -146,6 +149,7 @@ class wasmSymbolic:
             print "\t[+] TRY : %s (NUM: %s) " % (startFunc , str(i))
             if self.forwardSymbolic(startFunc,"$%d"%(i),targetFunc,targetArguNum):
                 print "[!] REACHABLE!"
+                print "\t[+] FILE : %s" %PATH
                 print "\t[+] Start : %s, argu : [$%d], targetFunc :[%s], targetArguNum :[%d] "\
                         %(startFunc, i,targetFunc,targetArguNum)
                 print "\t[+] %s" % "->".join(self.__callStack)
