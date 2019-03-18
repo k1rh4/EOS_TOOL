@@ -8,17 +8,24 @@ class wasmSymbolic:
     __callStack = []
     __dic = {}
     __elem = []
+    __WASM_FILE = "" 
     def __init__( self, decompiledFile , abiFile=""):
         if not os.path.exists(decompiledFile) and not os.path.exists(abiFile) : sys.exit()
+        self.__WASM_FILE = decompiledFile 
         actionFunctions = []
         ### GET ACTION FUNCTIONS ###
-        with open(abiFile,"r") as f :
-            abiData =  json.loads(f.read())
-            cnt = 0 
-            while len(abiData["actions"]) > cnt :
-                actions = abiData["actions"][cnt]
-                actionFunctions.append(actions["name"])
-                cnt += 1
+        try :
+            with open(abiFile,"r") as f :
+                abiData =  json.loads(f.read())
+                cnt = 0 
+                while len(abiData["actions"]) > cnt :
+                    actions = abiData["actions"][cnt]
+                    actionFunctions.append(actions["name"])
+                    cnt += 1
+        except :
+            print "[D] There is no Abi File check this out "
+            #raw_input(">")
+            return -1
 
         ### READ DECOMPILED FILES ###
         with open(decompiledFile ,"r") as f:
@@ -38,6 +45,7 @@ class wasmSymbolic:
             if ".FUNC $" in data:
                 fName = data.split(".FUNC ")[1].split(" (")[0]
                 l = []
+                l.append(data)
                 while 1:
                     i+=1
                     data = fileData[i]
@@ -72,7 +80,7 @@ class wasmSymbolic:
                 #print "[-] require_auth(self) detected" 
                 self.__callStack.pop()
                 return 0 # require filter
-        
+            '''
             if( "eosio_assert" in line ):
                 calline = line[line.find("("):line.rfind(")")]
                 callArguList = self.__getArgu(calline)
@@ -85,7 +93,7 @@ class wasmSymbolic:
                 #print "[-] require_auth(self) detected" 
                 self.__callStack.pop()
                 return 0 # require filter
-            
+            '''
             if ( "CALL" in line ):
                 if targetFunc in line :
                     caline = line[line.find("("):line.rfind(")")]
@@ -143,24 +151,29 @@ class wasmSymbolic:
                 #self.tryAllArgu(fName, "memcpy",2)
                 #self.tryAllArgu(fName, "memcpy",1)
 
-    
     def tryAllArgu(self, startFunc, targetFunc, targetArguNum):
-        for i in range(0,4):
+        arguNumber = 0 
+        if startFunc in self.__dic.keys():
+            fLine =  self.__dic[startFunc][0]
+            fArgu = self.__getArgu(fLine[fLine.find("("):fLine.rfind(")")])
+            arguNumber = len(fArgu)
+            print "[D] argu size : %d " % arguNumber 
+
+        for i in range(0,arguNumber):
             print "\t[+] TRY : %s (NUM: %s) " % (startFunc , str(i))
             if self.forwardSymbolic(startFunc,"$%d"%(i),targetFunc,targetArguNum):
                 print "[!] REACHABLE!"
-                print "\t[+] FILE : %s" %PATH
+                print "\t[+] FILE : %s" % self.__WASM_FILE
                 print "\t[+] Start : %s, argu : [$%d], targetFunc :[%s], targetArguNum :[%d] "\
                         %(startFunc, i,targetFunc,targetArguNum)
                 print "\t[+] %s" % "->".join(self.__callStack)
                 raw_input("CONTINUE?>")
             while self.__callStack : self.__callStack.pop()
 
-
 def main():
     import sys
-    PATH    = "../CONTRACT/eosmagiecube/eosmagiecube.wasm.decompile"
-    ABIFILE = "../CONTRACT/eosmagiecube/eosmagiecube.abi"
+    PATH    = "../CONTRACT/wnze2qwdiyne/wnze2qwdiyne.wasm.decompile"
+    ABIFILE = "../CONTRACT/wnze2qwdiyne/wnze2qwdiyne.abi"
     if len(sys.argv)>1:
         PATH    = sys.argv[1]
         ABIFILE = sys.argv[2]
