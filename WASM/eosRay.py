@@ -495,13 +495,23 @@ class eosRay():
             if ".LOOP" in line or ".LABEL" in line :
                 pass
 
-            if ".FUNC" in line:
+            elif ".FUNC" in line:
                 arguList = re.findall("\$[0-9]",line[line.find("("):line.find(")")]) # parsing $num
+                if arguList :
+                    paramNum = len(arguList)-1
+                
+                    b = line[0:line.find("(")]
+                    f = line[line.find("(")::]
+                    line = b + re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',f)
 
-            if arguList :
+            elif arguList :
                 paramNum = len(arguList)-1
-                # Do not change Arg\1 -> Arg[\1] 
-                line = re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
+                # Do not change Arg\1 -> Arg[\1]
+                #line = re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
+                line = re.sub(r"([^a-z]|^)(\$[0-%d]{1}([^0-9]|$))"%(paramNum),r'\1Arg\2',line)
+
+            else:
+                pass
 
             for variable in re.findall("(?<=\[).+?(?=\])",line): # parsing [ ] 
                 strData  = self.__getData(variable)
@@ -526,6 +536,7 @@ class eosRay():
                 else: break
             retList.append(line)
             i+=1
+
         return retList
 
     def __takeOutArgu(self, line):
