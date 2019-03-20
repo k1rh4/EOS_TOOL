@@ -10,4 +10,6 @@ then
 	CONTRACT=$2
 fi
 echo "HELLO CONTRACT SET AND CALL METHOD" 
+
 /EOS/cleos set contract $NAME $CONTRACT -p "$1@active"
+#/EOS/cleos set contract $NAME $CONTRACT -p "$1@eosio.code"
