@@ -16,12 +16,13 @@ if len(sys.argv) > 1 :
 OP=["--stake-cpu","\"0.0001 EOS\"","--stake-net" ,"\"0.0001 EOS\"", "--buy-ram" ,"\"0.0001 EOS\""]
 OP=[]
 
-for i in range(0,3):
+for i in range(0,4):
     print "---------------------------------------------------"
 
     randomName = ''.join(random.choice(string.ascii_lowercase) for _ in range(6))
-    if i == 0: randomName = "eosio.token"
-        print "[+] random Name : %s " % randomName
+    if i == 0: 
+        randomName = "eosio.token"
+    print "[+] random Name : %s " % randomName
 #    print "[I] Create wallet "
     cmdLine = [ "/EOS/cleos", "wallet", "create", "-n", randomName ]
 
@@ -35,7 +36,7 @@ for i in range(0,3):
     priv_key    = str(key_process.stdout.readline()[13:-1])
     pub_key     = str(key_process.stdout.readline()[12:-1])
 
-#    print "[+] pub_key : %s " % pub_key
+    print "[+] pub_key : %s " % pub_key
     print "[+] priv_key: %s " % priv_key
 
 
