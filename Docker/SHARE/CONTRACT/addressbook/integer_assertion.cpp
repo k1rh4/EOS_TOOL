@@ -4,7 +4,7 @@
 //#include <eosiolib/symbol2.hpp>
 #include <eosiolib/asset.hpp>
 #include <eosiolib/core_symbol.hpp>
-#include <stdio.h>
+
 using namespace eosio;
 using namespace std;
 
@@ -16,10 +16,14 @@ class [[eosio::contract]] addressbook : public contract {
 public:
     addressbook(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds){}
     [[eosio::action]]
-    void upsert(name user, string a1, int a2) 
+    void upsert(name user, asset money) 
     {
-        require_auth(_self);
-        require_auth(user);
+        
+        print ("MONEY : " ,asset{money});
+        int i =money.amount;
+        eosio_assert(i>0,"WHEN PIG FLY?");
+        print ("I : %d ", i );
+
     }
 };
 EOSIO_DISPATCH( addressbook, (upsert))

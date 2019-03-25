@@ -18,8 +18,10 @@ public:
     [[eosio::action]]
     void upsert(name user, string a1, int a2) 
     {
-        require_auth(_self);
-        require_auth(user);
+        char buff[10];
+
+        strcpy(buff, a1.c_str());
+        printf("::::::::::::::%s %d\n",buff, a2);
     }
 };
 EOSIO_DISPATCH( addressbook, (upsert))
