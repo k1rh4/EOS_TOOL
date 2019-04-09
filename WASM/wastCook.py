@@ -1,6 +1,8 @@
 
-WASM_DIS = "/Users/k1rh4/GIT/EOS_TOOL/TOOLS/wasm-dis"
+#https://github.com/emscripten-core/emsdk/ ... wasm-dis 
 
+WASM_DIS = "/Users/k1rh4/GIT/EOS_TOOL/TOOLS/wasm-dis"
+WASM_DIS = "/home/k1rh4/GIT/emsdk/clang/e1.38.12_64bit/binaryen/bin/wasm-dis"
 class wastCook():
     __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{},"global":[]}
         ### NOT implement yet ###

@@ -55,7 +55,9 @@ class eosRay():
         for func in self.__wastCook['func'].keys():
             stack = self.Postfix(self.__wastCook['func'][func])
             source = self.ray(stack)
-            restore = self.beautifulSrc(source)
+            
+            #restore = self.beautifulSrc(source)
+            restore = self.IR(source)
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
@@ -485,17 +487,63 @@ class eosRay():
         aLineList.append("}")
         return aLineList
 
-    ### Change .data to strings 
-    def beautifulSrc( self, _list ):
+    def IR( self, _list ):
         arguList = [] 
         retList = []
+
+        FUNC_FLAG = ""
         i = 0
+
         for line in _list :
 
             if ".LOOP" in line or ".LABEL" in line :
                 pass
 
             elif ".FUNC" in line:
+                FUNC_FLAG = "@F%s_" % line.split(".FUNC $")[1].split(" (")[0]
+
+            line = line.replace("(int_64)(int_64)","(int_64)")
+            line = line.replace("(int_32)(int_32)","(int_64)")
+            line = line.replace("  "," ")
+            line = line.replace("i32","int_32")
+            line = line.replace("i64","int_64")
+            line = line.replace("f32","float_32")
+            line = line.replace("f64","float_64")
+
+            #line = re.sub(r"([^a-z])(\$[0-9]{1,})",r'\1%s\2'%FUNC_FLAG,line)
+            #line = re.sub(r"([var])(\$[0-9]{1,})",r'\1%s\2'%FUNC_FLAG,line)
+            line = re.sub(r"(\$var)(\$[0-9]{1,})",r'%s\2'% FUNC_FLAG,line)
+            while 1:
+                # if (A=CALL B) == "C") -> A=CALL B , if (A=="C")
+                value, semantic = self.__takeOutArgu(line)
+                if value and semantic :
+                    retList.append(semantic)
+                    line = line.replace(semantic,value)
+                else: break
+            retList.append(line)
+            i+=1
+
+        return retList
+
+
+    ### Change .data to strings 
+    def beautifulSrc( self, _list ):
+        arguList = [] 
+        retList = []
+
+        FUNC_FLAG = ""
+        i = 0
+
+        for line in _list :
+
+            if ".LOOP" in line or ".LABEL" in line :
+                pass
+
+            elif ".FUNC" in line:
+                if      line == "{" : FUNC_FLAG = "F_"+line.split(".FUNC $")[1].split("(")[0] 
+                elif    line == "}" : FUNC_FLAG = "" 
+                else:   pass
+
                 arguList = re.findall("\$[0-9]",line[line.find("("):line.find(")")]) # parsing $num
                 if arguList :
                     paramNum = len(arguList)-1
@@ -512,7 +560,7 @@ class eosRay():
 
             else:
                 pass
-
+            # present .data string 
             for variable in re.findall("(?<=\[).+?(?=\])",line): # parsing [ ] 
                 strData  = self.__getData(variable)
                 if len(strData) > 0 : 
@@ -520,6 +568,8 @@ class eosRay():
                         retList.insert(0,".data %s -> [\"%s\"]"%(variable, strData) )
                     line += " # .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
+
+            # Remove duplicated type 
             line = line.replace("(int_64)(int_64)","(int_64)")
             line = line.replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ")
