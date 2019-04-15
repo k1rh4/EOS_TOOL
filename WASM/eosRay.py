@@ -14,32 +14,6 @@ class eosRay():
     def __init__(self,wastCook):
         self.__wastCook = wastCook
     
-    # 2019.02.21 ...  Not finished yet. I,m sick of this logic.... 
-    def Flair(self, abiFile):
-        import os
-        if not os.path.exists(abiFile) : return -1
-        with open (abiFile) as f : abiData = f.read()
-        import json
-        abiJson = json.loads(abiData)
-        _structs = abiJson['structs']
-        _actions = abiJson['actions']
-
-
-        fName = _actions[0]['name']
-        ftype = _actions[0]['type']
-
-        fieldNum = 0
-        for iterator in _structs:
-            if iterator['name'] == ftype :
-                fieldNum =  len(iterator['fields'])
-
-        callingConv = ""
-        for elem in self.__wastCook['elem'][0].split(" "):
-            for func in self.__wastCook['func'].keys():
-                if elem in func : 
-                    param, ret  = self.__getCallingConv(elem)
-                    if param == fieldNum:
-                        pass
 
     def save(self, fileName):
         sRes = ""
@@ -56,9 +30,10 @@ class eosRay():
             stack = self.Postfix(self.__wastCook['func'][func])
             source = self.ray(stack)
             
-            #restore = self.beautifulSrc(source)
+            restore = self.beautifulSrc(source)
+            restore = self.Flair(restore)
             #restore = self.IR(source)
-            restore = source
+            #restore = source
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
@@ -487,6 +462,23 @@ class eosRay():
             if typeList[0] != "v" and len(aLineList)>0 : aLineList.append("return %s" % aLineList.pop().strip())
         aLineList.append("}")
         return aLineList
+    
+    # 2019.04.15 ...  Not finished yet. I,m sick of this logic.... 
+    # import Export symbol restore, && Abi file symbol resture 
+    def Flair(self, source ):
+        retList     = []
+        # import Export Symobl resture 
+        for line in source:
+            lineType=""
+            if ".FUNC"  in line : lineType = ".FUNC"
+            if "CALL"   in line : lineType = "CALL"
+            if lineType :
+                name = line[line.find(lineType)+len(lineType)::]
+                name = name[0:name.find("(")].strip()
+                fName = self.__getFuncName(name)
+                line = line.replace(" "+name, " "+fName)
+            retList.append(line)
+        return retList
 
     def IR( self, _list ):
         arguList    = [] 
@@ -523,32 +515,27 @@ class eosRay():
     def beautifulSrc( self, _list ):
         arguList = [] 
         retList = []
-        FUNC_FLAG = ""
         i = 0
         for line in _list :
-
             if ".LOOP" in line or ".LABEL" in line :
                 pass
-
             elif ".FUNC" in line:
-                if      line == "{" : FUNC_FLAG = "F_"+line.split(".FUNC $")[1].split("(")[0] 
-                elif    line == "}" : FUNC_FLAG = "" 
-                else:   pass
-
                 arguList = re.findall("\$[0-9]",line[line.find("("):line.find(")")]) # parsing $num
+
                 if arguList :
                     paramNum = len(arguList)-1
-                
                     b = line[0:line.find("(")]
                     f = line[line.find("(")::]
-                    line = b + re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',f)
-
+                    line = b + re.sub(r"(\$var)(\$[0-%d]{1}[^0-9])"%paramNum,r'Arg\2',f)
+                    if 1!=1 : # For Mack version wasm-dis 
+                        line = b + re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',f)
             elif arguList :
                 paramNum = len(arguList)-1
                 # Do not change Arg\1 -> Arg[\1]
                 #line = re.sub(r"([^a-z])(\$[0-%d]{1}[^0-9])"%(paramNum),r'\1Arg\2',line)
-                line = re.sub(r"([^a-z]|^)(\$[0-%d]{1}([^0-9]|$))"%(paramNum),r'\1Arg\2',line)
-
+                line = re.sub(r"(\$var)(\$[0-%d]{1}[^0-9])"%(paramNum),r'Arg\2',line)
+                if 1!=1 : #For MAC version wasm-dis
+                    line = re.sub(r"([^a-z]|^)(\$[0-%d]{1}([^0-9]|$))"%(paramNum),r'\1Arg\2',line)
             else:
                 pass
             # present .data string 
@@ -568,7 +555,6 @@ class eosRay():
             line = line.replace("i64","int_64")
             line = line.replace("f32","float_32")
             line = line.replace("f64","float_64")
-
             while 1:
                 value, semantic = self.__takeOutArgu(line)
                 if value and semantic :
