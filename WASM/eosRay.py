@@ -137,13 +137,11 @@ class eosRay():
     def __getCallConv(self, fName):
         nRes = -1
         for func in self.__wastCook["func"].keys():
-            #print func + ":" + fName 
-            #raw_input(">")
             if func  == fName:
                 funcData == self.__wastCook["func"][func]
-                print funcData
 
     def __getCallingConv( self, fName ):
+
         #fName = self.__getFuncName(fName)
         retFlag = 0 
         nRes    = -1
@@ -159,15 +157,16 @@ class eosRay():
                 #NOTE case 
                 # (import "env" "abort" (func $~lib/env/abort (param i32 i32 i32 i32)))
                 #(import "env" "memcpy" (func $fimport$12 (param i32 i32 i32) (result i32)))
-                s = re.split('[(, )"]',data)
-                if fName in s: 
+                s = filter(None,re.split('[(, )"]',data))
+                if fName in s:
                     param =""
+                    #(import "env" "eosio_assert" (func $fimport$11 (param i32 i32)))
                     if "(result" in data    : retFlag = 1
                     if "(param" in data     :  
-                        param   = data[data.find("(param")::]
-                        param   = param[::param.find(")")]
-                        nRes    = param.count(" ")
+                        param   = data[data.find("(param")+len("(param")::]
+                        param   = param[0:param.find(")")]
                         self.__func.update({fName:[nRes,retFlag]})
+                        nRes    = param.count(" ")
                     else : nRes = 0 
                     break
         # CUSTOM FUNCTION TABLE CHECK 
@@ -411,11 +410,9 @@ class eosRay():
                     funcNum += 1 
                 else: raw_input("[E] Call_indirect:There is no type >")
             elif "call" in data:
-                fName = data.split(" ")[1]
+                fName = data.split(" ")[1].strip()
                 countArgument, retFlag = self.__getCallingConv(fName)
                 #countArgument, retFlag = self.__getCallConv(fName)
-                #fName = self.__getFuncName(fName)
-
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
                 if retFlag  : operand.append("CALL %s(%s)" % (fName, (", ".join(l))))
@@ -488,25 +485,23 @@ class eosRay():
         for line in _list :
             if ".LOOP" in line or ".LABEL" in line : pass
             elif ".FUNC" in line: FUNC_FLAG = "@F%s_" % line.split(".FUNC $")[1].split(" (")[0]
-            line = line.replace("(int_64)(int_64)","(int_64)")
-            line = line.replace("(int_32)(int_32)","(int_64)")
-            line = line.replace("  "," ")
-            line = line.replace("i32","int_32")
-            line = line.replace("i64","int_64")
-            line = line.replace("f32","float_32")
-            line = line.replace("f64","float_64")
+            line = line.replace("(int_64)(int_64)","(int_64)").replace("(int_32)(int_32)","(int_64)")
+            line = line.replace("  "," ").replace("i32","int_32").replace("i64","int_64")
+            line = line.replace("f32","float_32").replace("f64","float_64")
 
             #line = re.sub(r"([^a-z])(\$[0-9]{1,})",r'\1%s\2'%FUNC_FLAG,line)
-            #line = re.sub(r"([var])(\$[0-9]{1,})",r'\1%s\2'%FUNC_FLAG,line)
             line = re.sub(r"(\$var)(\$[0-9]{1,})",r'%s\2'% FUNC_FLAG,line)
             while 1:
-                # if (A=CALL B) == "C") -> A=CALL B , if (A=="C")
                 value, semantic = self.__takeOutArgu(line)
                 if value and semantic :
+                    strip_semantic = semantic.strip()
+                    tmp = semantic
+                    if(strip_semantic[0]=="(" and strip_semantic[-1]==")"):
+                        semantic = strip_semantic[1:-1]
+                    
                     retList.append(semantic)
-                    line = line.replace(semantic,value)
+                    line = line.replace(tmp,value)
                 else: break
-            retList.append(line)
             i+=1
         return retList
 
@@ -548,19 +543,23 @@ class eosRay():
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
 
             # Remove duplicated type 
-            line = line.replace("(int_64)(int_64)","(int_64)")
-            line = line.replace("(int_32)(int_32)","(int_64)")
-            line = line.replace("  "," ")
-            line = line.replace("i32","int_32")
-            line = line.replace("i64","int_64")
-            line = line.replace("f32","float_32")
-            line = line.replace("f64","float_64")
+            line = line.replace("(int_64)(int_64)","(int_64)").replace("(int_32)(int_32)","(int_64)")
+            line = line.replace("  "," ").replace("i32","int_32").replace("i64","int_64")
+            line = line.replace("f32","float_32").replace("f64","float_64")
+            
             while 1:
                 value, semantic = self.__takeOutArgu(line)
                 if value and semantic :
+                    strip_semantic = semantic.strip()
+                    tmp = semantic
+                    if(strip_semantic[0]=="(" and strip_semantic[-1]==")"):
+                        semantic = strip_semantic[1:-1]
+                    
+                    semantic = semantic.replace(" = ","\t = ")
                     retList.append(semantic)
-                    line = line.replace(semantic,value)
+                    line = line.replace(tmp,value)
                 else: break
+            
             retList.append(line)
             i+=1
 
