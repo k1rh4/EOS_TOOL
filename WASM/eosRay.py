@@ -30,9 +30,9 @@ class eosRay():
             stack = self.Postfix(self.__wastCook['func'][func])
             source = self.ray(stack)
             
-            restore = self.beautifulSrc(source)
-            restore = self.Flair(restore)
-            #restore = self.IR(source)
+            #restore = self.beautifulSrc(source)
+            #restore = self.Flair(restore)
+            restore = self.IR(source)
             #restore = source
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
@@ -485,12 +485,15 @@ class eosRay():
         for line in _list :
             if ".LOOP" in line or ".LABEL" in line : pass
             elif ".FUNC" in line: FUNC_FLAG = "@F%s_" % line.split(".FUNC $")[1].split(" (")[0]
+            
+            # Give unique name to every variable 
+            line = re.sub(r"(\$var)(\$[0-9]{1,})",r'%s\2'% FUNC_FLAG,line)
+            
+            # Remove duplicated types expression
             line = line.replace("(int_64)(int_64)","(int_64)").replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ").replace("i32","int_32").replace("i64","int_64")
             line = line.replace("f32","float_32").replace("f64","float_64")
 
-            #line = re.sub(r"([^a-z])(\$[0-9]{1,})",r'\1%s\2'%FUNC_FLAG,line)
-            line = re.sub(r"(\$var)(\$[0-9]{1,})",r'%s\2'% FUNC_FLAG,line)
             while 1:
                 value, semantic = self.__takeOutArgu(line)
                 if value and semantic :
@@ -502,9 +505,9 @@ class eosRay():
                     retList.append(semantic)
                     line = line.replace(tmp,value)
                 else: break
+            retList.append(line)
             i+=1
         return retList
-
 
     ### Change .data to strings 
     def beautifulSrc( self, _list ):
@@ -542,7 +545,7 @@ class eosRay():
                     line += " # .data %s -> [\"%s\"]".rjust(30) % (variable, strData.split("\\00")[0])
                 else : line = line.replace(("*%s*" % variable), "(int)%s"%variable)
 
-            # Remove duplicated type 
+            # Remove duplicated types expression
             line = line.replace("(int_64)(int_64)","(int_64)").replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ").replace("i32","int_32").replace("i64","int_64")
             line = line.replace("f32","float_32").replace("f64","float_64")
