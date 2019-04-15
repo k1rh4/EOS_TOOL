@@ -131,14 +131,18 @@ class eosRay():
                 if "(result " in data:
                     if "i32" in data.split("(result ")[1]: retData ="i"
                     if "i64" in data.split("(result ")[1]: retData ="j"
+                    if "f64" in data.split("(result ")[1]: retData ="j"
+                    if "f32" in data.split("(result ")[1]: retData ="i"
                 else : retData = "v"
 
                 if "(param " in data :
                     param = data.split("(param ")[1]
                     param = param[0:param.find(")")]
                     for iterator in param.split(" "):
-                        if iterator == "i32"    : retData +="i"
+                        if  iterator == "i32"    : retData +="i"
                         elif iterator =="i64"   : retData +="j"
+                        elif iterator =="f64"   : retData +="j"
+                        elif iterator =="i64"   : retData +="i"
                         else                    : pass
         return retData
 
@@ -240,9 +244,8 @@ class eosRay():
             elif "return" in data       : sourceList.append("return %s" % operand.pop()) if operand else sourceList.append("return ")
             elif "br_if" in data        : sourceList.append("if ( %s ){ goto %s }" % (operand.pop(), data.split(" ")[1]))
             elif "if" in data           : 
-                print operand
-                print data
-                sourceList.append("if ( %s ){ goto %s }" % (operand.pop(), data.split(" ")[1]))
+                raw_input("[!] 'if' instruction is not implemented yet");
+                #sourceList.append("if ( %s ) " % (operand.pop()))
             elif "br" in data           : sourceList.append("goto %s " %(data.split(" ")[1]))
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
@@ -480,8 +483,8 @@ class eosRay():
             elif "grow_memory" in data  : pass
             else                    : raw_input ("[D] Instruction is not define yet : %s " %(data))
         # MAKE RETURN VALUE #
-        if typeList : 
-            if typeList[0] != "v" : aLineList.append("return %s" % aLineList.pop().strip())
+        if typeList :
+            if typeList[0] != "v" and len(aLineList)>0 : aLineList.append("return %s" % aLineList.pop().strip())
         aLineList.append("}")
         return aLineList
 
