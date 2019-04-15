@@ -57,7 +57,8 @@ class eosRay():
             source = self.ray(stack)
             
             #restore = self.beautifulSrc(source)
-            restore = self.IR(source)
+            #restore = self.IR(source)
+            restore = source
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
@@ -110,25 +111,17 @@ class eosRay():
         return stack
 
     def __getFuncName( self, string ):
-        if "global" in string or "fimport" in string :
-            for data in self.__wastCook['import']:
-                if (" "+string) in data:
-                    return "$"+data.split("(import \"env\" \"")[1].split(" (func")[0].strip("\"")
+        for importList in self.__wastCook['import']:
+            s = filter(None,re.split('[(, )"]',importList))
+            if string in s :
+                string = s[2]
+                break
 
-        exportList = self.__wastCook['export']
-        for data in exportList:
-            if ("(global" in data) and (string in data):
-                return "$"+data.split("(export \"")[1].split(" (global")[0].strip("\"")
-
-            elif "(func" in data:
-                fName = re.findall("\$[0-9]+",data)[0] # parsing $numa
-                if fName == string :
-                    
-                    t = "$"+data.split("(export \"")[1].split(" (func")[0].strip("\"")
-                    return t
-            else:
-                pass
-
+        for exportList in self.__wastCook['export']:
+            s = filter(None,re.split('[(, )"]',exportList))
+            if string in s :
+                string = s[1]
+                break
         return string
 
     def __getType( self, string ):
@@ -162,9 +155,16 @@ class eosRay():
                 elif "i64" in _type     : retData = ptr.split("i64.const ")[1]
                 else                    : raw_input("ERROR:__getGlobal >")
         return retData 
+    def __getCallConv(self, fName):
+        nRes = -1
+        for func in self.__wastCook["func"].keys():
+            #print func + ":" + fName 
+            #raw_input(">")
+            if func  == fName:
+                funcData == self.__wastCook["func"][func]
+                print funcData
 
     def __getCallingConv( self, fName ):
-
         #fName = self.__getFuncName(fName)
         retFlag = 0 
         nRes    = -1
@@ -177,28 +177,20 @@ class eosRay():
         #IMPORT TABLE CHECK
         if nRes == -1 :
             for data in self.__wastCook["import"]:
+                #NOTE case 
+                # (import "env" "abort" (func $~lib/env/abort (param i32 i32 i32 i32)))
                 #(import "env" "memcpy" (func $fimport$12 (param i32 i32 i32) (result i32)))
-                f1  = "$"+data.split("import \"env\"")[1].split("\"")[1]
-                f2  = re.findall("\$fimport\$[0-9]+",data)
-                if len(f2) > 0 : f2 = f2[0]
-                if fName == f1 or fName == f2:
+                s = re.split('[(, )"]',data)
+                if fName in s: 
                     param =""
                     if "(result" in data    : retFlag = 1
-                    if "(param" in data     : param = data[data.find("(param")::]
-                    if len(param)>0 :
-                        param   = param[0:param.find(")")]
+                    if "(param" in data     :  
+                        param   = data[data.find("(param")::]
+                        param   = param[::param.find(")")]
                         nRes    = param.count(" ")
                         self.__func.update({fName:[nRes,retFlag]})
                     else : nRes = 0 
                     break
-
-        # EXPORT FUNCTION CHECK
-        if nRes == -1 :
-            for data in self.__wastCook["export"]:
-                f = re.findall("(?<=\").+?(?=\")",data)[0] #parsing "data"
-                alias = re.findall("\$[0-9a-zA-Z]+",data)[0] #parsing $init
-                if f in fName: fName = alias 
-
         # CUSTOM FUNCTION TABLE CHECK 
         if nRes == -1 :
             for i in self.__wastCook["func"].keys():
@@ -210,6 +202,7 @@ class eosRay():
                         if "(result" in data : retFlag = 1 
                     self.__func.update({fName:[nRes,retFlag]})
                     break
+
         if nRes == -1 :
             print self.__wastCook['import']
             raw_input ("[E] No data in [__getArguFromFunc : %s ]" % fName)
@@ -438,7 +431,8 @@ class eosRay():
             elif "call" in data:
                 fName = data.split(" ")[1]
                 countArgument, retFlag = self.__getCallingConv(fName)
-                fName = self.__getFuncName(fName)
+                #countArgument, retFlag = self.__getCallConv(fName)
+                #fName = self.__getFuncName(fName)
 
                 l = []
                 for i in range(countArgument): l.append(operand.pop())
@@ -454,7 +448,7 @@ class eosRay():
             ### [ End of entire logic ] ###
             elif "func $" in data :
                 fName = data.split(" ")[1]
-                fName = self.__getFuncName(fName)
+                #fName = self.__getFuncName(fName)
                 remainStack = []
                 # PARAMETER 
                 while localList : remainStack.append(localList.pop())
@@ -488,20 +482,13 @@ class eosRay():
         return aLineList
 
     def IR( self, _list ):
-        arguList = [] 
-        retList = []
-
-        FUNC_FLAG = ""
-        i = 0
-
+        arguList    = [] 
+        retList     = []
+        FUNC_FLAG   = ""
+        i           = 0
         for line in _list :
-
-            if ".LOOP" in line or ".LABEL" in line :
-                pass
-
-            elif ".FUNC" in line:
-                FUNC_FLAG = "@F%s_" % line.split(".FUNC $")[1].split(" (")[0]
-
+            if ".LOOP" in line or ".LABEL" in line : pass
+            elif ".FUNC" in line: FUNC_FLAG = "@F%s_" % line.split(".FUNC $")[1].split(" (")[0]
             line = line.replace("(int_64)(int_64)","(int_64)")
             line = line.replace("(int_32)(int_32)","(int_64)")
             line = line.replace("  "," ")
@@ -522,7 +509,6 @@ class eosRay():
                 else: break
             retList.append(line)
             i+=1
-
         return retList
 
 
@@ -530,10 +516,8 @@ class eosRay():
     def beautifulSrc( self, _list ):
         arguList = [] 
         retList = []
-
         FUNC_FLAG = ""
         i = 0
-
         for line in _list :
 
             if ".LOOP" in line or ".LABEL" in line :
