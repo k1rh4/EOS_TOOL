@@ -8,11 +8,11 @@ def main():
         PRJ = sys.argv[1]
 
     w = wastCook()
-    dic = w.getWast("./%s"%(PRJ))
+    dic = w.getWast("%s"%(PRJ))
     e = eosRay(dic)
 
     ## DECOMPILE ALL OF THINGS AND SAVE
-    e.save("./%s.decompile"%(PRJ))
+    e.save("%s.decompile"%(PRJ))
     '''
     i = 0
     while 1:
