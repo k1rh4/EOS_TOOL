@@ -5,8 +5,8 @@ import json
 
 class wasmSymbolic:
     __callStack = []
-    __dic = {}
-    __elem = []
+    __dic       = {}
+    __elem      = []
     def __init__( self, decompiledFile , abiFile=""):
         if not os.path.exists(decompiledFile) and not os.path.exists(abiFile) : sys.exit()
         actionFunctions = []

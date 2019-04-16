@@ -37,6 +37,7 @@ class eosRay():
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
+        print "[+] Save eosray data to %s (and return this)"%fileName 
         return sRes
 
     def __getData(self, variable):

@@ -1,5 +1,6 @@
 from wastCook import *
 from eosRay import *
+from sym    import *
 import sys
 
 def main():
@@ -12,7 +13,10 @@ def main():
     e = eosRay(dic)
 
     ## DECOMPILE ALL OF THINGS AND SAVE
-    e.save("%s.decompile"%(PRJ))
+    source = e.save("%s.decompile"%(PRJ))
+    s = sym(source)
+    s.MakeBB()
+    ## FOR STEP TEST ##
     '''
     i = 0
     while 1:
