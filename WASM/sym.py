@@ -1,18 +1,19 @@
 import re 
 from binarytree import Node
 class node():
-    def __init__(self, code=[]):
-        self.parents     = None
-        self.current     = None # Dummpy
-        self.left        = None
-        self.right       = None
-        self.variable    = {}
-        self.exp         = {}
-        self.code        = code
-
+    def __init__(self, BB,  blockNum):
+        self.parents        = None
+        self.current        = None # Dummpy
+        self.left           = None
+        self.right          = None
+        self.variable       = {}
+        self.exp            = {}
+        self.code           = BB[blockNum]
+        self.blockNum       = blockNum
         pass
     def insertLeft(self, node):
-        if self.left == None : self.left = node;
+        if self.left == None : 
+            self.left = node;
     def insertRight(self, node):
         if self.right == None: self.right = node;
     def insertparents(self, node):
@@ -22,17 +23,6 @@ class sym():
     #ArrayTree = [[0 for x in range(MAX_NODE)] for y in range(CNT_FUNC)]
     TreeList = [ None for x in range(100)]
     def __init__(self, IRCode): self.IRCode = IRCode
-    def left (self, objList, i): self.dfs(objList, i+1)
-    def right(self, objList, i): self.dfs(objList, 2*i+1)
-    def dfs(self, objStack, i): 
-        if(not objStack[i]): 
-            # Judge logic 
-            return 1
-        else :
-            oList = objStack
-            oList.append(obj[i])
-            self.right(oList, i)
-            self.left(oList, i)
 
     def extractVar(self, line):
         fName       = re.findall("[^_]\$[0-9]{1,}", line)[0].strip()
@@ -52,40 +42,49 @@ class sym():
     def __SearchBranchNode(self, BB, blockNum):
         pass
 
+    def ShowTree(self, TreeNode):
+        if TreeNode : 
+            print "[P]:" ,
+            print TreeNode.blockNum,
+            if TreeNode.left :
+                print ", [L]:",
+                print TreeNode.left.blockNum,
+            if TreeNode.right :
+                print ", [R]:",
+                print TreeNode.right.blockNum
+
+            self.ShowTree(TreeNode.left)
+            self.ShowTree(TreeNode.right)
+
     def __MakeTree(self, TreeNode, BB, _blockNum):
-        print TreeNode.code
         lastLine = TreeNode.code[-1]
         if "if" in lastLine :
             label = re.findall("\$label\$[0-9]{1,}",lastLine)[0]
             for N in BB.keys():
                 if ".LABEL" in BB[N][0]:
                     if label == re.findall("\$label\$[0-9]{1,}",BB[N][0])[0]:
-                        print N
-                        print _blockNum+1
-                        raw_input("break>")
-                        TreeNode.right = node(BB[N])
+                        TreeNode.right = node(BB, N)
                         TreeNode.right.insertparents(TreeNode)
                         self.__MakeTree(TreeNode.right,BB, N)
                         
-                        TreeNode.left = node(BB[_blockNum+1])
+                        TreeNode.left = node(BB, _blockNum+1)
                         TreeNode.left.insertparents(TreeNode)
                         self.__MakeTree(TreeNode.left, BB, _blockNum+1)
                         break
         else:
-            raw_input( "ELSE >%d"%_blockNum)
             if _blockNum+1 in BB.keys():
-                TreeNode.right = node(BB[_blockNum+1])
+                TreeNode.right = node(BB, _blockNum+1)
                 TreeNode.right.insertparents(TreeNode)
                 self.__MakeTree(TreeNode.right, BB, _blockNum+1)
             return 
 
     def InsertNode(self, fName, BB, lastNode):
         fName = int(fName.strip("$"))
-        self.TreeList[fName] = node(BB[0])
+        self.TreeList[fName] = node(BB,0)
         self.__MakeTree(self.TreeList[fName], BB, 0)
 
-        print self.TreeList[fName]
-
+        self.ShowTree(self.TreeList[fName])
+        raw_input("break>")
     def MakeBB(self):
         print "[D] BB Start "
         # dictionary Tree is the best .. em.. code, variables, expressions, 
