@@ -1,9 +1,26 @@
 import re 
+from binarytree import Node
+class node():
+    def __init__(self, code=[]):
+        self.parents     = None
+        self.current     = None # Dummpy
+        self.left        = None
+        self.right       = None
+        self.variable    = {}
+        self.exp         = {}
+        self.code        = code
 
-CNT_FUNC    = 100
-MAX_NODE    = 1000000
+        pass
+    def insertLeft(self, node):
+        if self.left == None : self.left = node;
+    def insertRight(self, node):
+        if self.right == None: self.right = node;
+    def insertparents(self, node):
+        if self.parents == None : self.parents = node;
+
 class sym():
-    ArrayTree = [[0 for x in range(MAX_NODE)] for y in range(CNT_FUNC)]
+    #ArrayTree = [[0 for x in range(MAX_NODE)] for y in range(CNT_FUNC)]
+    TreeList = [ None for x in range(100)]
     def __init__(self, IRCode): self.IRCode = IRCode
     def left (self, objList, i): self.dfs(objList, i+1)
     def right(self, objList, i): self.dfs(objList, 2*i+1)
@@ -35,44 +52,39 @@ class sym():
     def __SearchBranchNode(self, BB, blockNum):
         pass
 
-    def __MakeTree(self, fName, _nodeNum, BB, _blockNum):
-        blockNum    = _blockNum
-        nodeNum     = _nodeNum
-        if blockNum in BB.keys() and not self.ArrayTree[fName][nodeNum]: 
-            print ":::::::::::::::::::"
-            print "Basic Block : ",
-            print BB[blockNum]
-            print "FName : ",
-            print fName
-            print "Node Num : ",
-            print nodeNum
-            print "Block Num : ",
-            print blockNum
-            #NOTE : You can save other object to ArrayTree
-            self.ArrayTree[fName][nodeNum] = BB[blockNum]
-            raw_input("Insert Tree>")
-        else : return 
-        tBB = BB[blockNum]
-        if "if" in tBB[-1] : 
-            label = re.findall("\$label\$[0-9]{1,}",tBB[-1])
-            if len(label)>0 : 
-                label = label[0]
-                # Find next node and insert right node 
-                for key in BB.keys():
-                    cmpStr = ""
-                    if ".LABEL" in BB[key][0] :
-                        cmpStr = BB[key][0].split(" ")[1]
-                        if label == cmpStr:
-                            self.__MakeTree(fName, 2*nodeNum+2, BB, key)
-                            self.__MakeTree(fName, 2*nodeNum+1, BB, blockNum+1)
-                            return 
-                        else : pass
-        else: self.__MakeTree(fName, 2*nodeNum+2, BB, blockNum+1)
+    def __MakeTree(self, TreeNode, BB, _blockNum):
+        print TreeNode.code
+        lastLine = TreeNode.code[-1]
+        if "if" in lastLine :
+            label = re.findall("\$label\$[0-9]{1,}",lastLine)[0]
+            for N in BB.keys():
+                if ".LABEL" in BB[N][0]:
+                    if label == re.findall("\$label\$[0-9]{1,}",BB[N][0])[0]:
+                        print N
+                        print _blockNum+1
+                        raw_input("break>")
+                        TreeNode.right = node(BB[N])
+                        TreeNode.right.insertparents(TreeNode)
+                        self.__MakeTree(TreeNode.right,BB, N)
+                        
+                        TreeNode.left = node(BB[_blockNum+1])
+                        TreeNode.left.insertparents(TreeNode)
+                        self.__MakeTree(TreeNode.left, BB, _blockNum+1)
+                        break
+        else:
+            raw_input( "ELSE >%d"%_blockNum)
+            if _blockNum+1 in BB.keys():
+                TreeNode.right = node(BB[_blockNum+1])
+                TreeNode.right.insertparents(TreeNode)
+                self.__MakeTree(TreeNode.right, BB, _blockNum+1)
+            return 
 
     def InsertNode(self, fName, BB, lastNode):
         fName = int(fName.strip("$"))
-        self.__MakeTree(fName, 0, BB, 0)
-        print self.ArrayTree[fName]
+        self.TreeList[fName] = node(BB[0])
+        self.__MakeTree(self.TreeList[fName], BB, 0)
+
+        print self.TreeList[fName]
 
     def MakeBB(self):
         print "[D] BB Start "
