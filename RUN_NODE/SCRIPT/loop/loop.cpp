@@ -43,26 +43,32 @@ public:
     void main(uint64_t currentContract, uint64_t idx, uint64_t randNum){
 	int N = 0;
 	name curerntChildContract = "client"_n;
-        switch(currentContract){
-            case 1:
-                curerntChildContract = "reset1"_n;
-                N = 11;
-                break;
-            case 2:
-                curerntChildContract = "reset2"_n;
-                N = 13;
-                break;
-            case 3:
-                curerntChildContract = "reset3"_n;
-                N = 17;
-                break;
-        }
-        transaction out{};
-        out.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
-        out.delay_sec = 0;
-	out.send((idx + N), "client"_n, false);
-	//  out.send((idx + N), "client"_n, false);
-        print("[#] loop : ", curerntChildContract, " - ", idx);
+    transaction out{};
+    N = 11;
+    out.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
+    out.delay_sec = 0;
+    out.send((N), "client"_n, false);
+    
+    N = 13;
+    transaction out2{};
+    out2.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
+    out2.delay_sec = 0;
+    out2.send((idx + N), "client"_n, false);
+    
+    N = 17;
+    transaction out3{};
+    out3.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
+    out3.delay_sec = 0;
+    out3.send((idx +N), "client"_n, false);
+    
+    N =23;        
+    transaction out4{};
+    out4.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
+    out4.delay_sec = 0;
+    out4.send((idx + N), "client"_n, false);
+
+//  out.send((idx + N), "client"_n, false);
+    print("[#] loop : ", curerntChildContract, " - ", idx);
     }
 };
 
