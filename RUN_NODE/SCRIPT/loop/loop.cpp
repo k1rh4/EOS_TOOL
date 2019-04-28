@@ -47,7 +47,7 @@ public:
     N = 11;
     out.actions.emplace_back(permission_level{"client"_n, "active"_n}, "loop"_n, "main"_n, std::make_tuple("client"_n, uint64_t(idx + N), uint64_t(randNum)));
     out.delay_sec = 0;
-    out.send((N), "client"_n, false);
+    out.send((idx+N), "client"_n, false);
     
     N = 13;
     transaction out2{};
