@@ -35,7 +35,7 @@
 using namespace eosio;
 using namespace std;
 
-class [[eosio::contract]] tablec: public contract{
+class [[eosio::contract]] arbitCall: public contract{
     private:
         struct [[eosio::table]] person {
             uint64_t key;
@@ -64,4 +64,4 @@ class [[eosio::contract]] tablec: public contract{
         sendtochild(client, idx, randNum);
     }
 };
-EOSIO_DISPATCH(tablec, (main))
+EOSIO_DISPATCH(arbitCall, (main))
