@@ -35,7 +35,7 @@
 using namespace eosio;
 using namespace std;
 
-class [[eosio::contract]] arbitCall: public contract{
+class [[eosio::contract]] arbitCall2: public contract{
     private:
         struct [[eosio::table]] person {
             uint64_t key;
@@ -48,18 +48,15 @@ class [[eosio::contract]] arbitCall: public contract{
         typedef eosio::multi_index<"people"_n, person> address_index;
     public:
         using contract::contract;
-        void sendtochild(name client,uint64_t idx)
+        void sendtochild(uint64_t idx)
         {
         print("[*] Parent Called\n");
-        transaction out1{};
-        out1.actions.emplace_back(permission_level{_self, "active"_n}, client , "main"_n, std::make_tuple(uint64_t(1)));
-	    out1.send( idx+1, _self, false);
-        print("[#] Send To Child : ", client);
+        print("[#] Send  ");
     }
 
     [[eosio::action]]
-    void main(name client, uint64_t idx){
-        sendtochild(client, idx);
+    void main( uint64_t idx){
+        sendtochild( idx);
     }
 };
-EOSIO_DISPATCH(arbitCall, (main))
+EOSIO_DISPATCH(arbitCall2, (main))
