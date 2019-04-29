@@ -66,14 +66,16 @@ class [[eosio::contract]] tablec: public contract{
             });
             printf("SUCCESS SAVE\n");
         }
-        transaction out1{};
+        printf("END\n");
+        
+        /*
         //transaction out2{};
         //transaction out3{};
         out1.actions.emplace_back(permission_level{client, "active"_n}, "child"_n, "childreflect"_n, std::make_tuple(uint64_t(1), uint64_t(idx+11), uint64_t(randNum)));
 	// out1.send();
 	    out1.send(idx+11, "client"_n, false);
         print("[#] Send To Child : ", client, " - ", idx);
-
+        */
     }
 
     [[eosio::action]]
