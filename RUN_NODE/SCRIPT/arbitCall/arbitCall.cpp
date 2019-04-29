@@ -52,7 +52,7 @@ class [[eosio::contract]] arbitCall: public contract{
         {
         print("[*] Parent Called\n");
         transaction out1{};
-        out1.actions.emplace_back(permission_level{_self, "active"_n}, client , "main"_n, std::make_tuple(uint64_t(1)));
+        out1.actions.emplace_back(permission_level{_self, "active"_n}, client , "main"_n, std::make_tuple(_self,1,1));
 	    out1.send( idx+1, _self, false);
         print("[#] Send To Child : ", client);
     }
