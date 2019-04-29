@@ -31,7 +31,7 @@
 #include <eosiolib/system.h>
 #include <eosiolib/transaction.h>
 #include <eosiolib/types.h>
-
+#include <eosiolib/crypto.h>
 using namespace eosio;
 using namespace std;
 
@@ -67,7 +67,10 @@ class [[eosio::contract]] tablec: public contract{
             printf("SUCCESS SAVE\n");
         }
         printf("END\n");
-        
+        sha256("1234567890123456789012aa34789012",32);
+        sha256("12345678901234567890123456780a12",32);
+        sha256("12345678901234567890123456789012",32);
+        sha256("1234567890123456789012345678902a",32);
         /*
         //transaction out2{};
         //transaction out3{};
