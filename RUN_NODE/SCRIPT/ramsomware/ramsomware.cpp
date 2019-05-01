@@ -41,6 +41,7 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
                 row.key = idx;
                 row.data = A;
             });
+            print("SUCCESS SAVE DATA\n");
         }
 
         [[eosio::action]]
