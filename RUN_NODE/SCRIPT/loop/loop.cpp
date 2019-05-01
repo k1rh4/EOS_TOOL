@@ -43,7 +43,8 @@ public:
     void main(name currentContract, uint64_t idx){
 	int N = 1;
     transaction out{};
-    out.actions.emplace_back(permission_level{currentContract, "active"_n}, "loop"_n, "main"_n, std::make_tuple(currentContract, uint64_t(idx + N)));
+    out.actions.emplace_back(permission_level{currentContract, "active"_n},\
+            "loop"_n, "main"_n, std::make_tuple(currentContract, uint64_t(idx + N)));
     out.delay_sec = 0;
     out.send((idx+N), currentContract, false);
     print("[#] loop : ", name{currentContract}, " - ", idx);
