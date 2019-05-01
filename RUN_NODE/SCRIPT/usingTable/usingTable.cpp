@@ -35,7 +35,7 @@
 using namespace eosio;
 using namespace std;
 
-class [[eosio::contract]] tablec: public contract{
+class [[eosio::contract]] usingTable: public contract{
     private:
         struct [[eosio::table]] person {
             uint64_t key;
@@ -48,7 +48,7 @@ class [[eosio::contract]] tablec: public contract{
         typedef eosio::multi_index<"people"_n, person> address_index;
     public:
         using contract::contract;
-        void sendtochild( name client, uint64_t idx, uint64_t randNum)
+        void sendtochild( name client, uint64_t idx)
         {
         print("[*] Parent Called\n");
 
@@ -67,42 +67,12 @@ class [[eosio::contract]] tablec: public contract{
             printf("SUCCESS SAVE\n");
         }
         printf("ENeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeD\n");
-        printf("fffffffffffffffffffffffffffffffffffffEN1D\n");
-        printf("ENgggggggggggggggggggggggggggggggggggggD2\n");
-        printf("EffffffffffffffffffffffffffffffffffffffN3D\n");
-        printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEN4D\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBaaaBaBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBaaaBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBfffBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBfBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBffBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBbbbgBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBffBBBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBfBBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBadfBBBBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBadfBBBBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBadfBBBBBBBBBBBB\n");
-        print ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBadfadfBBBBBBBBB\n");
-        /*
-        //transaction out2{};
-        //transaction out3{};
-        out1.actions.emplace_back(permission_level{client, "active"_n}, "child"_n, "childreflect"_n, std::make_tuple(uint64_t(1), uint64_t(idx+11), uint64_t(randNum)));
-	// out1.send();
-	    out1.send(idx+11, "client"_n, false);
-        print("[#] Send To Child : ", client, " - ", idx);
-        */
     }
 
     [[eosio::action]]
-    void main(name client, uint64_t idx, uint64_t randNum){
+    void main(name client, uint64_t idx){
 
-        sendtochild(client, idx, randNum);
+        sendtochild(client, idx);
     }
 };
-EOSIO_DISPATCH(tablec, (main))
+EOSIO_DISPATCH(usingTable, (main))

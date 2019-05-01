@@ -1,26 +1,64 @@
 #include <eosiolib/eosio.hpp>
-#include <eosiolib/symbol.hpp>
-//#include <symbol.hpp>
-//#include <eosiolib/symbol2.hpp>
-#include <eosiolib/asset.hpp>
-#include <eosiolib/core_symbol.hpp>
-#include <stdio.h>
+#include <eosiolib/print.hpp>
+
 using namespace eosio;
-using namespace std;
 
-//#define N(X) eosio::string_to_name(#X)
-#define N(X) name(X)
-#define V(X) N(X).value
+//EOSIO.CDT 1.3.1 버전에서는 에러가 발생합니다. 테이블 abi생성이 되지 앉아서 에러가 발생합니다
+//https://github.com/EOSIO/eos/issues/6009
+CONTRACT addressbook : public eosio::contract {
 
-class [[eosio::contract]] addressbook : public contract {
-public:
-    addressbook(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds){}
+ public:
+    using contract::contract;
+ 
     [[eosio::action]]
-    void upsert(name user, string a1, int a2) 
-    {
-        require_auth(_self);
-        require_auth(user);
-    }
-};
-EOSIO_DISPATCH( addressbook, (upsert))
+      void upsert(name user, std::string first_name, std::string last_name, std::string street, std::string city, std::string state) {
+        require_auth( user );
+        address_index addresses(_self, _self.value);
+        auto iterator = addresses.find( user.value );
+        if( iterator == addresses.end() )
+        {
+          addresses.emplace(user, [&]( auto& row ) {
+          row.key = user.value;
+          row.first_name = first_name;
+          row.last_name = last_name;
+          row.street = street;
+          row.city = city;
+          row.state = state;
+          });
+        }
+        else {
+          std::string changes;
+          addresses.modify(iterator, user, [&]( auto& row ) {
+            row.key = user.value;
+            row.first_name = first_name;
+            row.last_name = last_name;
+            row.street = street;
+            row.city = city;
+            row.state = state;
+          });
+        }
+      } 
 
+    [[eosio::action]]
+    void erase(name user){
+        address_index addresses(_self, _self.value);
+        auto iterator = addresses.find( user.value );
+        eosio_assert(iterator != addresses.end(), "Record does not exist");
+        addresses.erase(iterator);
+    }
+
+ private:
+    struct [[eosio::table]] person {
+          uint64_t key;
+          std::string first_name;
+          std::string last_name;
+          std::string street;
+          std::string city;
+          std::string state;
+          uint64_t primary_key() const { return key; }
+      };
+      typedef eosio::multi_index<"people"_n, person> address_index;
+
+};
+
+EOSIO_DISPATCH( addressbook, (upsert)(erase) )

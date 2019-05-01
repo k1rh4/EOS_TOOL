@@ -50,12 +50,13 @@ class [[eosio::contract]] arbitCall: public contract{
         using contract::contract;
         void sendtochild(name client,uint64_t idx)
         {
-        print("[*] Parent Called\n");
-        transaction out1{};
-        out1.actions.emplace_back(permission_level{_self, "active"_n}, client , "main"_n, std::make_tuple(_self,1,1));
-	    out1.send( idx+1, _self, false);
-        print("[#] Send To Child : ", client);
-    }
+            print("[*] Parent Called\n");
+            transaction out1{};
+            name targetContract = client;
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , "main"_n, std::make_tuple(_self,1,1));
+            out1.send( idx+1, _self, false);
+            print("[#] Send To Child : ", client);
+        }
 
     [[eosio::action]]
     void main(name client, uint64_t idx){
