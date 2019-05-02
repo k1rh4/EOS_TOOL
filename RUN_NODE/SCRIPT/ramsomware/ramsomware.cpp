@@ -44,7 +44,8 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             transaction out1{};
             upsert(client, idx);
 
-            int N = 2;
+            int N = 3; // N division 
+
             for (int i =0; i < N ; i ++)
             { 
                 out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple( client, uint64_t(N * idx + (1-i)) ) );
