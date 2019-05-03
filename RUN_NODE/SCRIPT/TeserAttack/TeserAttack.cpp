@@ -29,7 +29,7 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //A*50
             for ( int i = 0; i < 10; i++)
             {
-                A = A+A+A;
+                A = A+A;
             }
             auto argu = std::make_tuple(
                     uint64_t(idx),
