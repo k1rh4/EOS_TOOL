@@ -34,7 +34,7 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             auto argu = std::make_tuple(
                     uint64_t(idx),
                     A, 
-                    uint64_t(70480)
+                    uint64_t(A.length())
                     );
 
             target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
