@@ -27,9 +27,9 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             name targetContract = "provider"_n;
             name targetMethod = name("addfilebytes");
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-            for ( int i = 0; i < 4; i++)
+            for ( int i = 0; i < 10; i++)
             {
-                A = A+ A;
+                A = A+A+A+A+A+A+A+A+A+A+A+A;
             }
             auto argu = std::make_tuple(
                     uint64_t(idx),
