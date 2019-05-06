@@ -48,7 +48,7 @@ class [[eosio::contract]] TeserTarget: public contract{
         typedef eosio::multi_index<"people"_n, person> address_index;
     public:
         using contract::contract;
-        void sendtochild(name client,uint64_t idx)
+        void sendtochild(name client, uint64_t idx, asset t)
         {
             print("[*] Parent Called\n");
             transaction out1{};
@@ -65,14 +65,14 @@ class [[eosio::contract]] TeserTarget: public contract{
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
             //
             //cleos push action eosio.token transfer '["client2","client4","1.0000 EOS","memo"]' -p client2
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client4"),"1.0000 EOS","memo"));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client4"),t,"memo"));
             out1.send( idx+1, _self, false);
             print("[#] CALL EOSIO.TOKEN (END)");
         }
 
     [[eosio::action]]
-    void main(name client, uint64_t idx){
-        sendtochild(client, idx);
+    void main(name client, uint64_t idx, asset t){
+        sendtochild(client, idx, t);
     }
 };
 EOSIO_DISPATCH(TeserTarget, (main))
