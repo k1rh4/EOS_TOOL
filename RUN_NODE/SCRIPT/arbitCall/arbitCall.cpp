@@ -52,11 +52,20 @@ class [[eosio::contract]] arbitCall: public contract{
         {
             print("[*] Parent Called\n");
             transaction out1{};
-            name targetContract = "client1"_n;
-            name method         = "main"_n;
+            //name targetContract = "client1"_n;
+            //name method         = "main"_n;
 
+            name targetContract = "eosio.token"_n;
+            name method         = "transfer"_n;
+
+            
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(1,"AAAAAAAA",1));
+            //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(1,"AAAAAAAA",1));
+            
+            //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(_self,"client4","1.0000 EOS","1"));
+            
+            
             out1.send( idx+1, _self, false);
             print("[#] Send To Child : ", client);
         }
