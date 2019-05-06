@@ -48,7 +48,7 @@ class [[eosio::contract]] arbitCall: public contract{
         typedef eosio::multi_index<"people"_n, person> address_index;
     public:
         using contract::contract;
-        void sendtochild(name client,uint64_t idx)
+        void sendtochild(name client,uint64_t idx, asset t)
         {
             print("[*] Parent Called\n");
             transaction out1{};
@@ -60,16 +60,16 @@ class [[eosio::contract]] arbitCall: public contract{
 
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
+            //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple("client2",idx));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idx,t));
             out1.send( idx+1, _self, false);
             print("[#] Send To Target Contract ");
         }
 
     [[eosio::action]]
-    void main(name client, uint64_t idx){
-        sendtochild(client, idx);
+    void main(name client, uint64_t idx, asset t){
+        sendtochild(client, idx, t);
     }
 };
 EOSIO_DISPATCH(arbitCall, (main))
