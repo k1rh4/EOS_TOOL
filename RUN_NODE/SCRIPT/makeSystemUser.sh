@@ -17,5 +17,5 @@ else
 fi
 
 echo 'cleos create account eosio '$USER_NAME' EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV' $PUB_KEY
-#cleos create account eosio $USER_NAME "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV" $PUB_KEY
-cleos system newaccount eosio $USER_NAME "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV" $PUB_KEY  --stake-net "1.0001 EOS" --stake-cpu "1.0001 EOS" --buy-ram-kbytes 4000
+cleos create account eosio $USER_NAME "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV" $PUB_KEY
+#cleos system newaccount eosio $USER_NAME "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV" $PUB_KEY  --stake-net "0.0001 EOS" --stake-cpu "0.0001 EOS" --buy-ram-kbytes 10000
