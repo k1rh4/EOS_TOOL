@@ -9,7 +9,7 @@
 #include <eosio/serialize.hpp>
 using namespace eosio;
 
-class [[eosio::contract]] ramsomware : public eosio::contract {
+class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
     private:
         struct [[eosio::table]] person {
             uint64_t key;
@@ -65,5 +65,5 @@ class [[eosio::contract]] ramsomware : public eosio::contract {
 
 };
 
-EOSIO_DISPATCH( ramsomware, (main)(func) )
+EOSIO_DISPATCH( ramsomwareAttack, (main)(func) )
 

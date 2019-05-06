@@ -9,7 +9,7 @@
 #include <eosio/serialize.hpp>
 using namespace eosio;
 
-class [[eosio::contract]] nodeDoS : public eosio::contract {
+class [[eosio::contract]] nodeDoSAttack : public eosio::contract {
   public:
       using contract::contract;
         [[eosio::action]]
@@ -52,5 +52,5 @@ class [[eosio::contract]] nodeDoS : public eosio::contract {
 
 };
 
-EOSIO_DISPATCH( nodeDoS, (main)(func) )
+EOSIO_DISPATCH( nodeDoSAttack, (main)(func) )
 
