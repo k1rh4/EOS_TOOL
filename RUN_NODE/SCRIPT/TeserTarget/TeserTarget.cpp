@@ -52,18 +52,18 @@ class [[eosio::contract]] TeserTarget: public contract{
         {
             print("[*] Parent Called\n");
             transaction out1{};
-            name targetContract = name("client1");
-            name method         = name("addfilebytes");
+            //name targetContract = name("client1");
+            //ame method         = name("addfilebytes");
 
-            //name targetContract = "eosio.token"_n;
-            //name method         = "transfer"_n;
+            name targetContract = name("eosio.token");
+            name method         = name("transfer");
 
             print("[#] CALL EOSIO.TOKEN (IN)");
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract
-            //out.actions.emplace_back(permission_level{client, "active"_n}, client, "main"_n, std::make_tuple(client, uint64_t(idx*100) )); 
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAAAA",uint64_t(20)));
+            //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAAAA",uint64_t(20)));
+            
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
-            //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple("client2","client4","1.0000 EOS","memo"));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple("client2","client4","1.0000 EOS","memo"));
             out1.send( idx+1, _self, false);
             print("[#] CALL EOSIO.TOKEN (END)");
         }
