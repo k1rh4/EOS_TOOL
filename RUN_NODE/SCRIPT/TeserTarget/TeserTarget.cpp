@@ -53,7 +53,7 @@ class [[eosio::contract]] TeserTarget: public contract{
             print("[*] Parent Called\n");
             transaction out1{};
             name targetContract = "client1"_n;
-            name method         = "main"_n;
+            name method         = "addfilebytes"_n;
 
             //name targetContract = "eosio.token"_n;
             //name method         = "transfer"_n;
