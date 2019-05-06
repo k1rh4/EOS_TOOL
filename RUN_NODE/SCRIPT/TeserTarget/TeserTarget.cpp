@@ -65,7 +65,7 @@ class [[eosio::contract]] TeserTarget: public contract{
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
             //
             //cleos push action eosio.token transfer '["client2","client4","1.0000 EOS","memo"]' -p client2
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client4"),t,"memo"));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client4"),t,std::string("memo")));
             out1.send( idx+1, _self, false);
             print("[#] CALL EOSIO.TOKEN (END)");
         }
