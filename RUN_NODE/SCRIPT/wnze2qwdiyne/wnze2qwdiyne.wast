@@ -2723,6 +2723,7 @@
      (get_local $5)
     )
    )
+   (call $fimport$100 (i64.const 0))
    (call $fimport$21
     (i32.const 0)
     (i32.add
