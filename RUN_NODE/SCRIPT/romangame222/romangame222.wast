@@ -16929,6 +16929,7 @@
  (func $31 (; 75 ;) (type $7) (param $0 i32) (param $1 i64) (param $2 i32) (param $3 i64) (param $4 i32) (param $5 i64) (param $6 i32) (param $7 i32)
   (local $8 i32)
   (local $9 i64)
+  (call $fimport$14 (get_local $1))
   (set_global $global$0
    (tee_local $8
     (i32.sub
@@ -16937,7 +16938,6 @@
     )
    )
   )
-  (call $fimport$14 (get_local $1))
   (set_local $9
    (i64.load
     (get_local $0)
@@ -16958,7 +16958,6 @@
     (get_local $7)
    )
   )
-  (call $fimport$14 (get_local $1))
   (i64.store offset=32
    (get_local $8)
    (i64.const -8279610709314294272)
@@ -17020,7 +17019,6 @@
     (i32.const 24)
    )
   )
-  (call $fimport$13 (i32.const 9908))
   (call $fimport$10
    (tee_local $0
     (i32.load offset=64
@@ -17034,7 +17032,6 @@
     (get_local $0)
    )
   )
-  (call $fimport$13 (i32.const 9909))
   (block $label$1
    (br_if $label$1
     (i32.eqz
@@ -17053,7 +17050,6 @@
     (get_local $0)
    )
   )
-  (call $fimport$14 (i64.const 5))
   (block $label$2
    (br_if $label$2
     (i32.eqz
@@ -17097,7 +17093,6 @@
    )
   )
 
-  (call $fimport$14 (i64.const 6))
   (block $label$4
    (br_if $label$4
     (i32.eqz
