@@ -16937,6 +16937,7 @@
     )
    )
   )
+  (call $fimport$14 (i64.const 0))
   (set_local $9
    (i64.load
     (get_local $0)
