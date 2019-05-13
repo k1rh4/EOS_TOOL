@@ -16989,6 +16989,7 @@
     )
    )
   )
+  (call $fimport$14 (i64.const 1))
   (i32.store
    (i32.add
     (get_local $8)
@@ -17017,6 +17018,8 @@
     (i32.const 24)
    )
   )
+  (call $fimport$14 (i64.const 2))
+
   (call $fimport$10
    (tee_local $0
     (i32.load offset=64
@@ -17030,6 +17033,7 @@
     (get_local $0)
    )
   )
+  (call $fimport$14 (i64.const 3))
   (block $label$1
    (br_if $label$1
     (i32.eqz
