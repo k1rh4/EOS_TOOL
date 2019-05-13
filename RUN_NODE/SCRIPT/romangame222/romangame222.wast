@@ -81,6 +81,7 @@
  (import "env" "__trunctfsf2" (func $fimport$41 (param i64 i64) (result f32)))
  (import "env" "set_blockchain_parameters_packed" (func $fimport$42 (param i32 i32)))
  (import "env" "get_blockchain_parameters_packed" (func $fimport$43 (param i32 i32) (result i32)))
+ (import "env" "printi" (func $fimport$44 (param i64)))
  (memory $0 1)
  (data (i32.const 8192) "\00Assertion failed: %s (%s: %s: %d)\n\00-+   0X0x\00")
  (data (i32.const 8240) "\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\00\01\02\03\04\05\06\07\08\ff\ff\ff\ff\ff\ff\ff\t\n\0b\0c\0d\0e\0f\10\ff\11\12\13\14\15\ff\16\17\18\19\1a\1b\1c\1d\1e\1f \ff\ff\ff\ff\ff\ff!\"#$%&\'()*+\ff,-./0123456789\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff")
@@ -16929,7 +16930,7 @@
  (func $31 (; 75 ;) (type $7) (param $0 i32) (param $1 i64) (param $2 i32) (param $3 i64) (param $4 i32) (param $5 i64) (param $6 i32) (param $7 i32)
   (local $8 i32)
   (local $9 i64)
-  (call $fimport$14 (get_local $1))
+  (call $fimport$44 (i64.const 1))
   (set_global $global$0
    (tee_local $8
     (i32.sub
@@ -17001,7 +17002,7 @@
    (get_local $8)
    (get_local $0)
   )
-  (call $fimport$13 (i32.const 9907))
+  (call $fimport$44 (i64.const 2))
   (call $60
    (i32.add
     (get_local $8)
@@ -17019,6 +17020,7 @@
     (i32.const 24)
    )
   )
+  (call $fimport$44 (i64.const 3))
   (call $fimport$10
    (tee_local $0
     (i32.load offset=64
