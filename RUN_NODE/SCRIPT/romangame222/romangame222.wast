@@ -16937,7 +16937,7 @@
     )
    )
   )
-  (call $fimport$14 (i64.const 0))
+  (call $fimport$14 (get_local $1))
   (set_local $9
    (i64.load
     (get_local $0)
@@ -16958,7 +16958,7 @@
     (get_local $7)
    )
   )
-  (call $fimport$14 (i64.const 1))
+  (call $fimport$14 (get_local $1))
   (i64.store offset=32
    (get_local $8)
    (i64.const -8279610709314294272)
@@ -17002,7 +17002,7 @@
    (get_local $8)
    (get_local $0)
   )
-  (call $fimport$14 (i64.const 2))
+  (call $fimport$13 (i32.const 9907))
   (call $60
    (i32.add
     (get_local $8)
@@ -17020,7 +17020,7 @@
     (i32.const 24)
    )
   )
-  (call $fimport$14 (i64.const 3))
+  (call $fimport$13 (i32.const 9908))
   (call $fimport$10
    (tee_local $0
     (i32.load offset=64
@@ -17034,7 +17034,7 @@
     (get_local $0)
    )
   )
-  (call $fimport$14 (i64.const 4))
+  (call $fimport$13 (i32.const 9909))
   (block $label$1
    (br_if $label$1
     (i32.eqz
