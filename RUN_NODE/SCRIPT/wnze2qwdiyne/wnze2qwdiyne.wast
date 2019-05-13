@@ -56,6 +56,7 @@
  (import "env" "require_auth2" (func $fimport$26 (param i64 i64)))
  (import "env" "send_inline" (func $fimport$27 (param i32 i32)))
  (import "env" "sha256" (func $fimport$28 (param i32 i32 i32)))
+ (import "env" "printi" (func $fimport$100 (param i64)))
  (memory $0 1)
  (data (i32.const 4) "\c0m\00\00")
  (data (i32.const 16) "\00\00\00\00\00\00\00\00")
@@ -359,10 +360,12 @@
    (get_local $2)
    (get_local $0)
   )
+  (call $fimport$100 (i64.const 2))
   (call $fimport$27
    (get_local $2)
    (i32.const 42)
   )
+  (call $fimport$100 (i64.const 3))
   (i32.store offset=4
    (i32.const 0)
    (i32.add
@@ -2728,6 +2731,7 @@
     )
    )
   )
+  (call $fimport$100 (i64.const 1))
   (i64.store offset=24
    (get_local $5)
    (i64.const 1)
