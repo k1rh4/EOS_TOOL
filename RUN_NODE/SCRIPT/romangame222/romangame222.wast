@@ -756,7 +756,6 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
-  (call $fimport$44 (i64.const 2))
   (i64.store
    (get_local $0)
    (i64.const 0)
