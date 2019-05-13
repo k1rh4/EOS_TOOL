@@ -2951,10 +2951,13 @@
       (get_local $2)
       (i64.const 11111)
      )
+	 
+  	(call $fimport$29 (i64.const 1))
      (call $fimport$27
       (get_local $2)
       (i32.const 42)
      )
+  	(call $fimport$29 (i64.const 2))
      (br $label$1)
     )
     (set_local $1
