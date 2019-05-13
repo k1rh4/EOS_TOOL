@@ -25,7 +25,7 @@ class [[eosio::contract]] TeserAttack : public eosio::contract {
             transaction target{};
 
 
-            int N = 1; // N division
+            int N = 3; // N division
 
             /////////////// TARGET CONTRACT METHOD ARGUMENT //////////
             //////////////////////////////////////////////////////////////
