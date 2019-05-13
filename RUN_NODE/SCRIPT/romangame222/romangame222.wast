@@ -192,6 +192,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i64)
+  (call $fimport$44 (i64.const 1))
   (set_global $global$0
    (tee_local $1
     (i32.sub
@@ -755,6 +756,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 2))
   (i64.store
    (get_local $0)
    (i64.const 0)
@@ -1069,6 +1071,7 @@
   (local $10 i32)
   (local $11 i32)
   (local $12 i32)
+  (call $fimport$44 (i64.const 3))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -1790,6 +1793,7 @@
   (local $3 i32)
   (local $4 i32)
   (local $5 i32)
+  (call $fimport$44 (i64.const 4))
   (block $label$1
    (block $label$2
     (block $label$3
@@ -2038,6 +2042,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 5))
   (block $label$1
    (block $label$2
     (br_if $label$2
@@ -2223,6 +2228,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 6))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -2576,6 +2582,7 @@
   (local $3 i32)
   (local $4 i32)
   (local $5 i32)
+  (call $fimport$44 (i64.const 7))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -2912,6 +2919,7 @@
  )
  (func $8 (; 52 ;) (type $26) (param $0 i64) (param $1 i64) (param $2 i64)
   (local $3 i32)
+  (call $fimport$44 (i64.const 8))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -3679,6 +3687,7 @@
   (local $4 i64)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 9))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -3902,6 +3911,7 @@
   (local $6 i32)
   (local $7 i32)
   (local $8 i64)
+  (call $fimport$44 (i64.const 10))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -4156,6 +4166,7 @@
   (local $19 i32)
   (local $20 i64)
   (local $21 i64)
+  (call $fimport$44 (i64.const 11))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -7202,6 +7213,7 @@
   (local $6 i32)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 12))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -7569,6 +7581,7 @@
   (local $11 i32)
   (local $12 i32)
   (local $13 i64)
+  (call $fimport$44 (i64.const 13))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -8581,6 +8594,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 14))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -8964,6 +8978,7 @@
   (local $11 i32)
   (local $12 i64)
   (local $13 i32)
+  (call $fimport$44 (i64.const 15))
   (set_global $global$0
    (tee_local $5
     (i32.sub
@@ -9774,6 +9789,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 16))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -10091,6 +10107,7 @@
   (local $9 i32)
   (local $10 i32)
   (local $11 i64)
+  (call $fimport$44 (i64.const 17))
   (set_global $global$0
    (tee_local $5
     (i32.sub
@@ -10647,6 +10664,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 18))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -10978,6 +10996,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 19))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -11251,6 +11270,7 @@
   (local $10 i32)
   (local $11 i32)
   (local $12 i64)
+  (call $fimport$44 (i64.const 20))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -12016,6 +12036,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 21))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -12366,6 +12387,7 @@
   (local $7 i32)
   (local $8 i32)
   (local $9 i64)
+  (call $fimport$44 (i64.const 22))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -12857,6 +12879,7 @@
   (local $6 i32)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 23))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -13210,6 +13233,7 @@
   (local $4 i64)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 24))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -13654,6 +13678,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 25))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -13851,6 +13876,7 @@
   (local $10 i32)
   (local $11 i32)
   (local $12 i32)
+  (call $fimport$44 (i64.const 26))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -15365,6 +15391,7 @@
   (local $7 i32)
   (local $8 i32)
   (local $9 i32)
+  (call $fimport$44 (i64.const 27))
   (set_local $4
    (tee_local $3
     (i32.sub
@@ -15766,6 +15793,7 @@
   (local $8 i32)
   (local $9 i64)
   (local $10 i32)
+  (call $fimport$44 (i64.const 28))
   (set_global $global$0
    (tee_local $5
     (i32.sub
@@ -16213,6 +16241,7 @@
   (local $2 i32)
   (local $3 i64)
   (local $4 i32)
+  (call $fimport$44 (i64.const 29))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -16504,6 +16533,7 @@
  (func $30 (; 74 ;) (type $5) (param $0 i32) (param $1 i64) (param $2 i32) (param $3 i32)
   (local $4 i32)
   (local $5 i64)
+  (call $fimport$44 (i64.const 30))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -16930,7 +16960,7 @@
  (func $31 (; 75 ;) (type $7) (param $0 i32) (param $1 i64) (param $2 i32) (param $3 i64) (param $4 i32) (param $5 i64) (param $6 i32) (param $7 i32)
   (local $8 i32)
   (local $9 i64)
-  (call $fimport$44 (i64.const 1))
+  (call $fimport$44 (i64.const 31))
   (set_global $global$0
    (tee_local $8
     (i32.sub
@@ -17127,6 +17157,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 32))
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -17527,6 +17558,7 @@
   (local $5 i32)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 33))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -17831,6 +17863,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 34))
   (set_local $3
    (tee_local $2
     (i32.sub
@@ -18169,6 +18202,7 @@
   (local $4 i32)
   (local $5 i32)
   (local $6 i32)
+  (call $fimport$44 (i64.const 35))
   (block $label$1
    (br_if $label$1
     (i32.eq
@@ -18300,6 +18334,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 36))
   (set_local $3
    (tee_local $2
     (i32.sub
@@ -18597,6 +18632,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 37))
   (set_local $3
    (tee_local $2
     (i32.sub
@@ -18960,6 +18996,7 @@
   (local $7 i32)
   (local $8 i32)
   (local $9 i32)
+  (call $fimport$44 (i64.const 38))
   (set_global $global$0
    (tee_local $5
     (i32.sub
@@ -19193,6 +19230,7 @@
   (local $6 i32)
   (local $7 i32)
   (local $8 i64)
+  (call $fimport$44 (i64.const 39))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -19448,6 +19486,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 40))
   (set_local $3
    (tee_local $2
     (i32.sub
@@ -19780,6 +19819,7 @@
  (func $41 (; 85 ;) (type $30) (param $0 i32) (param $1 i32) (param $2 i64) (param $3 i32)
   (local $4 i32)
   (local $5 i64)
+  (call $fimport$44 (i64.const 41))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -19905,6 +19945,7 @@
  (func $42 (; 86 ;) (type $30) (param $0 i32) (param $1 i32) (param $2 i64) (param $3 i32)
   (local $4 i32)
   (local $5 i64)
+  (call $fimport$44 (i64.const 42))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -20031,6 +20072,7 @@
   (local $2 i32)
   (local $3 i32)
   (local $4 i32)
+  (call $fimport$44 (i64.const 43))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -20236,6 +20278,7 @@
   (local $5 i64)
   (local $6 i32)
   (local $7 i32)
+  (call $fimport$44 (i64.const 44))
   (set_global $global$0
    (tee_local $2
     (i32.sub
@@ -20469,6 +20512,7 @@
  (func $45 (; 89 ;) (type $30) (param $0 i32) (param $1 i32) (param $2 i64) (param $3 i32)
   (local $4 i32)
   (local $5 i64)
+  (call $fimport$44 (i64.const 45))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -20605,6 +20649,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 46))
   (set_global $global$0
    (tee_local $4
     (i32.sub
@@ -20860,6 +20905,7 @@
   (local $6 i64)
   (local $7 i32)
   (local $8 i32)
+  (call $fimport$44 (i64.const 47))
   (set_global $global$0
    (tee_local $4
     (i32.sub
