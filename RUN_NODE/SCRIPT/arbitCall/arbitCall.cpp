@@ -55,7 +55,7 @@ class [[eosio::contract]] arbitCall: public contract{
             //name targetContract = "client1"_n;
             //name method         = "main"_n;
 
-            name targetContract = name("eosio.code");
+            name targetContract = name("eosio.token");
             name method         = name("transfer");
 
             
