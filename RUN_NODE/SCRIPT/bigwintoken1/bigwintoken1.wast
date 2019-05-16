@@ -15547,6 +15547,7 @@
     (get_local $7)
    )
   )
+  (call $fimport$20 (i64.const 6) )
   (block $label$2
    (br_if $label$2
     (i32.eqz
@@ -15616,6 +15617,7 @@
    (get_local $3)
    (get_local $4)
   )
+  (call $fimport$20 (i64.const 7) )
   (block $label$4
    (block $label$5
     (block $label$6
