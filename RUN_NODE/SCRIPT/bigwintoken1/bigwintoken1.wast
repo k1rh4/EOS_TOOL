@@ -55,6 +55,25 @@
  (type $53 (func (param i32 f32)))
  (type $54 (func (param i64 i64) (result f64)))
  (type $55 (func (param i64 i64) (result f32)))
+ (type $56 (func (param i64 i64 i64 i64) (result i32)))
+ (type $57 (func (param i32 i32)))
+ (type $58 (func (param i64)))
+ (type $59 (func (param i32)))
+ (type $60 (func (result i64)))
+ (type $61 (func (param i32 i64 i32 i32)))
+ (type $62 (func (param i64 i64 i64 i64 i32 i32) (result i32)))
+ (type $63 (func (param i64) (result i32)))
+ (type $64 (func (param i32 i32 i32) (result i32)))
+ (type $65 (func (param i32 i64 i32 i32 i32)))
+ (type $66 (func (param i32 i32) (result i32)))
+ (type $67 (func (result i32)))
+ (type $68 (func))
+ (type $69 (func (param i32 i64 i64 i64 i64)))
+ (type $70 (func (param i64 i64) (result i32)))
+ (type $71 (func (param i32 f64)))
+ (type $72 (func (param i32 f32)))
+ (type $73 (func (param i64 i64) (result f64)))
+ (type $74 (func (param i64 i64) (result f32)))
  (import "env" "db_lowerbound_i64" (func $fimport$0 (param i64 i64 i64 i64) (result i32)))
  (import "env" "eosio_assert" (func $fimport$1 (param i32 i32)))
  (import "env" "db_find_i64" (func $fimport$2 (param i64 i64 i64 i64) (result i32)))
@@ -15400,7 +15419,9 @@
   (local $5 i32)
   (local $6 i64)
   (local $7 i64)
-  (call $fimport$20 (i64.const 41))
+  (call $fimport$20
+   (i64.const 41)
+  )
   (set_global $global$0
    (tee_local $3
     (i32.sub
@@ -15552,7 +15573,6 @@
   (call $fimport$20
    (i64.const 8)
   )
-
   (block $label$1
    (br_if $label$1
     (i32.eqz
@@ -15657,6 +15677,7 @@
         (i32.const 0)
        )
       )
+      (call $fimport$20 (i64.const 9))
       (call $fimport$1
        (i32.eq
         (i32.load offset=24
@@ -15677,6 +15698,7 @@
        )
        (i32.const 18357)
       )
+      (call $fimport$20 (i64.const 10))
       (call $fimport$1
        (i32.const 1)
        (i32.const 17938)
