@@ -15534,7 +15534,7 @@
    )
   )
   (call $fimport$20
-   (i64.const 5)
+   (i64.const 7)
   )
   (call $fimport$12
    (tee_local $5
@@ -15550,7 +15550,7 @@
    )
   )
   (call $fimport$20
-   (i64.const 6)
+   (i64.const 8)
   )
 
   (block $label$1
