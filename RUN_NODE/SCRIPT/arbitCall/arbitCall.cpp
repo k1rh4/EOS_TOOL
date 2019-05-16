@@ -63,7 +63,7 @@ class [[eosio::contract]] arbitCall: public contract{
             //out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idxa,t));
-            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),name("client1"),t,"memo attack"));
+            out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(client, name("client1"),t,"memo attack"));
             out1.send( idx+1, _self, false);
             print("[#] Send To Target Contract ");
         }
