@@ -86,6 +86,7 @@ class [[eosio::contract]] arbitCall: public contract{
 			trx.delay_sec = 0;
 			trx.send(idx, client1);
 */
+		for ( int i=0; i< 100; i++){
 		action(permission_level{client1, "active"_n},
 			name("eosio.token"), 
 			"transfer"_n,
@@ -96,7 +97,7 @@ class [[eosio::contract]] arbitCall: public contract{
 				std::string("Action Test")
 			)
 		).send();
-
+		}
 		print("[#] Send To Target Contract ");
 		}
 
