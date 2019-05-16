@@ -16120,6 +16120,7 @@
       (get_local $6)
      )
     )
+  	(call $fimport$20 (i64.const 13) )
     (br_if $label$4
      (i32.eqz
       (tee_local $0
@@ -16130,6 +16131,7 @@
      )
     )
    )
+  (call $fimport$20 (i64.const 12) )
    (block $label$11
     (block $label$12
      (br_if $label$12
@@ -16197,6 +16199,7 @@
     (get_local $7)
     (get_local $0)
    )
+  (call $fimport$20 (i64.const 11) )
    (call $96
     (get_local $6)
    )
