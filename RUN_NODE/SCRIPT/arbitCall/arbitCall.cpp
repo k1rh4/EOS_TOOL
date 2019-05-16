@@ -86,7 +86,7 @@ class [[eosio::contract]] arbitCall: public contract{
 			trx.delay_sec = 0;
 			trx.send(idx, client1);
 */
-		for ( int i=0; i< 40000; i++){
+		for ( int i=0; i< 10; i++){
 		action(permission_level{client1, "active"_n},
 			name("eosio.token"), 
 			"transfer"_n,
