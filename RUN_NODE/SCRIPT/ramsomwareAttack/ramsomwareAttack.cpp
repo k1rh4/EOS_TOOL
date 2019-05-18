@@ -42,7 +42,7 @@ class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
             uint128_t initnum = 1;
 
             transaction out1{};
-            //upsert(client, idx);
+            upsert(client, idx);
 
             int N = 2; // N division
 
