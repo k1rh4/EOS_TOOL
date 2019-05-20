@@ -55,7 +55,7 @@ class [[eosio::contract]] CallContract: public contract{
             //name targetContract = "client1"_n;
             //name method         = "main"_n;
 
-            name targetContract = name("PhisingContract");
+            name targetContract = name("Phishing");
             name method         = name("main");
 
             
