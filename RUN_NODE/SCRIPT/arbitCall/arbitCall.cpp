@@ -67,7 +67,7 @@ class [[eosio::contract]] arbitCall: public contract{
 			//transaction transfer;
 			//transfer.actions.emplace_back(eosio::permission_level {_self, N(active) }, N(eosio.token), N(transfer), std::make_tuple(from_account, to_account_1, quantity_to_send, std::string("memo")));
             //out1.send( idx+1, _self, false);
-			/*
+			
 			transaction trx{};
 			{
 				trx.actions.emplace_back(
@@ -85,7 +85,7 @@ class [[eosio::contract]] arbitCall: public contract{
 			trx.delay_sec = 0;
 			trx.send(idx, client1);
 
-			*/
+			/*
 
 		for ( int i=0; i< 2; i++){
 		action(permission_level{client1, "active"_n},
@@ -99,6 +99,7 @@ class [[eosio::contract]] arbitCall: public contract{
 			)
 		).send();
 		}
+		*/
 
 		print("[#] Send To Target Contract ");
 		}
