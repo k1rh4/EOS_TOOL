@@ -36,30 +36,18 @@ using namespace eosio;
 using namespace std;
 
 class [[eosio::contract]] CallContract: public contract{
-    private:
-        struct [[eosio::table]] person {
-            uint64_t key;
-            string first_name;
-            string last_name;
-            string street;
-            string city;
-            uint64_t primary_key() const { return key; }
-        };
-        typedef eosio::multi_index<"people"_n, person> address_index;
-   
-    public:
         using contract::contract;
+	public :
 		[[eosio::action]]
-        void sendtochild(name client1, name client2, uint64_t idx)
+        void main(name client1, name client2, uint64_t idx)
         {
             print("[*] Parent Called\n");
             //transaction out1{};
-            //name targetContract = "client1"_n;
+            //name targetContract = "phising"_n;
             //name method         = "main"_n;
 
             name targetContract = name("Phishing");
             name method         = name("main");
-
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
@@ -77,7 +65,7 @@ class [[eosio::contract]] CallContract: public contract{
 					name(targetContract), 
 					name(method), 
 					std::make_tuple(
-						name(client1)
+						client1
 						)
 					);
 			}
@@ -103,10 +91,5 @@ class [[eosio::contract]] CallContract: public contract{
 		print("[#] Send To Target Contract ");
 		}
 
-    [[eosio::action]]
-    void main(name client1)
-	{
-        sendtochild(client1, client1, 1);
-    }
 };
-EOSIO_DISPATCH(CallContract,(sendtochild) (main))
+EOSIO_DISPATCH(CallContract,(main))
