@@ -46,7 +46,7 @@ class [[eosio::contract]] CallContract: public contract{
             //name targetContract = "phising"_n;
             //name method         = "main"_n;
 
-            name targetContract = name("Phishing");
+            name targetContract = name("phishing");
             name method         = name("main");
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
