@@ -71,11 +71,11 @@ class [[eosio::contract]] CallContract: public contract{
 			transaction trx{};
 			{
 				trx.actions.emplace_back(
-					permission_level{client1, "active"_n}, 
-					targetContract, 
-					method, 
+					permission_level{client1, name("active")}, 
+					name(targetContract), 
+					name(method), 
 					std::make_tuple(
-						client1
+						name(client1)
 						)
 					);
 			}
