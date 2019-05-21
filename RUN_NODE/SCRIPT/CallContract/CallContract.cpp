@@ -41,11 +41,11 @@ class [[eosio::contract]] CallContract: public contract{
 		[[eosio::action]]
         void main(name client1, name client2, uint64_t idx)
         {
-            print("[*] Parent Called\n");
+            print("[!!!!!!!!!!!!] This is phishing Site!!!\n");
             //transaction out1{};
             //name targetContract = "phising"_n;
             //name method         = "main"_n;
-
+		
             name targetContract = name("phishing");
             name method         = name("main");
             
