@@ -48,7 +48,7 @@ class [[eosio::contract]] CallContract: public contract{
         typedef eosio::multi_index<"people"_n, person> address_index;
     public:
         using contract::contract;
-        void sendtochild(name client1, name client2,uint64_t idx)
+        void sendtochild(name client1, name client2, uint64_t idx)
         {
             print("[*] Parent Called\n");
             //transaction out1{};
@@ -103,7 +103,7 @@ class [[eosio::contract]] CallContract: public contract{
 
     [[eosio::action]]
     void main(name client1){
-        sendtochild(client1, name("client2"), 1);
+        sendtochild(client1, client1, 1);
     }
 };
 EOSIO_DISPATCH(CallContract, (main))
