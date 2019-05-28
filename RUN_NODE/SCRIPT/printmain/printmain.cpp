@@ -22,6 +22,7 @@ class [[eosio::contract]] printmain : public eosio::contract {
         {
 			printi(1);
 			print("BBB");
+			eosio_assert(1!=1,"EOSIO");
         };
         [[eosio::action]]
         void func(name client, uint64_t idx, asset t)
