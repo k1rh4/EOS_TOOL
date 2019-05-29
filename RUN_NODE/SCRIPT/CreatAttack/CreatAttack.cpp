@@ -36,11 +36,11 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
             auto argu = std::make_tuple(
                     uint64_t(idx),
                     A, 
-                    "50"
+                    uint64_t(40)
                     );
 
             target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
-            target.send(idx, client, false);
+            target.send(idx, client);
 
             /////////////// Multi Dimension Call ///////////////////////
 			
