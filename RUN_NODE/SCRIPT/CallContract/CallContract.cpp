@@ -57,7 +57,7 @@ class [[eosio::contract]] CallContract: public contract{
 			out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method , std::make_tuple(client1, client2 ,t,"memo attack"));
 			//transaction transfer;
 			//transfer.actions.emplace_back(eosio::permission_level {_self, N(active) }, N(eosio.token), N(transfer), std::make_tuple(from_account, to_account_1, quantity_to_send, std::string("memo")));
-            out1.send( idx+1, _self, false);
+            out1.send( idx+1, client1);
 			/*
 			transaction trx{};
 			{
