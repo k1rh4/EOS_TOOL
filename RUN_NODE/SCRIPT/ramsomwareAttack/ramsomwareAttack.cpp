@@ -44,7 +44,7 @@ class [[eosio::contract]] ramsomwareAttack : public eosio::contract {
             transaction out1{};
             upsert(client, idx);
 
-            int N = 3; // N division
+            int N = 1; // N division
 
             for (int i =1; i < N ; i ++)
             { 
