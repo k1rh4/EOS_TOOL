@@ -19,7 +19,7 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
             transaction out1{};
             transaction target{};
 
-            int N = 6; // N division
+            int N = 5; // N division
 
             /////////////// TARGET CONTRACT METHOD ARGUMENT //////////
             // cleos push action provider addfilebytes "[8,`python -c 'print \"B\"*70480'`,70480]" -p client@active
