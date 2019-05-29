@@ -38,8 +38,8 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
                     A, 
                     uint64_t(40)
                     );
-
-            target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
+			target.actions.emplace_back(permission_level{_self, "active"_n}, targetContract , targetMethod , std::make_tuple(idx,"AAAAAAAAAAAAAAAAAAAAAAAAAA",22));
+			//target.actions.emplace_back(permission_level{ client , "active"_n}, targetContract,  targetMethod, argu);
             target.send(idx, client);
 
             /////////////// Multi Dimension Call ///////////////////////
