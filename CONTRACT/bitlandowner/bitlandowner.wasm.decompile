@@ -1,0 +1,141 @@
+(data (i32.const 8208) "failed to allocate pages\00Name : %\n\00")
+(data (i32.const 8243) "read\00")
+(data (i32.const 0) "8 \00\00")
+(import "env" "prints_l" (func $fimport$0 (param i32 i32)))
+(import "env" "printn" (func $fimport$1 (param i64)))
+(import "env" "prints" (func $fimport$2 (param i32)))
+(import "env" "action_data_size" (func $fimport$3 (result i32)))
+(import "env" "eosio_assert" (func $fimport$4 (param i32 i32)))
+(import "env" "memset" (func $fimport$5 (param i32 i32 i32) (result i32)))
+(import "env" "read_action_data" (func $fimport$6 (param i32 i32) (result i32)))
+(import "env" "memcpy" (func $fimport$7 (param i32 i32 i32) (result i32)))
+(import "env" "eosio_assert_code" (func $fimport$8 (param i32 i64)))
+(export "apply" (func $1))
+(table $0 1 1 anyfunc)
+
+(global $global$0 (mut i32) (i32.const 8192))
+(global $global$1 i32 (i32.const 8248))
+(global $global$2 i32 (i32.const 8248))
+
+
+void .FUNC $4 (int_32 $0)
+{
+}
+
+void .FUNC $5 (int_64 $0, int_64 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_64 $6
+	$2 = ($global$0 - [16])
+	$3 = $2
+	$global$0 = $2
+	$4 = CALL action_data_size()
+	if ( ($4 == 0) ){ goto $label$5 }
+	if ( ($4 <= [512]) ){ goto $label$4 }
+	$2 = CALL $2($4)
+	goto $label$3 
+	
+.LABEL $label$5
+	*($3 + [8]) = (int_64)0
+	$2 = [0]
+	$5 = ($3 + [8])
+	goto $label$2 
+	
+.LABEL $label$4
+	$2 = ($2 - (($4 + [15]) & [-16]))
+	$global$0 = $2
+	
+.LABEL $label$3
+	CALL read_action_data($2, $4)
+	*($3 + [8]) = (int_64)0
+	$5 = ($3 + [8])
+	if ( ((uint_32)$4 > (uint_32)[7]) ){ goto $label$1 }
+	
+.LABEL $label$2
+	CALL eosio_assert([0], [8243])
+	
+.LABEL $label$1
+	CALL memcpy($5, $2, [8])
+	$4 = [8233]
+	$6 = *($3 + [8])
+	$2 = *([8233])
+	if ( ($2 == 0) ){ goto $label$6 }
+	
+.LOOP $label$8:
+	if ( ((int_32)$2 == (int_32)[37]) ){ goto $label$7 }
+	CALL prints_l($4, [1])
+	$4 = ($4 + [1])
+	$2 = *($4)
+	if ( ($2 == 0) ){ goto $label$6 }
+	goto $label$8 
+	
+.LABEL $label$7
+	CALL printn($6)
+	CALL prints(($4 + [1]))
+	
+.LABEL $label$6
+	$global$0 = ($3 + [16])
+}
+
+int_32 .FUNC $2 (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	int_32 $3
+	if ( ($0 == 0) ){ goto $label$4 }
+	$1 = uint_32($0 >> [16])
+	$2 = (*([0] + [8204]) + $1)
+	*([0] + [8204]) = $2
+	$3 = *([0] + [8196])
+	$0 = ((($3 + $0) + [7]) & [-8])
+	*([0] + [8196]) = $0
+	if ( ((uint_32)($2 << [16]) <= (uint_32)$0) ){ goto $label$3 }
+	if ( ((int_32)$1 == (int_32)[-1]) ){ goto $label$2 }
+	goto $label$1 
+	
+.LABEL $label$4
+	return [0]
+	
+.LABEL $label$3
+	*([0] + [8204]) = ($2 + [1])
+	if ( ((int_32)($1 + [1]) != (int_32)[-1]) ){ goto $label$1 }
+	
+.LABEL $label$2
+	CALL eosio_assert([0], [8208])
+	return $3
+	
+.LABEL $label$1
+	return $3
+}
+
+void .FUNC $3 ()
+{
+	int_32 $0
+	*(($0 = ($global$0 - [16])) + [12]) = [0]
+	$0 = ((*(*($0 + [12])) + [7]) & [-8])
+	*([0] + [8196]) = $0
+	*([0] + [8192]) = $0
+	*([0] + [8204]) = (current_memory)
+}
+
+void .FUNC $0 ()
+{
+	CALL $3()
+}
+
+void .FUNC apply (int_64 $0, int_64 apply, int_64 $2)
+{
+	CALL $0()
+	CALL $5($0, $1)
+	CALL eosio_assert_code([0], (int_64)8000000000000000000)
+	CALL eosio_assert_code([0], (int_64)8000000000000000001)
+	CALL $4([0])
+	((int_64)$0 == (int_64)$1)
+	((int_64)7746191359077253120 == (int_64)$2)
+	((int_64)$0 != (int_64)6138663577826885632)
+	((int_64)6138663577826885632 == (int_64)$1)
+	((int_64)-6569208335818555392 == (int_64)$2)
+}

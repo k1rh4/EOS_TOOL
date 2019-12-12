@@ -1,10 +1,10 @@
 from wastCook import *
 from eosRay import *
-from sym    import *
+from sym import *
 import sys
 
 def main():
-    PRJ = "../CONTRACT/fastwindice3/fastwindice3.wasm"
+    PRJ = "./sendcc.wasm"
     if len(sys.argv) > 1 :
         PRJ = sys.argv[1]
 
@@ -14,8 +14,8 @@ def main():
 
     ## DECOMPILE ALL OF THINGS AND SAVE
     source = e.save("%s.decompile"%(PRJ))
-    s = sym(source)
-    s.MakeBB()
+    #s = sym(source)
+    #s.MakeBB()
     ## FOR STEP TEST ##
     '''
     i = 0

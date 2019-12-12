@@ -1,0 +1,626 @@
+{
+  "version": "eosio::abi/1.0",
+  "types": [{
+      "new_type_name": "ORDER_ID",
+      "type": "uint64"
+    },{
+      "new_type_name": "RECORD_ID",
+      "type": "uint64"
+    },{
+      "new_type_name": "PERIOD_ID",
+      "type": "uint64"
+    },{
+      "new_type_name": "PRICE_PRECISION",
+      "type": "uint32"
+    },{
+      "new_type_name": "ACTION_TYPE",
+      "type": "string"
+    },{
+      "new_type_name": "PRICE",
+      "type": "int64"
+    }
+  ],
+  "structs": [{
+      "name": "st_order",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "ORDER_ID"
+        },{
+          "name": "user",
+          "type": "name"
+        },{
+          "name": "record_id",
+          "type": "RECORD_ID"
+        },{
+          "name": "quantity",
+          "type": "asset"
+        },{
+          "name": "price",
+          "type": "asset"
+        },{
+          "name": "place_time",
+          "type": "time_point_sec"
+        },{
+          "name": "expire_time",
+          "type": "time_point_sec"
+        }
+      ]
+    },{
+      "name": "st_record",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "RECORD_ID"
+        },{
+          "name": "scope",
+          "type": "uint64"
+        },{
+          "name": "order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "price",
+          "type": "asset"
+        },{
+          "name": "total_quantity",
+          "type": "asset"
+        },{
+          "name": "remaining_quantity",
+          "type": "asset"
+        },{
+          "name": "frozen_asset",
+          "type": "extended_asset"
+        },{
+          "name": "remark",
+          "type": "string"
+        },{
+          "name": "place_time",
+          "type": "time_point_sec"
+        },{
+          "name": "expire_time",
+          "type": "time_point_sec"
+        }
+      ]
+    },{
+      "name": "st_balance",
+      "base": "",
+      "fields": [{
+          "name": "owner",
+          "type": "name"
+        },{
+          "name": "liquid",
+          "type": "extended_asset"
+        }
+      ]
+    },{
+      "name": "st_period",
+      "base": "",
+      "fields": [{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "price_precision",
+          "type": "PRICE_PRECISION"
+        },{
+          "name": "minimum_volume",
+          "type": "uint32"
+        },{
+          "name": "transaction_fee",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "st_renting",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "uint64"
+        },{
+          "name": "borrow_order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "lend_order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "borrower",
+          "type": "name"
+        },{
+          "name": "lender",
+          "type": "name"
+        },{
+          "name": "quantity",
+          "type": "extended_asset"
+        },{
+          "name": "price",
+          "type": "asset"
+        },{
+          "name": "start",
+          "type": "time_point_sec"
+        },{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "end",
+          "type": "time_point_sec"
+        }
+      ]
+    },{
+      "name": "st_refunding",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "uint64"
+        },{
+          "name": "lender",
+          "type": "name"
+        },{
+          "name": "quantity",
+          "type": "extended_asset"
+        },{
+          "name": "start",
+          "type": "time_point_sec"
+        },{
+          "name": "end",
+          "type": "time_point_sec"
+        }
+      ]
+    },{
+      "name": "st_server",
+      "base": "",
+      "fields": [{
+          "name": "on",
+          "type": "uint64"
+        }
+      ]
+    },{
+      "name": "st_global",
+      "base": "",
+      "fields": [{
+          "name": "order_id",
+          "type": "ORDER_ID"
+        }
+      ]
+    },{
+      "name": "request_borrow_order",
+      "base": "",
+      "fields": [{
+          "name": "borrower",
+          "type": "name"
+        },{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "borrow_quantity",
+          "type": "asset"
+        },{
+          "name": "maximum_price",
+          "type": "asset"
+        },{
+          "name": "remark",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "borroworder",
+      "base": "",
+      "fields": [{
+          "name": "r_borrow_order",
+          "type": "request_borrow_order"
+        }
+      ]
+    },{
+      "name": "request_lend_order",
+      "base": "",
+      "fields": [{
+          "name": "lender",
+          "type": "name"
+        },{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "lend_quantity",
+          "type": "asset"
+        },{
+          "name": "minimum_price",
+          "type": "asset"
+        },{
+          "name": "remark",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "lendorder",
+      "base": "",
+      "fields": [{
+          "name": "r_lend_order",
+          "type": "request_lend_order"
+        }
+      ]
+    },{
+      "name": "request_cancel_order",
+      "base": "",
+      "fields": [{
+          "name": "user",
+          "type": "name"
+        },{
+          "name": "record_id",
+          "type": "RECORD_ID"
+        }
+      ]
+    },{
+      "name": "cancelorder",
+      "base": "",
+      "fields": [{
+          "name": "r_cancel_order",
+          "type": "request_cancel_order"
+        }
+      ]
+    },{
+      "name": "admincancel",
+      "base": "",
+      "fields": [{
+          "name": "r_cancel_order",
+          "type": "request_cancel_order"
+        }
+      ]
+    },{
+      "name": "request_withdraw",
+      "base": "",
+      "fields": [{
+          "name": "user",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "withdraw",
+      "base": "",
+      "fields": [{
+          "name": "r_withdraw",
+          "type": "request_withdraw"
+        }
+      ]
+    },{
+      "name": "request_execute_trade",
+      "base": "",
+      "fields": [{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "borrow_order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "lend_order_id",
+          "type": "ORDER_ID"
+        }
+      ]
+    },{
+      "name": "executetrade",
+      "base": "",
+      "fields": [{
+          "name": "r_execute_trade",
+          "type": "request_execute_trade"
+        }
+      ]
+    },{
+      "name": "runrenting",
+      "base": "",
+      "fields": [{
+          "name": "max",
+          "type": "uint16"
+        }
+      ]
+    },{
+      "name": "runrefunding",
+      "base": "",
+      "fields": [{
+          "name": "max",
+          "type": "uint16"
+        }
+      ]
+    },{
+      "name": "log_order",
+      "base": "",
+      "fields": [{
+          "name": "type",
+          "type": "ACTION_TYPE"
+        },{
+          "name": "id",
+          "type": "ORDER_ID"
+        },{
+          "name": "user",
+          "type": "name"
+        },{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "quantity",
+          "type": "asset"
+        },{
+          "name": "price",
+          "type": "asset"
+        },{
+          "name": "remark",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "logsetorder",
+      "base": "",
+      "fields": [{
+          "name": "data",
+          "type": "log_order"
+        }
+      ]
+    },{
+      "name": "log_cancel_order",
+      "base": "",
+      "fields": [{
+          "name": "type",
+          "type": "ACTION_TYPE"
+        },{
+          "name": "id",
+          "type": "ORDER_ID"
+        },{
+          "name": "user",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "logcancel",
+      "base": "",
+      "fields": [{
+          "name": "data",
+          "type": "log_cancel_order"
+        }
+      ]
+    },{
+      "name": "log_data",
+      "base": "",
+      "fields": [{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "deal_amount",
+          "type": "uint64"
+        },{
+          "name": "deal_price",
+          "type": "PRICE"
+        },{
+          "name": "price_precision",
+          "type": "PRICE_PRECISION"
+        },{
+          "name": "deal_time",
+          "type": "time_point_sec"
+        },{
+          "name": "expire_time",
+          "type": "time_point_sec"
+        },{
+          "name": "borrower",
+          "type": "string"
+        },{
+          "name": "borrow_price",
+          "type": "PRICE"
+        },{
+          "name": "borrow_order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "borrower_remark",
+          "type": "string"
+        },{
+          "name": "lender",
+          "type": "string"
+        },{
+          "name": "lend_price",
+          "type": "PRICE"
+        },{
+          "name": "lend_order_id",
+          "type": "ORDER_ID"
+        },{
+          "name": "lender_remark",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "rexlog",
+      "base": "",
+      "fields": [{
+          "name": "data",
+          "type": "log_data"
+        }
+      ]
+    },{
+      "name": "request_update_period",
+      "base": "",
+      "fields": [{
+          "name": "period",
+          "type": "PERIOD_ID"
+        },{
+          "name": "price_precision",
+          "type": "PRICE_PRECISION"
+        },{
+          "name": "minimum_volume",
+          "type": "uint32"
+        },{
+          "name": "transaction_fee",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "updateperiod",
+      "base": "",
+      "fields": [{
+          "name": "r_update_period",
+          "type": "request_update_period"
+        }
+      ]
+    },{
+      "name": "deleteperiod",
+      "base": "",
+      "fields": [{
+          "name": "period_id",
+          "type": "uint64"
+        }
+      ]
+    },{
+      "name": "updateserver",
+      "base": "",
+      "fields": []
+    },{
+      "name": "updateglobal",
+      "base": "",
+      "fields": [{
+          "name": "order_id",
+          "type": "uint64"
+        }
+      ]
+    }
+  ],
+  "actions": [{
+      "name": "borroworder",
+      "type": "borroworder",
+      "ricardian_contract": ""
+    },{
+      "name": "lendorder",
+      "type": "lendorder",
+      "ricardian_contract": ""
+    },{
+      "name": "cancelorder",
+      "type": "cancelorder",
+      "ricardian_contract": ""
+    },{
+      "name": "admincancel",
+      "type": "admincancel",
+      "ricardian_contract": ""
+    },{
+      "name": "withdraw",
+      "type": "withdraw",
+      "ricardian_contract": ""
+    },{
+      "name": "executetrade",
+      "type": "executetrade",
+      "ricardian_contract": ""
+    },{
+      "name": "runrenting",
+      "type": "runrenting",
+      "ricardian_contract": ""
+    },{
+      "name": "runrefunding",
+      "type": "runrefunding",
+      "ricardian_contract": ""
+    },{
+      "name": "logsetorder",
+      "type": "logsetorder",
+      "ricardian_contract": ""
+    },{
+      "name": "logcancel",
+      "type": "logcancel",
+      "ricardian_contract": ""
+    },{
+      "name": "rexlog",
+      "type": "rexlog",
+      "ricardian_contract": ""
+    },{
+      "name": "updateperiod",
+      "type": "updateperiod",
+      "ricardian_contract": ""
+    },{
+      "name": "deleteperiod",
+      "type": "deleteperiod",
+      "ricardian_contract": ""
+    },{
+      "name": "updateserver",
+      "type": "updateserver",
+      "ricardian_contract": ""
+    },{
+      "name": "updateglobal",
+      "type": "updateglobal",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [{
+      "name": "orders",
+      "index_type": "i64",
+      "key_names": [
+        "id"
+      ],
+      "key_types": [
+        "ORDER_ID"
+      ],
+      "type": "st_order"
+    },{
+      "name": "records",
+      "index_type": "i64",
+      "key_names": [
+        "id"
+      ],
+      "key_types": [
+        "RECORD_ID"
+      ],
+      "type": "st_record"
+    },{
+      "name": "balance",
+      "index_type": "i64",
+      "key_names": [
+        "owner"
+      ],
+      "key_types": [
+        "name"
+      ],
+      "type": "st_balance"
+    },{
+      "name": "periods",
+      "index_type": "i64",
+      "key_names": [
+        "period"
+      ],
+      "key_types": [
+        "PERIOD_ID"
+      ],
+      "type": "st_period"
+    },{
+      "name": "renting",
+      "index_type": "i64",
+      "key_names": [
+        "id"
+      ],
+      "key_types": [
+        "uint64"
+      ],
+      "type": "st_renting"
+    },{
+      "name": "refunding",
+      "index_type": "i64",
+      "key_names": [
+        "id"
+      ],
+      "key_types": [
+        "uint64"
+      ],
+      "type": "st_refunding"
+    },{
+      "name": "server",
+      "index_type": "i64",
+      "key_names": [
+        "on"
+      ],
+      "key_types": [
+        "uint64"
+      ],
+      "type": "st_server"
+    },{
+      "name": "global",
+      "index_type": "i64",
+      "key_names": [
+        "order_id"
+      ],
+      "key_types": [
+        "ORDER_ID"
+      ],
+      "type": "st_global"
+    }
+  ],
+  "ricardian_clauses": [],
+  "error_messages": [],
+  "abi_extensions": [],
+  "variants": []
+}

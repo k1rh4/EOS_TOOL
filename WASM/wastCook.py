@@ -2,7 +2,7 @@
 #https://github.com/emscripten-core/emsdk/ ... wasm-dis 
 
 WASM_DIS = "/Users/k1rh4/GIT/EOS_TOOL/TOOLS/wasm-dis"
-WASM_DIS = "/home/k1rh4/GIT/emsdk/clang/e1.38.12_64bit/binaryen/bin/wasm-dis"
+#WASM_DIS = "/home/k1rh4/GIT/emsdk/clang/e1.38.12_64bit/binaryen/bin/wasm-dis"
 class wastCook():
     __DIC = {"moudle":[],"type":[],"import":[],"table":[], "elem":[], "export":[], "memory":[], "data":[],"func":{},"global":[]}
         ### NOT implement yet ###
@@ -10,12 +10,12 @@ class wastCook():
 
     def __deMangling( self, _key ):
         import re 
-        _key = _key.replace("$_ZN5","$")
-        _key = _key.replace("$_ZneRK11","$Zne_")
-        _key = _key.replace("$_ZeqRK11","$Zeq_")
-        _key = _key.replace("$_ZNKSt3","$")
-        _key = re.sub(r"(eosio)[0-9]{2,}","",_key)
-        _key = _key.replace("__","")
+        #_key = _key.replace("$_ZN5","$")
+        #_key = _key.replace("$_ZneRK11","$Zne_")
+        #_key = _key.replace("$_ZeqRK11","$Zeq_")
+        #_key = _key.replace("$_ZNKSt3","$")
+        #_key = re.sub(r"(eosio)[0-9]{2,}","",_key)
+        #_key = _key.replace("__","")
         return _key
 
     def __readUntilEnd( self, _type, _wastFile, _line ):
@@ -85,12 +85,49 @@ class wastCook():
             i += 1
 
         return self.__DIC
-'''
+
 def main():
     w = wastCook()
-    dic = w.wast("./hello.wast")
-    print "\n".join(dic["func"].keys())
-    print dic["func"]["$hello2hi"]
+    dic = w.getWast("./sendcc.wast")
+    #print "\n".join(dic["func"].keys())
+    #print repr(dic["export"])
+
+    f = open("./sendcc.wast","r")
+    w = open("./sendcc.wast.rs","w")
+
+    for l in f.readlines():
+        if "(call " in l:
+            tmpLine = l
+            funcName = tmpLine[tmpLine.find("$")::]
+
+            funcName = funcName.strip().strip(")")
+            if "import" in funcName :
+                for imp in dic["import"]:
+                    if funcName in imp :
+                        realName = imp.split(" ")[2]
+                        l = l.replace(funcName,realName)
+            else :
+                for exp in dic['export']:
+                    if funcName in exp :
+                        realName = exp.split(" ")[1]
+                        l = l.replace(funcName,realName)
+
+        elif "(func " in l and "(export" not in l:
+            tmpLine = l
+            funcName = tmpLine[tmpLine.find("(func")+6::]
+            funcName = funcName[0:funcName.find(" ")]
+            funcName = funcName.strip()+")"
+            for exp in dic['export']:
+                if funcName in exp :
+                    realName = exp.split(" ")[1]
+                    l = l.replace(funcName,realName)
+        else:
+            pass
+        w.write(l)
+        
+    f.close()
+    w.close()
+
 if __name__ == "__main__":
         main()
-'''
+

@@ -1,0 +1,3360 @@
+(data (i32.const 4) "`N\00\00")
+(data (i32.const 16) "\00")
+(data (i32.const 288) "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz\00")
+(data (i32.const 352) "EOS\00")
+(data (i32.const 368) "PUB_R1_\00")
+(data (i32.const 384) "unrecognized public key format\00")
+(data (i32.const 416) "invalid base-58 value\00")
+(data (i32.const 448) "base-58 value is out of range\00")
+(data (i32.const 480) "onerror\00")
+(data (i32.const 496) "eosio\00")
+(data (i32.const 512) "onerror action\'s are only valid from the \"eosio\" system account\00")
+(data (i32.const 576) "eosio.token\00")
+(data (i32.const 592) "transfer\00")
+(data (i32.const 608) "newaccount\00")
+(data (i32.const 624) "magnitude of asset amount must be less than 2^62\00")
+(data (i32.const 688) "invalid symbol name\00")
+(data (i32.const 720) "read\00")
+(data (i32.const 736) "get\00")
+(data (i32.const 752) "Only accept EOS asset\00")
+(data (i32.const 784) "Invalid quantity\00")
+(data (i32.const 816) "attempt to subtract asset with different symbol\00")
+(data (i32.const 864) "subtraction underflow\00")
+(data (i32.const 896) "subtraction overflow\00")
+(data (i32.const 928) "RAM cost is not sufficient\00")
+(data (i32.const 960) "memo must be separated with colon\00")
+(data (i32.const 1008) "account name length must be 12\00")
+(data (i32.const 1040) "public key length must be 53(K1) or 57(R1)\00")
+(data (i32.const 1088) "active\00")
+(data (i32.const 1104) "buyram\00")
+(data (i32.const 1120) "delegatebw\00")
+(data (i32.const 1136) "{\"account\":\"\00")
+(data (i32.const 1152) "\",\"ramcost\":\"\00")
+(data (i32.const 1168) "\"}\00")
+(data (i32.const 1184) ".\00")
+(data (i32.const 1200) " \00")
+(data (i32.const 1216) ",\00")
+(data (i32.const 1232) "write\00")
+(data (i32.const 1248) "eosio.ram\00")
+(data (i32.const 1264) "eosio.stake\00")
+(data (i32.const 1280) "sell ram\00")
+(data (i32.const 1296) "unstake\00")
+(data (i32.const 1312) "manaminemain\00")
+(data (i32.const 9728) "malloc_from_freed was designed to only be called after _heap was completely allocated\00")
+(import "env" "abort" (func $fimport$0))
+(import "env" "action_data_size" (func $fimport$1 (result i32)))
+(import "env" "current_time" (func $fimport$2 (result i64)))
+(import "env" "eosio_assert" (func $fimport$3 (param i32 i32)))
+(import "env" "memcpy" (func $fimport$4 (param i32 i32 i32) (result i32)))
+(import "env" "memmove" (func $fimport$5 (param i32 i32 i32) (result i32)))
+(import "env" "memset" (func $fimport$6 (param i32 i32 i32) (result i32)))
+(import "env" "printi" (func $fimport$7 (param i64)))
+(import "env" "printn" (func $fimport$8 (param i64)))
+(import "env" "prints" (func $fimport$9 (param i32)))
+(import "env" "prints_l" (func $fimport$10 (param i32 i32)))
+(import "env" "printui" (func $fimport$11 (param i64)))
+(import "env" "read_action_data" (func $fimport$12 (param i32 i32) (result i32)))
+(import "env" "require_auth" (func $fimport$13 (param i64)))
+(import "env" "require_auth2" (func $fimport$14 (param i64 i64)))
+(import "env" "send_inline" (func $fimport$15 (param i32 i32)))
+(export "memory" (memory $0))
+(export "_ZeqRK11checksum256S1_" (func $0))
+(export "_ZeqRK11checksum160S1_" (func $1))
+(export "_ZneRK11checksum160S1_" (func $2))
+(export "now" (func $3))
+(export "_ZN5eosio12require_authERKNS_16permission_levelE" (func $4))
+(export "_ZN6abieos14get_base58_mapEv" (func $5))
+(export "_ZN6abieos20string_to_public_keyENSt3__117basic_string_viewIcNS0_11char_traitsIcEEEE" (func $6))
+(export "apply" (func $8))
+(export "isspace" (func $44))
+(export "memchr" (func $45))
+(export "memcmp" (func $46))
+(export "strlen" (func $47))
+(export "malloc" (func $48))
+(export "free" (func $51))
+(table $0 3 3 anyfunc)
+(elem (i32.const 0) $52 $9 $11)
+
+
+
+void .FUNC $18 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	$4 = (*([0] + [4]) - [32])
+	*([0] + [4]) = $4
+	$3 = [0]
+	*($0 + [8]) = [0]
+	*($0) = (int_64)0
+	*($4) = [16]
+	*($4 + [8]) = $4
+	*($4 + [20]) = ($1 + [20])
+	*($4 + [16]) = ($1 + [16])
+	*($4 + [24]) = ($1 + [32])
+	*($4 + [28]) = ($1 + [44])
+	CALL $26(($4 + [16]), ($4 + [8]))
+	*($4 + [8]) = $4
+	*($4 + [20]) = ($1 + [60])
+	*($4 + [16]) = ($1 + [56])
+	*($4 + [24]) = ($1 + [72])
+	*($4 + [28]) = ($1 + [84])
+	CALL $26(($4 + [16]), ($4 + [8]))
+	$2 = *($4)
+	if ( ($2 == 0) ){ goto $label$2 }
+	CALL $16($0, $2)
+	$3 = *(($0 + [4]))
+	$0 = *($0)
+	goto $label$1 
+	
+.LABEL $label$2
+	$0 = [0]
+	
+.LABEL $label$1
+	*($4 + [20]) = $0
+	*($4 + [16]) = $0
+	*($4 + [24]) = $3
+	*($4) = ($4 + [16])
+	*($4 + [8]) = $1
+	CALL $27(($4 + [8]), $4)
+	*([0] + [4]) = ($4 + [32])
+}
+
+void .FUNC $19 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_64 $6
+	int_32 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	*($0 + [8]) = [0]
+	*($0) = (int_64)0
+	$5 = [16]
+	$2 = ($1 + [16])
+	$3 = *($1 + [16])
+	$7 = *(($1 + [20]))
+	$4 = ($7 - $3)
+	$6 = (CASTING uint_64)(uint_32 int_32($4 >> [4]))
+	
+.LOOP $label$1:
+	$5 = ($5 + [1])
+	$6 = (uint_64)$6 >> (uint_64)(int_64)7
+	if ( ((int_64)$6) != (int_64)0) ){ goto $label$1 }
+	if ( ((int_32)$3 == (int_32)$7) ){ goto $label$2 }
+	$5 = (($4 & [-16]) + $5)
+	
+.LABEL $label$2
+	$3 = *(($1 + [32]))
+	$7 = *($1 + [28])
+	$5 = (($7 - $5) - $3)
+	$4 = ($1 + [28])
+	$6 = (CASTING uint_64)(uint_32 ($3 - $7))
+	
+.LOOP $label$3:
+	$5 = ($5 + [-1])
+	$6 = (uint_64)$6 >> (uint_64)(int_64)7
+	if ( ((int_64)$6) != (int_64)0) ){ goto $label$3 }
+	$7 = [0]
+	if ( ($5 == 0) ){ goto $label$5 }
+	CALL $16($0, ([0] - $5))
+	$7 = *(($0 + [4]))
+	$5 = *($0)
+	goto $label$4 
+	
+.LABEL $label$5
+	$5 = [0]
+	
+.LABEL $label$4
+	*($8) = $5
+	*($8 + [8]) = $7
+	CALL eosio_assert(((int_32)($7 - $5) > (int_32)[7]), [1232])
+	CALL memcpy($5, $1, [8])
+	$0 = ($5 + [8])
+	CALL eosio_assert(((int_32)($7 - $0) > (int_32)[7]), [1232])
+	CALL memcpy($0, ($1 + [8]), [8])
+	*($8 + [4]) = ($5 + [16])
+	CALL $25(CALL $24($8, $2), $4)
+	*([0] + [4]) = ($8 + [16])
+}
+
+int_32 .FUNC $39 (int_32 $0, int_32 $1, int_32 $2)
+{
+	int_32 $3
+	int_32 $4
+	$4 = *($0)
+	if ( ($4 & [1]) ){ goto $label$2 }
+	$4 = uint_32($4 >> [1])
+	$3 = ($0 + [1])
+	goto $label$1 
+	
+.LABEL $label$2
+	$4 = *($0 + [4])
+	$3 = *($0 + [8])
+	
+.LABEL $label$1
+	$0 = [-1]
+	if ( ((uint_32)$4 <= (uint_32)$2) ){ goto $label$3 }
+	$0 = ($4 - $2)
+	if ( ($0 == 0) ){ goto $label$5 }
+	$0 = CALL memchr(($3 + $2), ($1 & [255]), $0)
+	goto $label$4 
+	
+.LABEL $label$5
+	$0 = [0]
+	
+.LABEL $label$4
+	$0 = ( ($0 - $3) ? [-1] : $0 )
+	
+.LABEL $label$3
+	return $0
+}
+
+int_32 .FUNC $29 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_64 $5
+	int_32 $6
+	int_32 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	$5 = (CASTING uint_64)(uint_32 ((int_32)(*($1 + [4]) - *($1)) / (int_32)[24]))
+	$6 = *($0 + [4])
+	$3 = ($0 + [8])
+	$4 = ($0 + [4])
+	
+.LOOP $label$1:
+	$7 = (CASTING uint_32)(uint_64 $5)
+	$5 = (uint_64)$5 >> (uint_64)(int_64)7
+	$2 = ((int_64)$5) != (int_64)0
+	*($8 + [15]) = (($2) << [7]) | ($7 & [127]))
+	CALL eosio_assert(((int_32)(*($3) - $6) > (int_32)[0]), [1232])
+	CALL memcpy(*($4), ($8 + [15]), [1])
+	$6 = (*($4) + [1])
+	*($4) = $6
+	if ( $2 ){ goto $label$1 }
+	$3 = *(($1 + [4]))
+	$7 = *($1)
+	if ( ((int_32)$7 == (int_32)$3) ){ goto $label$2 }
+	$4 = ($0 + [4])
+	
+.LOOP $label$3:
+	$2 = ($0 + [8])
+	CALL eosio_assert(((int_32)(*($2) - $6) > (int_32)[7]), [1232])
+	CALL memcpy(*($4), $7, [8])
+	$6 = (*($4) + [8])
+	*($4) = $6
+	CALL eosio_assert(((int_32)(*($2) - $6) > (int_32)[7]), [1232])
+	CALL memcpy(*($4), ($7 + [8]), [8])
+	$6 = (*($4) + [8])
+	*($4) = $6
+	CALL eosio_assert(((int_32)(*($2) - $6) > (int_32)[1]), [1232])
+	CALL memcpy(*($4), ($7 + [16]), [2])
+	$6 = (*($4) + [2])
+	*($4) = $6
+	$7 = ($7 + [24])
+	if ( ((int_32)$7 != (int_32)$3) ){ goto $label$3 }
+	
+.LABEL $label$2
+	*([0] + [4]) = ($8 + [16])
+	return $0
+}
+
+int_32 .FUNC $28 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_64 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	$7 = (CASTING uint_64)(uint_32 ((int_32)(*($1 + [4]) - *($1)) / (int_32)[44]))
+	$6 = *($0 + [4])
+	$4 = ($0 + [8])
+	$5 = ($0 + [4])
+	
+.LOOP $label$1:
+	$2 = (CASTING uint_32)(uint_64 $7)
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	$3 = ((int_64)$7) != (int_64)0
+	*($8 + [15]) = (($3) << [7]) | ($2 & [127]))
+	CALL eosio_assert(((int_32)(*($4) - $6) > (int_32)[0]), [1232])
+	CALL memcpy(*($5), ($8 + [15]), [1])
+	$6 = (*($5) + [1])
+	*($5) = $6
+	if ( $3 ){ goto $label$1 }
+	$2 = *(($1 + [4]))
+	$5 = *($1)
+	if ( ((int_32)$5 == (int_32)$2) ){ goto $label$2 }
+	$6 = ($0 + [4])
+	$3 = ($0 + [8])
+	
+.LOOP $label$3:
+	CALL $31($0, $5)
+	CALL eosio_assert(((int_32)(*($3) - *($6)) > (int_32)[1]), [1232])
+	CALL memcpy(*($6), ($5 + [40]), [2])
+	*($6) = (*($6) + [2])
+	$5 = ($5 + [44])
+	if ( ((int_32)$5 != (int_32)$2) ){ goto $label$3 }
+	
+.LABEL $label$2
+	*([0] + [4]) = ($8 + [16])
+	return $0
+}
+
+void .FUNC $21 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	$4 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $4
+	$2 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), $2, [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$0 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [8]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [16]), [8])
+	$2 = (*($3 + [4]) + [8])
+	*($3 + [4]) = $2
+	CALL eosio_assert(((int_32)(*($3 + [8]) - $2) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [24]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [32]), [8])
+	$2 = (*($3 + [4]) + [8])
+	*($3 + [4]) = $2
+	CALL eosio_assert(((int_32)(*($3 + [8]) - $2) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [40]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($1)
+	*($4 + [15]) = *($0 + [48])
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[0]), [1232])
+	CALL memcpy(*($3 + [4]), ($4 + [15]), [1])
+	*($3 + [4]) = (*($3 + [4]) + [1])
+	*([0] + [4]) = ($4 + [16])
+}
+
+void .FUNC $20 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	$2 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), $2, [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$0 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [8]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [16]), [8])
+	$1 = (*($3 + [4]) + [8])
+	*($3 + [4]) = $1
+	CALL eosio_assert(((int_32)(*($3 + [8]) - $1) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), ($0 + [24]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+}
+
+void .FUNC $23 (int_32 $0, int_32 $1)
+{
+	int_64 $2
+	int_32 $3
+	$3 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $3
+	if ( ($1 == 0) ){ goto $label$1 }
+	CALL printui(*($0))
+	CALL prints([1216])
+	
+.LABEL $label$1
+	$2 = *($0)
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)8)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)16)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)24)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)32)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)40)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)48)
+	*($3 + [15]) = $0)
+	if ( (($0 & [255]) == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	$0 = (CASTING uint_32)(uint_64 (uint_64)$2 >> (uint_64)(int_64)56)
+	*($3 + [15]) = $0)
+	if ( ($0 == 0) ){ goto $label$2 }
+	CALL prints_l(($3 + [15]), [1])
+	
+.LABEL $label$2
+	*([0] + [4]) = ($3 + [16])
+}
+
+void .FUNC $22 (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	int_32 $3
+	int_64 $4
+	int_32 $5
+	int_32 $6
+	int_64 $7
+	int_64 $8
+	int_64 $9
+	int_32 $10
+	$2 = *([0] + [4])
+	$10 = $2
+	$7 = (int_64)1
+	$8 = *($0 + [8])
+	$5 = (int_64)($8 == 0)
+	if ( $5 ){ goto $label$1 }
+	$9 = ((int_64)$8 + (int_64)1)
+	$7 = (int_64)1
+	
+.LOOP $label$2:
+	$7 = ((int_64)$7 * (int_64)10)
+	$9 = ((int_64)$9 + (int_64)-1)
+	if ( ((int_64)$9 > (int_64)1) ){ goto $label$2 }
+	
+.LABEL $label$1
+	$1 = ($0 + [8])
+	$2 = ($2 - (((CASTING uint_32)(uint_64 ((int_64)$8 + (int_64)1)) + [15]) & [1008]))
+	*([0] + [4]) = $2
+	*(($6 = ($2 + ($3 = (CASTING uint_32)(uint_64 $8))))) = [0]
+	$4 = *($0)
+	if ( $5 ){ goto $label$3 }
+	$8 = ((int_64)$8 + (int_64)1)
+	$9 = ((int_64)$4 % (int_64)$7)
+	$0 = ($6 + [-1])
+	
+.LOOP $label$4:
+	*($0) = ((int_64)((int_64)$9 % (int_64)10) + (int_64)48)
+	$0 = ($0 + [-1])
+	$9 = ((int_64)$9 / (int_64)10)
+	$8 = ((int_64)$8 + (int_64)-1)
+	if ( ((int_64)$8 > (int_64)1) ){ goto $label$4 }
+	
+.LABEL $label$3
+	CALL printi(((int_64)$4 / (int_64)$7))
+	CALL prints([1184])
+	CALL prints_l($2, $3)
+	CALL prints([1200])
+	CALL $23($1, [0])
+	*([0] + [4]) = $10
+}
+
+int_32 .FUNC $25 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_64 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	$7 = (CASTING uint_64)(uint_32 (*($1 + [4]) - *($1)))
+	$6 = *($0 + [4])
+	$4 = ($0 + [8])
+	$5 = ($0 + [4])
+	
+.LOOP $label$1:
+	$2 = (CASTING uint_32)(uint_64 $7)
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	$3 = ((int_64)$7) != (int_64)0
+	*($8 + [15]) = (($3) << [7]) | ($2 & [127]))
+	CALL eosio_assert(((int_32)(*($4) - $6) > (int_32)[0]), [1232])
+	CALL memcpy(*($5), ($8 + [15]), [1])
+	$6 = (*($5) + [1])
+	*($5) = $6
+	if ( $3 ){ goto $label$1 }
+	$2 = *($1)
+	$5 = (*(($1 + [4])) - $2)
+	CALL eosio_assert(((int_32)(*(($0 + [8])) - $6) >= (int_32)$5), [1232])
+	$6 = ($0 + [4])
+	CALL memcpy(*($6), $2, $5)
+	*($6) = (*($6) + $5)
+	*([0] + [4]) = ($8 + [16])
+	return $0
+}
+
+int_32 .FUNC $24 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_64 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	$7 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $7
+	$4 = (CASTING uint_64)(uint_32 int_32((*($1 + [4]) - *($1)) >> [4]))
+	$5 = *($0 + [4])
+	$2 = ($0 + [8])
+	
+.LOOP $label$1:
+	$3 = (CASTING uint_32)(uint_64 $4)
+	$4 = (uint_64)$4 >> (uint_64)(int_64)7
+	$6 = ((int_64)$4) != (int_64)0
+	*($7 + [15]) = (($6) << [7]) | ($3 & [127]))
+	CALL eosio_assert(((int_32)(*($2) - $5) > (int_32)[0]), [1232])
+	$3 = ($0 + [4])
+	CALL memcpy(*($3), ($7 + [15]), [1])
+	$5 = (*($3) + [1])
+	*($3) = $5
+	if ( $6 ){ goto $label$1 }
+	$1 = *(($1 + [4]))
+	$6 = *($1)
+	if ( ((int_32)$6 == (int_32)$1) ){ goto $label$2 }
+	$3 = ($0 + [4])
+	
+.LOOP $label$3:
+	$2 = ($0 + [8])
+	CALL eosio_assert(((int_32)(*($2) - $5) > (int_32)[7]), [1232])
+	CALL memcpy(*($3), $6, [8])
+	$5 = (*($3) + [8])
+	*($3) = $5
+	CALL eosio_assert(((int_32)(*($2) - $5) > (int_32)[7]), [1232])
+	CALL memcpy(*($3), ($6 + [8]), [8])
+	$5 = (*($3) + [8])
+	*($3) = $5
+	$6 = ($6 + [16])
+	if ( ((int_32)$6 != (int_32)$1) ){ goto $label$3 }
+	
+.LABEL $label$2
+	*([0] + [4]) = ($7 + [16])
+	return $0
+}
+
+void .FUNC $27 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	$2 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((int_32)(*($3 + [8]) - *($3 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($3 + [4]), $2, [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($0)
+	$0 = *($1)
+	CALL eosio_assert(((int_32)(*($0 + [8]) - *($0 + [4])) > (int_32)[7]), [1232])
+	CALL memcpy(*($0 + [4]), ($3 + [8]), [8])
+	*($0 + [4]) = (*($0 + [4]) + [8])
+	$0 = *($1)
+	CALL eosio_assert(((int_32)(*($0 + [8]) - *($0 + [4])) > (int_32)[3]), [1232])
+	CALL memcpy(*($0 + [4]), ($3 + [16]), [4])
+	*($0 + [4]) = (*($0 + [4]) + [4])
+	CALL $28($0, ($3 + [20]))
+	CALL $29($0, ($3 + [32]))
+	CALL $30($0, ($3 + [44]))
+	$0 = *($1)
+	CALL eosio_assert(((int_32)(*($0 + [8]) - *($0 + [4])) > (int_32)[3]), [1232])
+	CALL memcpy(*($0 + [4]), ($3 + [56]), [4])
+	*($0 + [4]) = (*($0 + [4]) + [4])
+	CALL $28($0, ($3 + [60]))
+	CALL $29($0, ($3 + [72]))
+	CALL $30($0, ($3 + [84]))
+}
+
+void .FUNC $26 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_64 $7
+	*(($6 = *($1))) = (*($6) + [4])
+	$5 = *($6)
+	$6 = *($0 + [4])
+	$3 = *($6 + [4])
+	$7 = (CASTING uint_64)(uint_32 ((int_32)($3 - $5) / (int_32)[44]))
+	$2 = *($1)
+	$6 = *($2)
+	
+.LOOP $label$1:
+	$6 = ($6 + [1])
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	if ( ((int_64)$7) != (int_64)0) ){ goto $label$1 }
+	*($2) = $6
+	if ( ((int_32)$5 == (int_32)$3) ){ goto $label$2 }
+	
+.LOOP $label$3:
+	$6 = ($6 + [35])
+	$7 = *($5)
+	
+.LOOP $label$4:
+	$6 = ($6 + [1])
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	if ( ((int_64)$7) != (int_64)0) ){ goto $label$4 }
+	$5 = ($5 + [44])
+	if ( ((int_32)$5 != (int_32)$3) ){ goto $label$3 }
+	*($2) = $6
+	
+.LABEL $label$2
+	$3 = *($6)
+	$6 = *($0 + [8])
+	$5 = *($6 + [4])
+	$4 = ($5 - $3)
+	$7 = (CASTING uint_64)(uint_32 ((int_32)$4 / (int_32)[24]))
+	$2 = *($1)
+	$6 = *($2)
+	
+.LOOP $label$5:
+	$6 = ($6 + [1])
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	if ( ((int_64)$7) != (int_64)0) ){ goto $label$5 }
+	if ( ((int_32)$3 == (int_32)$5) ){ goto $label$6 }
+	$6 = ((((int_32)((uint_32)($4 + [-24]) / (uint_32)[24]) * (int_32)[18]) + $6) + [18])
+	
+.LABEL $label$6
+	*($2) = $6
+	$3 = *($6)
+	$6 = *($0 + [12])
+	$5 = *($6 + [4])
+	$0 = ($5 - $3)
+	$7 = (CASTING uint_64)(uint_32 int_32($0 >> [3]))
+	$1 = *($1)
+	$6 = *($1)
+	
+.LOOP $label$7:
+	$6 = ($6 + [1])
+	$7 = (uint_64)$7 >> (uint_64)(int_64)7
+	if ( ((int_64)$7) != (int_64)0) ){ goto $label$7 }
+	if ( ((int_32)$3 == (int_32)$5) ){ goto $label$8 }
+	$6 = ((((int_32)uint_32(($0 + [-8]) >> [3]) * (int_32)[6]) + $6) + [6])
+	
+.LABEL $label$8
+	*($1) = $6
+}
+
+int_32 .FUNC $49 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	int_32 $8
+	int_32 $9
+	int_32 $10
+	int_32 $11
+	int_32 $12
+	int_32 $13
+	if ( ($1 == 0) ){ goto $label$1 }
+	$13 = *($0 + [8384])
+	if ( $13 ){ goto $label$2 }
+	$13 = [16]
+	*(($0 + [8384])) = [16]
+	
+.LABEL $label$2
+	$2 = (($1 + [4]) & [7])
+	$2 = ( (($1 + [8]) - $2) ? $1 : $2 )
+	$10 = *($0 + [8388])
+	if ( ((uint_32)$10 >= (uint_32)$13) ){ goto $label$5 }
+	$1 = (($0 + ((int_32)$10 * (int_32)[12])) + [8192])
+	if ( $10 ){ goto $label$6 }
+	$13 = ($0 + [8196])
+	if ( *($13) ){ goto $label$6 }
+	*($1) = [8192]
+	*($13) = $0
+	
+.LABEL $label$6
+	$10 = ($2 + [4])
+	
+.LOOP $label$7:
+	$13 = *($1 + [8])
+	if ( ((uint_32)($13 + $10) > (uint_32)*($1)) ){ goto $label$8 }
+	*(($13 = (*($1 + [4]) + $13))) = ((*($13) & [-2147483648]) | $2)
+	*(($1 = ($1 + [8]))) = (*($1) + $10)
+	*($13) = (*($13) | [-2147483648])
+	$1 = ($13 + [4])
+	if ( $1 ){ goto $label$4 }
+	
+.LABEL $label$8
+	$1 = CALL $50($0)
+	if ( $1 ){ goto $label$7 }
+	
+.LABEL $label$5
+	$4 = ([2147483644] - $2)
+	$11 = ($0 + [8392])
+	$12 = ($0 + [8384])
+	$3 = *($0 + [8392])
+	$13 = $3
+	
+.LOOP $label$9:
+	$5 = ($1 + [8192])
+	$1 = ($0 + ((int_32)$13 * (int_32)[12]))
+	CALL eosio_assert(((int_32)*(($1 + [8200])) == (int_32)*($5)), [9728])
+	$6 = *(($1 + [8196]))
+	$13 = ($6 + [4])
+	
+.LOOP $label$10:
+	$7 = ($6 + *($5))
+	$8 = ($13 + [-4])
+	$9 = *($8)
+	$1 = ($9 & [2147483647])
+	if ( ((int_32)$9 < (int_32)[0]) ){ goto $label$11 }
+	if ( ((uint_32)$1 >= (uint_32)$2) ){ goto $label$12 }
+	
+.LOOP $label$13:
+	$10 = ($13 + $1)
+	if ( ((uint_32)$10 >= (uint_32)$7) ){ goto $label$12 }
+	$10 = *($10)
+	if ( ((int_32)$10 < (int_32)[0]) ){ goto $label$12 }
+	$1 = (($1 + ($10 & [2147483647])) + [4])
+	if ( ($1 <= $2) ){ goto $label$13 }
+	
+.LABEL $label$12
+	*($8) = (( $1 ? $2 : ($1 <= $2) ) | ($9 & [-2147483648]))
+	if ( ((uint_32)$1 <= (uint_32)$2) ){ goto $label$14 }
+	*(($13 + $2)) = (($4 + $1) & [2147483647])
+	
+.LABEL $label$14
+	if ( ((uint_32)$1 >= (uint_32)$2) ){ goto $label$3 }
+	
+.LABEL $label$11
+	$13 = (($13 + $1) + [4])
+	if ( ($13 <= $7) ){ goto $label$10 }
+	$1 = [0]
+	$13 = (*($11) + [1])
+	$13 = ( [0] ? $13 : ((int_32)$13 == (int_32)*($12)) )
+	*($11) = $13
+	if ( ((int_32)$13 != (int_32)$3) ){ goto $label$9 }
+	
+.LABEL $label$4
+	return $1
+	
+.LABEL $label$3
+	*($8) = (*($8) | [-2147483648])
+	return $13
+	
+.LABEL $label$1
+	return [0]
+}
+
+int_32 .FUNC malloc (int_32 $0)
+{
+	return CALL $49([1332], $0)
+}
+
+int_32 .FUNC $43 (int_32 $0, int_32 $1, int_32 $2, int_32 $3, int_32 $4)
+{
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	int_32 $8
+	*($0) = (int_64)0
+	*(($0 + [8])) = [0]
+	$5 = ($8 & [1])
+	$8 = *($1)
+	$8 = ( *($1 + [4]) ? uint_32($8 >> [1]) : $5 )
+	if ( ($8 <= $2) ){ goto $label$1 }
+	$8 = ($8 - $2)
+	$3 = ( $8 ? $3 : ($8 <= $3) )
+	if ( ((uint_32)$3 >= (uint_32)[-16]) ){ goto $label$1 }
+	$6 = *($1 + [8])
+	if ( ((uint_32)$3 >= (uint_32)[11]) ){ goto $label$4 }
+	*($0) = ($3 << [1])
+	$8 = ($0 + [1])
+	if ( $3 ){ goto $label$3 }
+	goto $label$2 
+	
+.LABEL $label$4
+	$7 = (($3 + [16]) & [-16])
+	$8 = CALL $34($7)
+	*($0) = ($7 | [1])
+	*($0 + [8]) = $8
+	*($0 + [4]) = $3
+	
+.LABEL $label$3
+	CALL memcpy($8, (( $6 ? ($1 + [1]) : $5 ) + $2), $3)
+	
+.LABEL $label$2
+	*(($8 + $3)) = [0]
+	return $0
+	
+.LABEL $label$1
+	CALL abort()
+	return (unreachable)
+}
+
+int_32 .FUNC $42 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	*($0) = (int_64)0
+	*(($3 = ($0 + [8]))) = [0]
+	if ( (*($1) & [1]) ){ goto $label$1 }
+	*($0) = *($1)
+	*($3) = *(($1 + [8]))
+	return $0
+	
+.LABEL $label$1
+	$3 = *($1 + [4])
+	if ( ((uint_32)$3 >= (uint_32)[-16]) ){ goto $label$2 }
+	$2 = *($1 + [8])
+	if ( ((uint_32)$3 >= (uint_32)[11]) ){ goto $label$5 }
+	*($0) = ($3 << [1])
+	$1 = ($0 + [1])
+	if ( $3 ){ goto $label$4 }
+	goto $label$3 
+	
+.LABEL $label$5
+	$4 = (($3 + [16]) & [-16])
+	$1 = CALL $34($4)
+	*($0) = ($4 | [1])
+	*($0 + [8]) = $1
+	*($0 + [4]) = $3
+	
+.LABEL $label$4
+	CALL memcpy($1, $2, $3)
+	
+.LABEL $label$3
+	*(($1 + $3)) = [0]
+	return $0
+	
+.LABEL $label$2
+	CALL abort()
+	return (unreachable)
+}
+
+void .FUNC $41 (int_32 $0)
+{
+	CALL abort()
+	(unreachable)
+}
+
+int_32 .FUNC $40 (int_32 $0, int_32 $1, int_32 $2, int_32 $3, int_32 $4)
+{
+	int_32 $5
+	int_32 $6
+	$6 = *($0)
+	$5 = ($6 & [1])
+	if ( $5 ){ goto $label$2 }
+	$6 = uint_32($6 >> [1])
+	goto $label$1 
+	
+.LABEL $label$2
+	$6 = *($0 + [4])
+	
+.LABEL $label$1
+	if ( ((int_32)$4 == (int_32)[-1]) ){ goto $label$3 }
+	if ( ($6 <= $1) ){ goto $label$3 }
+	$6 = ($6 - $1)
+	$6 = ( $6 ? $2 : ($6 <= $2) )
+	if ( $5 ){ goto $label$5 }
+	$0 = ($0 + [1])
+	goto $label$4 
+	
+.LABEL $label$5
+	$0 = *($0 + [8])
+	
+.LABEL $label$4
+	$5 = ((uint_32)$6 > (uint_32)$4)
+	$2 = ( $4 ? $6 : $5 )
+	if ( ($2 == 0) ){ goto $label$6 }
+	$1 = CALL memcmp(($0 + $1), $3, $2)
+	if ( ($1 == 0) ){ goto $label$6 }
+	return $1
+	
+.LABEL $label$6
+	return ( [-1] ? $5 : ($6 <= $4) )
+	
+.LABEL $label$3
+	CALL abort()
+	return (unreachable)
+}
+
+int_32 .FUNC strlen (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	$2 = $0
+	if ( (($0 & [3]) == 0) ){ goto $label$2 }
+	$2 = $0
+	
+.LOOP $label$3:
+	if ( (*($2) == 0) ){ goto $label$1 }
+	$2 = ($2 + [1])
+	if ( ($2 & [3]) ){ goto $label$3 }
+	
+.LABEL $label$2
+	$2 = ($2 + [-4])
+	
+.LOOP $label$4:
+	$2 = ($2 + [4])
+	$1 = *($2)
+	if ( (((((int_32)$1 ^ (int_32)[-1]) & ($1 + [-16843009])) & [-2139062144]) == 0) ){ goto $label$4 }
+	if ( (($1 & [255]) == 0) ){ goto $label$1 }
+	
+.LOOP $label$5:
+	$2 = ($2 + [1])
+	if ( *($2) ){ goto $label$5 }
+	
+.LABEL $label$1
+	return ($2 - $0)
+}
+
+int_32 .FUNC memcmp (int_32 $0, int_32 $1, int_32 $2)
+{
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	$5 = [0]
+	if ( ($2 == 0) ){ goto $label$1 }
+	
+.LOOP $label$3:
+	$4 = *($1)
+	$3 = *($0)
+	if ( ((int_32)$3 != (int_32)$4) ){ goto $label$2 }
+	$1 = ($1 + [1])
+	$0 = ($0 + [1])
+	$2 = ($2 + [-1])
+	if ( $2 ){ goto $label$3 }
+	goto $label$1 
+	
+.LABEL $label$2
+	$5 = ($3 - $4)
+	
+.LABEL $label$1
+	return $5
+}
+
+int_32 .FUNC memchr (int_32 $0, int_32 $1, int_32 $2)
+{
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	$6 = [0]
+	$4 = ((int_32)$2 != (int_32)[0])
+	if ( ($2 == 0) ){ goto $label$6 }
+	if ( (($0 & [3]) == 0) ){ goto $label$5 }
+	$3 = ($1 & [255])
+	
+.LOOP $label$7:
+	if ( ((int_32)*($0) == (int_32)$3) ){ goto $label$3 }
+	$4 = ((int_32)$2 != (int_32)[1])
+	$5 = ($2 + [-1])
+	$0 = ($0 + [1])
+	if ( ((int_32)$2 == (int_32)[1]) ){ goto $label$4 }
+	$2 = $5
+	if ( ($0 & [3]) ){ goto $label$7 }
+	goto $label$4 
+	
+.LABEL $label$6
+	$5 = $2
+	if ( $4 ){ goto $label$2 }
+	goto $label$1 
+	
+.LABEL $label$5
+	$5 = $2
+	
+.LABEL $label$4
+	if ( $4 ){ goto $label$2 }
+	goto $label$1 
+	
+.LABEL $label$3
+	$5 = $2
+	
+.LABEL $label$2
+	if ( ((int_32)*($0) == (int_32)($1 & [255])) ){ goto $label$8 }
+	if ( ($5 <= [4]) ){ goto $label$10 }
+	$4 = ((int_32)($1 & [255]) * (int_32)[16843009])
+	
+.LOOP $label$11:
+	$2 = ((int_32)*($0) ^ (int_32)$4)
+	if ( ((((int_32)$2 ^ (int_32)[-1]) & ($2 + [-16843009])) & [-2139062144]) ){ goto $label$9 }
+	$0 = ($0 + [4])
+	$5 = ($5 + [-4])
+	if ( ((uint_32)$5 > (uint_32)[3]) ){ goto $label$11 }
+	
+.LABEL $label$10
+	if ( ($5 == 0) ){ goto $label$1 }
+	
+.LABEL $label$9
+	$2 = ($1 & [255])
+	
+.LOOP $label$12:
+	if ( ((int_32)*($0) == (int_32)$2) ){ goto $label$8 }
+	$0 = ($0 + [1])
+	$5 = ($5 + [-1])
+	if ( $5 ){ goto $label$12 }
+	goto $label$1 
+	
+.LABEL $label$8
+	$6 = $5
+	
+.LABEL $label$1
+	return ( $0 ? [0] : $6 )
+}
+
+int_32 .FUNC isspace (int_32 $0)
+{
+	return (((int_32)$0 == (int_32)[32]) | (($0 + [-9]) <= [5]))
+}
+
+void .FUNC free (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	int_32 $3
+	if ( ($0 == 0) ){ goto $label$2 }
+	$2 = *([0] + [9716])
+	if ( ((int_32)$2 < (int_32)[1]) ){ goto $label$2 }
+	$3 = [9524]
+	$1 = (((int_32)$2 * (int_32)[12]) + [9524])
+	
+.LOOP $label$3:
+	$2 = *(($3 + [4]))
+	if ( ($2 == 0) ){ goto $label$2 }
+	if ( ((uint_32)($2 + [4]) > (uint_32)$0) ){ goto $label$4 }
+	if ( ((uint_32)($2 + *($3)) > (uint_32)$0) ){ goto $label$1 }
+	
+.LABEL $label$4
+	$3 = ($3 + [12])
+	if ( ($3 <= $1) ){ goto $label$3 }
+	
+.LABEL $label$2
+	return 
+	
+.LABEL $label$1
+	*(($3 = ($0 + [-4]))) = (*($3) & [2147483647])
+}
+
+void .FUNC apply (int_64 $0, int_64 $1, int_64 $2)
+{
+	int_32 $3
+	int_32 $4
+	int_64 $5
+	int_64 $6
+	int_64 $7
+	int_64 $8
+	int_32 $9
+	$9 = (*([0] + [4]) - [48])
+	*([0] + [4]) = $9
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [480]
+	$7 = (int_64)0
+	
+.LOOP $label$1:
+	if ( ((uint_64)$6 > (uint_64)(int_64)6) ){ goto $label$6 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$5 }
+	$3 = ($3 + [165])
+	goto $label$4 
+	
+.LABEL $label$6
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$3 }
+	goto $label$2 
+	
+.LABEL $label$5
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$4
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$3
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$2
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$1 }
+	if ( ((int_64)$7 != (int_64)$2) ){ goto $label$7 }
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [496]
+	$7 = (int_64)0
+	
+.LOOP $label$8:
+	if ( ((uint_64)$6 > (uint_64)(int_64)4) ){ goto $label$13 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$12 }
+	$3 = ($3 + [165])
+	goto $label$11 
+	
+.LABEL $label$13
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$10 }
+	goto $label$9 
+	
+.LABEL $label$12
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$11
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$10
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$9
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$8 }
+	CALL eosio_assert(((int_64)$7 == (int_64)$1), [512])
+	
+.LABEL $label$7
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [576]
+	$7 = (int_64)0
+	
+.LOOP $label$14:
+	if ( ((uint_64)$6 > (uint_64)(int_64)10) ){ goto $label$19 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$18 }
+	$3 = ($3 + [165])
+	goto $label$17 
+	
+.LABEL $label$19
+	$8 = (int_64)0
+	if ( ((int_64)$6 == (int_64)11) ){ goto $label$16 }
+	goto $label$15 
+	
+.LABEL $label$18
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$17
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$16
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$15
+	$4 = ($4 + [1])
+	$5 = ((int_64)$5 + (int_64)-5)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$6 = ((int_64)$6 + (int_64)1)
+	if ( ((int_64)$6 != (int_64)13) ){ goto $label$14 }
+	if ( ((int_64)$7 != (int_64)$1) ){ goto $label$22 }
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [592]
+	$7 = (int_64)0
+	
+.LOOP $label$23:
+	if ( ((uint_64)$6 > (uint_64)(int_64)7) ){ goto $label$28 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$27 }
+	$3 = ($3 + [165])
+	goto $label$26 
+	
+.LABEL $label$28
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$25 }
+	goto $label$24 
+	
+.LABEL $label$27
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$26
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$25
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$24
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$23 }
+	if ( ((int_64)$7 == (int_64)$2) ){ goto $label$21 }
+	
+.LABEL $label$22
+	if ( ((int_64)$1 != (int_64)$0) ){ goto $label$29 }
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [608]
+	$7 = (int_64)0
+	
+.LOOP $label$30:
+	if ( ((uint_64)$6 > (uint_64)(int_64)9) ){ goto $label$35 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$34 }
+	$3 = ($3 + [165])
+	goto $label$33 
+	
+.LABEL $label$35
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$32 }
+	goto $label$31 
+	
+.LABEL $label$34
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$33
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$32
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$31
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$30 }
+	if ( ((int_64)$7 == (int_64)$2) ){ goto $label$21 }
+	
+.LABEL $label$29
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [480]
+	$7 = (int_64)0
+	
+.LOOP $label$36:
+	if ( ((uint_64)$6 > (uint_64)(int_64)6) ){ goto $label$41 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$40 }
+	$3 = ($3 + [165])
+	goto $label$39 
+	
+.LABEL $label$41
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$38 }
+	goto $label$37 
+	
+.LABEL $label$40
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$39
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$38
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$37
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$36 }
+	if ( ((int_64)$7 != (int_64)$2) ){ goto $label$20 }
+	
+.LABEL $label$21
+	*($9 + [40]) = $0
+	$6 = (int_64)0
+	$5 = (int_64)59
+	$4 = [608]
+	$7 = (int_64)0
+	
+.LOOP $label$42:
+	if ( ((uint_64)$6 > (uint_64)(int_64)9) ){ goto $label$47 }
+	$3 = *($4)
+	if ( ((uint_32)(($3 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$46 }
+	$3 = ($3 + [165])
+	goto $label$45 
+	
+.LABEL $label$47
+	$8 = (int_64)0
+	if ( ((uint_64)$6 <= (uint_64)(int_64)11) ){ goto $label$44 }
+	goto $label$43 
+	
+.LABEL $label$46
+	$3 = ( ($3 + [208]) ? [0] : ((($3 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$45
+	$8 = (int_64)((int_64)(CASTING uint_64)(uint_32 $3) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$44
+	$8 = ((int_64)((int_64)$8 & (int_64)31) << (int_64)((int_64)$5 & (int_64)4294967295))
+	
+.LABEL $label$43
+	$4 = ($4 + [1])
+	$6 = ((int_64)$6 + (int_64)1)
+	$7 = ((int_64)$8 | (int_64)$7)
+	$5 = ((int_64)$5 + (int_64)-5)
+	if ( ((int_64)$5 != (int_64)-6) ){ goto $label$42 }
+	if ( ((int_64)$7 != (int_64)$2) ){ goto $label$48 }
+	CALL require_auth($0)
+	
+.LABEL $label$48
+	if ( ((int_64)$2 == (int_64)-7297973096368160768) ){ goto $label$49 }
+	if ( ((int_64)$2 != (int_64)-3617168760277827584) ){ goto $label$20 }
+	*($9 + [36]) = [0]
+	*($9 + [32]) = [1]
+	*($9 + [8 align=4]) = *($9 + [32])
+	CALL $10(($9 + [40]), ($9 + [8]))
+	goto $label$20 
+	
+.LABEL $label$49
+	*($9 + [28]) = [0]
+	*($9 + [24]) = [2]
+	*($9 + [16 align=4]) = *($9 + [24])
+	CALL $12(($9 + [40]), ($9 + [16]))
+	
+.LABEL $label$20
+	*([0] + [4]) = ($9 + [48])
+}
+
+void .FUNC $9 (int_32 $0, int_64 $1, int_64 $2, int_32 $3, int_32 $4)
+{
+	int_32 $5
+	int_32 $6
+	int_64 $7
+	int_64 $8
+	int_64 $9
+	int_32 $10
+	$10 = (*([0] + [4]) - [48])
+	*([0] + [4]) = $10
+	$9 = *($0)
+	if ( ((int_64)$9 == (int_64)$1) ){ goto $label$1 }
+	if ( ((int_64)$9 != (int_64)$2) ){ goto $label$1 }
+	$2 = (int_64)0
+	$7 = (int_64)59
+	$6 = [1248]
+	$8 = (int_64)0
+	
+.LOOP $label$2:
+	if ( ((uint_64)$2 > (uint_64)(int_64)8) ){ goto $label$7 }
+	$5 = *($6)
+	if ( ((uint_32)(($5 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$6 }
+	$5 = ($5 + [165])
+	goto $label$5 
+	
+.LABEL $label$7
+	$9 = (int_64)0
+	if ( ((uint_64)$2 <= (uint_64)(int_64)11) ){ goto $label$4 }
+	goto $label$3 
+	
+.LABEL $label$6
+	$5 = ( ($5 + [208]) ? [0] : ((($5 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$5
+	$9 = (int_64)((int_64)(CASTING uint_64)(uint_32 $5) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$4
+	$9 = ((int_64)((int_64)$9 & (int_64)31) << (int_64)((int_64)$7 & (int_64)4294967295))
+	
+.LABEL $label$3
+	$6 = ($6 + [1])
+	$2 = ((int_64)$2 + (int_64)1)
+	$8 = ((int_64)$9 | (int_64)$8)
+	$7 = ((int_64)$7 + (int_64)-5)
+	if ( ((int_64)$7 != (int_64)-6) ){ goto $label$2 }
+	if ( ((int_64)$8 == (int_64)$1) ){ goto $label$1 }
+	$2 = (int_64)0
+	$7 = (int_64)59
+	$6 = [1264]
+	$8 = (int_64)0
+	
+.LOOP $label$8:
+	if ( ((uint_64)$2 > (uint_64)(int_64)10) ){ goto $label$13 }
+	$5 = *($6)
+	if ( ((uint_32)(($5 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$12 }
+	$5 = ($5 + [165])
+	goto $label$11 
+	
+.LABEL $label$13
+	$9 = (int_64)0
+	if ( ((int_64)$2 == (int_64)11) ){ goto $label$10 }
+	goto $label$9 
+	
+.LABEL $label$12
+	$5 = ( ($5 + [208]) ? [0] : ((($5 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$11
+	$9 = (int_64)((int_64)(CASTING uint_64)(uint_32 $5) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$10
+	$9 = ((int_64)((int_64)$9 & (int_64)31) << (int_64)((int_64)$7 & (int_64)4294967295))
+	
+.LABEL $label$9
+	$6 = ($6 + [1])
+	$7 = ((int_64)$7 + (int_64)-5)
+	$8 = ((int_64)$9 | (int_64)$8)
+	$2 = ((int_64)$2 + (int_64)1)
+	if ( ((int_64)$2 != (int_64)13) ){ goto $label$8 }
+	if ( ((int_64)$8 == (int_64)$1) ){ goto $label$1 }
+	$6 = *($4)
+	$5 = CALL strlen([1280])
+	if ( ((int_32)$5 != (int_32)( *($4 + [4]) ? uint_32($6 >> [1]) : ($6 & [1]) )) ){ goto $label$14 }
+	if ( (CALL $40($4, [0], [-1], [1280], $5) == 0) ){ goto $label$1 }
+	
+.LABEL $label$14
+	$6 = *($4)
+	$5 = CALL strlen([1296])
+	if ( ((int_32)$5 != (int_32)( *(($4 + [4])) ? uint_32($6 >> [1]) : ($6 & [1]) )) ){ goto $label$15 }
+	if ( (CALL $40($4, [0], [-1], [1296], $5) == 0) ){ goto $label$1 }
+	
+.LABEL $label$15
+	$2 = (int_64)0
+	$9 = (int_64)59
+	$6 = [1312]
+	$8 = (int_64)0
+	
+.LOOP $label$16:
+	$7 = (int_64)0
+	if ( ((uint_64)$2 > (uint_64)(int_64)11) ){ goto $label$17 }
+	$5 = *($6)
+	if ( ((uint_32)(($5 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$19 }
+	$5 = ($5 + [165])
+	goto $label$18 
+	
+.LABEL $label$19
+	$5 = ( ($5 + [208]) ? [0] : ((($5 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$18
+	$7 = ((int_64)(CASTING uint_64)(uint_32 ($5 & [31])) << (int_64)((int_64)$9 & (int_64)4294967295))
+	
+.LABEL $label$17
+	$6 = ($6 + [1])
+	$2 = ((int_64)$2 + (int_64)1)
+	$8 = ((int_64)$7 | (int_64)$8)
+	$9 = ((int_64)$9 + (int_64)-5)
+	if ( ((int_64)$9 != (int_64)-6) ){ goto $label$16 }
+	if ( ((int_64)$8 == (int_64)$1) ){ goto $label$1 }
+	*(($6 = (($10 + [32]) + [8]))) = *(($3 + [8]))
+	*($10 + [32]) = *($3)
+	CALL $42(($10 + [16]), $4)
+	*(($10 + [8])) = *($6)
+	*($10) = *($10 + [32])
+	CALL $11($0, $10, ($10 + [16]))
+	if ( ((*($10 + [16]) & [1]) == 0) ){ goto $label$1 }
+	CALL $35(*($10 + [24]))
+	
+.LABEL $label$1
+	*([0] + [4]) = ($10 + [48])
+}
+
+void .FUNC _ZN6abieos20string_to_public_keyENSt3__117basic_string_viewIcNS0_11char_traitsIcEEEE (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	$3 = (*([0] + [4]) - [80])
+	*([0] + [4]) = $3
+	$2 = *($1 + [4])
+	if ( ($2 <= [3]) ){ goto $label$2 }
+	$1 = *($1)
+	if ( ((int_32)CALL strlen([352]) != (int_32)[3]) ){ goto $label$4 }
+	if ( (CALL memcmp($1, [352], [3]) == 0) ){ goto $label$3 }
+	
+.LABEL $label$4
+	if ( ($2 <= [7]) ){ goto $label$2 }
+	if ( ((int_32)CALL strlen([368]) != (int_32)[7]) ){ goto $label$2 }
+	if ( CALL memcmp($1, [368], [7]) ){ goto $label$2 }
+	*($3 + [36]) = ($2 + [-7])
+	*($3 + [32]) = ($1 + [7])
+	*($3 + [16 align=4]) = *($3 + [32])
+	CALL $7(($3 + [40]), ($3 + [16]))
+	*($0) = [1]
+	CALL memcpy(CALL $fimport$6(($0 + [1]), [0], [33]), ($3 + [40]), [33])
+	goto $label$1 
+	
+.LABEL $label$3
+	*($3 + [28]) = ($2 + [-3])
+	*($3 + [24]) = ($1 + [3])
+	*($3 + [8 align=4]) = *($3 + [24])
+	CALL $7(($3 + [40]), ($3 + [8]))
+	*($0) = [0]
+	CALL memcpy(CALL $fimport$6(($0 + [1]), [0], [33]), ($3 + [40]), [33])
+	goto $label$1 
+	
+.LABEL $label$2
+	CALL eosio_assert([0], [384])
+	
+.LABEL $label$1
+	*([0] + [4]) = ($3 + [80])
+	(unreachable)
+}
+
+void .FUNC $7 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	$7 = (*([0] + [4]) - [256])
+	*([0] + [4]) = $7
+	$2 = CALL memset($0, [0], [37])
+	$6 = *($1 + [4])
+	if ( ($6 == 0) ){ goto $label$1 }
+	$5 = *($1)
+	$3 = ($5 + $6)
+	
+.LOOP $label$2:
+	if ( *([0] + [16]) ){ goto $label$3 }
+	$1 = [-256]
+	
+.LOOP $label$4:
+	*(($1 + [288])) = [255]
+	$1 = ($1 + [1])
+	if ( $1 ){ goto $label$4 }
+	$1 = [0]
+	
+.LOOP $label$5:
+	*((*(($1 + [288])) + [32])) = $1
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 != (int_32)[59]) ){ goto $label$5 }
+	*([0] + [16]) = [1]
+	
+.LABEL $label$3
+	$6 = *((CALL memcpy($7, [32], [256]) + *($5)))
+	if ( ((int_32)$6 >= (int_32)[0]) ){ goto $label$6 }
+	CALL eosio_assert([0], [416])
+	
+.LABEL $label$6
+	$1 = [0]
+	
+.LOOP $label$7:
+	$6 = (((int_32)*($4) * (int_32)[58]) + $6)
+	*(($4 = ($2 + $1))) = $6
+	$6 = int_32($6 >> [8])
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 != (int_32)[37]) ){ goto $label$7 }
+	if ( ($6 == 0) ){ goto $label$8 }
+	CALL eosio_assert([0], [448])
+	
+.LABEL $label$8
+	$5 = ($5 + [1])
+	if ( ((int_32)$5 != (int_32)$3) ){ goto $label$2 }
+	
+.LABEL $label$1
+	$1 = ($2 + [36])
+	
+.LOOP $label$9:
+	$6 = *($0)
+	*($0) = *($1)
+	*($1) = $6
+	$1 = ($1 + [-1])
+	$0 = ($0 + [1])
+	if ( ($0 <= $1) ){ goto $label$9 }
+	*([0] + [4]) = ($7 + [256])
+}
+
+void .FUNC _ZN5eosio12require_authERKNS_16permission_levelE (int_32 $0)
+{
+	CALL require_auth2(*($0), *($0 + [8]))
+}
+
+void .FUNC _ZN6abieos14get_base58_mapEv (int_32 $0)
+{
+	int_32 $1
+	if ( *([0] + [16]) ){ goto $label$1 }
+	$1 = [-256]
+	
+.LOOP $label$2:
+	*(($1 + [288])) = [255]
+	$1 = ($1 + [1])
+	if ( $1 ){ goto $label$2 }
+	$1 = [0]
+	
+.LOOP $label$3:
+	*((*(($1 + [288])) + [32])) = $1
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 != (int_32)[59]) ){ goto $label$3 }
+	*([0] + [16]) = [1]
+	
+.LABEL $label$1
+	CALL memcpy($0, [32], [256])
+}
+
+int_32 .FUNC _ZneRK11checksum160S1_ (int_32 $0, int_32 $1)
+{
+	return ((int_32)CALL memcmp($0, $1, [32]) != (int_32)[0])
+}
+
+int_32 .FUNC now ()
+{
+	return (CASTING uint_32)(uint_64 ((uint_64)CALL current_time() / (uint_64)(int_64)1000000))
+}
+
+int_32 .FUNC memory (int_32 memory, int_32 $1)
+{
+	return (CALL memcmp($0, $1, [32]) == 0)
+}
+
+int_32 .FUNC _ZeqRK11checksum160S1_ (int_32 $0, int_32 _ZeqRK11checksum160S1_)
+{
+	return (CALL memcmp($0, $1, [32]) == 0)
+}
+
+void .FUNC $14 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	$3 = (*([0] + [4]) - [96])
+	*([0] + [4]) = $3
+	*(($2 = (($3 + [32]) + [8]))) = *(($1 + [8]))
+	*($3 + [32]) = *($1)
+	CALL $42(($3 + [16]), ($1 + [16]))
+	*((($3 + [48]) + [8])) = *($2)
+	*($3 + [48]) = *($3 + [32])
+	$1 = *($0 + [4])
+	$2 = *($1 + [4])
+	$0 = (*(*($0)) + int_32($2 >> [1]))
+	$1 = *($1)
+	if ( (($2 & [1]) == 0) ){ goto $label$1 }
+	$1 = *((*($0) + $1))
+	
+.LABEL $label$1
+	*(($2 = (($3 + [80]) + [8]))) = *((($3 + [48]) + [8]))
+	*($3 + [80]) = *($3 + [48])
+	CALL $42(($3 + [64]), ($3 + [16]))
+	*(($3 + [8])) = *($2)
+	*($3) = *($3 + [80])
+	CALL void $0((int_32 $3), (int_32 ($3 + [64])), (int_32 $1))
+	if ( ((*($3 + [64]) & [1]) == 0) ){ goto $label$2 }
+	CALL $35(*($3 + [72]))
+	
+.LABEL $label$2
+	if ( ((*($3 + [16]) & [1]) == 0) ){ goto $label$3 }
+	CALL $35(*($3 + [24]))
+	
+.LABEL $label$3
+	*([0] + [4]) = ($3 + [96])
+}
+
+int_32 .FUNC $15 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_64 $6
+	int_32 $7
+	$5 = *($0 + [4])
+	$7 = [0]
+	$6 = (int_64)0
+	$2 = ($0 + [8])
+	$3 = ($0 + [4])
+	
+.LOOP $label$1:
+	CALL eosio_assert(($5 <= *($2)), [736])
+	$5 = *($3)
+	$4 = *($5)
+	$5 = ($5 + [1])
+	*($3) = $5
+	$7 = ($7 & [255])
+	$6 = ((int_64)(CASTING uint_64)(uint_32 (($4 & [127]) << $7)) | (int_64)$6)
+	$7 = ($7 + [7])
+	if ( uint_32($4 >> [7]) ){ goto $label$1 }
+	$4 = *($1)
+	$7 = *($1 + [4])
+	$2 = ($7 - $4)
+	$3 = (CASTING uint_32)(uint_64 $6)
+	if ( ((uint_32)$3 <= (uint_32)$2) ){ goto $label$3 }
+	CALL $16($1, ($3 - $2))
+	$5 = *(($0 + [4]))
+	$7 = *(($1 + [4]))
+	$4 = *($1)
+	goto $label$2 
+	
+.LABEL $label$3
+	if ( ((uint_32)$3 >= (uint_32)$2) ){ goto $label$2 }
+	$7 = ($4 + $3)
+	*(($1 + [4])) = $7
+	
+.LABEL $label$2
+	$5 = ($7 - $4)
+	CALL eosio_assert(((uint_32)(*(($0 + [8])) - $5) >= (uint_32)$5), [720])
+	$7 = ($0 + [4])
+	CALL memcpy($4, *($7), $5)
+	*($7) = (*($7) + $5)
+	return $0
+}
+
+void .FUNC $16 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	$6 = *($0 + [4])
+	$2 = *($0 + [8])
+	if ( ((uint_32)($2 - $6) >= (uint_32)$1) ){ goto $label$5 }
+	$5 = *($0)
+	$3 = ($6 - $5)
+	$4 = ($3 + $1)
+	if ( ((int_32)$4 <= (int_32)[-1]) ){ goto $label$3 }
+	$6 = [2147483647]
+	$2 = ($2 - $5)
+	if ( ((uint_32)$2 > (uint_32)[1073741822]) ){ goto $label$6 }
+	$6 = ($2 << [1])
+	$6 = ( $4 ? $6 : ($6 <= $4) )
+	if ( ($6 == 0) ){ goto $label$4 }
+	
+.LABEL $label$6
+	$2 = CALL $34($6)
+	goto $label$2 
+	
+.LABEL $label$5
+	$0 = ($0 + [4])
+	
+.LOOP $label$7:
+	*($6) = [0]
+	$6 = (*($0) + [1])
+	*($0) = $6
+	$1 = ($1 + [-1])
+	if ( $1 ){ goto $label$7 }
+	goto $label$1 
+	
+.LABEL $label$4
+	$6 = [0]
+	$2 = [0]
+	goto $label$2 
+	
+.LABEL $label$3
+	CALL $41($0)
+	
+.LABEL $label$2
+	$4 = ($2 + $6)
+	$5 = ($2 + $3)
+	$6 = $5
+	
+.LOOP $label$8:
+	*($6) = [0]
+	$6 = ($6 + [1])
+	$1 = ($1 + [-1])
+	if ( $1 ){ goto $label$8 }
+	$1 = *($0)
+	$3 = ($0 + [4])
+	$2 = (*($3) - $1)
+	$5 = ($5 - $2)
+	if ( ((int_32)$2 < (int_32)[1]) ){ goto $label$9 }
+	CALL memcpy($5, $1, $2)
+	$1 = *($0)
+	
+.LABEL $label$9
+	*($0) = $5
+	*($3) = $6
+	*(($0 + [8])) = $4
+	if ( ($1 == 0) ){ goto $label$1 }
+	CALL $35($1)
+	return 
+	
+.LABEL $label$1
+	(unreachable)
+}
+
+int_32 .FUNC $17 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	*(($0 + [8])) = (int_64)0
+	*($0 + [4]) = [0]
+	*($0) = *($1)
+	$2 = (*(($1 + [8])) - *($1 + [4]))
+	$3 = ((int_32)$2 / (int_32)[44])
+	if ( ($2 == 0) ){ goto $label$4 }
+	if ( ((uint_32)$3 >= (uint_32)[97612894]) ){ goto $label$3 }
+	$2 = CALL $34($2)
+	*(($0 + [4])) = $2
+	*(($0 + [12])) = ($2 + ((int_32)$3 * (int_32)[44]))
+	*(($3 = ($0 + [8]))) = $2
+	$4 = *(($1 + [4]))
+	$5 = (*(($1 + [8])) - $4)
+	if ( ((int_32)$5 < (int_32)[1]) ){ goto $label$4 }
+	CALL memcpy($2, $4, $5)
+	*($3) = (*($3) + ((int_32)((uint_32)$5 / (uint_32)[44]) * (int_32)[44]))
+	
+.LABEL $label$4
+	*($0 + [16 align=4]) = (int_64)0
+	*(($0 + [24])) = [0]
+	$2 = (*(($1 + [20])) - *($1 + [16]))
+	$3 = ((int_32)$2 / (int_32)[24])
+	if ( ($2 == 0) ){ goto $label$5 }
+	if ( ((uint_32)$3 >= (uint_32)[178956971]) ){ goto $label$2 }
+	$2 = CALL $34($2)
+	*(($0 + [16])) = $2
+	*(($0 + [24])) = ($2 + ((int_32)$3 * (int_32)[24]))
+	*(($3 = ($0 + [20]))) = $2
+	$4 = *(($1 + [16]))
+	$5 = (*(($1 + [20])) - $4)
+	if ( ((int_32)$5 < (int_32)[1]) ){ goto $label$5 }
+	CALL memcpy($2, $4, $5)
+	*($3) = (*($3) + ((int_32)((uint_32)$5 / (uint_32)[24]) * (int_32)[24]))
+	
+.LABEL $label$5
+	*($0 + [28 align=4]) = (int_64)0
+	*(($0 + [36])) = [0]
+	$2 = (*(($1 + [32])) - *($1 + [28]))
+	$3 = int_32($2 >> [3])
+	if ( ($3 == 0) ){ goto $label$6 }
+	if ( ((uint_32)$3 >= (uint_32)[536870912]) ){ goto $label$1 }
+	$2 = CALL $34($2)
+	*(($0 + [28])) = $2
+	*(($0 + [36])) = ($2 + ($3 << [3]))
+	*(($3 = ($0 + [32]))) = $2
+	$5 = *(($1 + [28]))
+	$1 = (*(($1 + [32])) - $5)
+	if ( ((int_32)$1 < (int_32)[1]) ){ goto $label$6 }
+	CALL memcpy($2, $5, $1)
+	*($3) = (*($3) + $1)
+	
+.LABEL $label$6
+	return $0
+	
+.LABEL $label$3
+	CALL $41(($0 + [4]))
+	
+.LABEL $label$2
+	CALL $41(($0 + [16]))
+	
+.LABEL $label$1
+	CALL $41(($0 + [28]))
+	(unreachable)
+	(unreachable)
+	return (unreachable)
+}
+
+int_32 .FUNC $10 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_64 $3
+	int_32 $4
+	int_32 $5
+	$4 = (*([0] + [4]) - [96])
+	*([0] + [4]) = $4
+	*(($5 = $4) + [60]) = $0
+	*($5 + [48]) = *($1)
+	*($5 + [52]) = *($1 + [4])
+	$1 = [0]
+	$0 = [0]
+	$2 = CALL action_data_size()
+	if ( ($2 == 0) ){ goto $label$1 }
+	if ( ($2 <= [513]) ){ goto $label$3 }
+	$0 = CALL malloc($2)
+	goto $label$2 
+	
+.LABEL $label$3
+	$0 = ($4 - (($2 + [15]) & [-16]))
+	*([0] + [4]) = $0
+	
+.LABEL $label$2
+	CALL read_action_data($0, $2)
+	
+.LABEL $label$1
+	*(($5 + [24])) = (int_64)1397703940
+	*($5 + [8]) = (int_64)0
+	*($5) = (int_64)0
+	*($5 + [16]) = (int_64)0
+	CALL eosio_assert([1], [624])
+	$3 = (int_64)5459781
+	
+.LOOP $label$6:
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $3) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$5 }
+	$3 = (uint_64)$3 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$3) & (int_64)255) != (int_64)0) ){ goto $label$7 }
+	
+.LOOP $label$8:
+	$3 = (uint_64)$3 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$3) & (int_64)255) != (int_64)0) ){ goto $label$5 }
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$8 }
+	
+.LABEL $label$7
+	$4 = [1]
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$6 }
+	goto $label$4 
+	
+.LABEL $label$5
+	$4 = [0]
+	
+.LABEL $label$4
+	CALL eosio_assert($4, [688])
+	*(($5 + [40])) = [0]
+	*($5 + [32]) = (int_64)0
+	*($5 + [68]) = $0
+	*($5 + [64]) = $0
+	*($5 + [72]) = ($0 + $2)
+	*($5 + [80]) = ($5 + [64])
+	*($5 + [88]) = $5
+	CALL $32(($5 + [88]), ($5 + [80]))
+	if ( ($2 <= [513]) ){ goto $label$9 }
+	CALL free($0)
+	
+.LABEL $label$9
+	*($5 + [68]) = ($5 + [48])
+	*($5 + [64]) = ($5 + [60])
+	CALL $33(($5 + [64]), $5)
+	if ( ((*($5 + [32]) & [1]) == 0) ){ goto $label$10 }
+	CALL $35(*(($5 + [40])))
+	
+.LABEL $label$10
+	*([0] + [4]) = ($5 + [96])
+	return [1]
+}
+
+void .FUNC $11 (int_32 $0, int_32 $1, int_32 $2)
+{
+	int_32 $3
+	int_32 $4
+	int_64 $5
+	int_32 $6
+	int_32 $7
+	int_64 $8
+	int_64 $9
+	int_64 $10
+	int_64 $11
+	int_64 $12
+	int_64 $13
+	int_64 $14
+	int_32 $15
+	$15 = (*([0] + [4]) - [352])
+	*([0] + [4]) = $15
+	$10 = *($1 + [8])
+	$4 = ((int_64)$10 == (int_64)1397703940)
+	CALL eosio_assert($4, [752])
+	$7 = [0]
+	$6 = [0]
+	$12 = *($1)
+	if ( ((uint_64)((int_64)$12 + (int_64)4611686018427387903) > (uint_64)(int_64)9223372036854775806) ){ goto $label$1 }
+	$8 = (uint_64)$10 >> (uint_64)(int_64)8)
+	$1 = [0]
+	
+.LOOP $label$3:
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $8) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$2 }
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$4 }
+	
+.LOOP $label$5:
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$2 }
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$5 }
+	
+.LABEL $label$4
+	$6 = [1]
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$3 }
+	goto $label$1 
+	
+.LABEL $label$2
+	$6 = [0]
+	
+.LABEL $label$1
+	CALL eosio_assert($6, [784])
+	CALL eosio_assert([1], [624])
+	$8 = (int_64)5459781
+	
+.LOOP $label$8:
+	$1 = [0]
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $8) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$7 }
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$9 }
+	
+.LOOP $label$10:
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$7 }
+	$7 = ($7 + [1])
+	if ( ((int_32)$7 < (int_32)[7]) ){ goto $label$10 }
+	
+.LABEL $label$9
+	$6 = [1]
+	$7 = ($7 + [1])
+	if ( ((int_32)$7 < (int_32)[7]) ){ goto $label$8 }
+	goto $label$6 
+	
+.LABEL $label$7
+	$6 = [0]
+	
+.LABEL $label$6
+	CALL eosio_assert($6, [688])
+	CALL eosio_assert([1], [624])
+	$8 = (int_64)5459781
+	
+.LOOP $label$13:
+	$7 = [0]
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $8) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$12 }
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$14 }
+	
+.LOOP $label$15:
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$12 }
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$15 }
+	
+.LABEL $label$14
+	$6 = [1]
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$13 }
+	goto $label$11 
+	
+.LABEL $label$12
+	$6 = [0]
+	
+.LABEL $label$11
+	CALL eosio_assert($6, [688])
+	CALL eosio_assert([1], [624])
+	$8 = (int_64)5459781
+	
+.LOOP $label$17:
+	$1 = [0]
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $8) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$16 }
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$18 }
+	
+.LOOP $label$19:
+	$8 = (uint_64)$8 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$8) & (int_64)255) != (int_64)0) ){ goto $label$16 }
+	$7 = ($7 + [1])
+	if ( ((int_32)$7 < (int_32)[7]) ){ goto $label$19 }
+	
+.LABEL $label$18
+	$1 = [1]
+	$7 = ($7 + [1])
+	if ( ((int_32)$7 < (int_32)[7]) ){ goto $label$17 }
+	
+.LABEL $label$16
+	CALL eosio_assert($1, [688])
+	CALL eosio_assert($4, [816])
+	$8 = ((int_64)$12 + (int_64)-1000)
+	CALL eosio_assert(((int_64)$8 > (int_64)-4611686018427387904), [864])
+	CALL eosio_assert(((int_64)$8 < (int_64)4611686018427387904), [896])
+	CALL eosio_assert($4, [816])
+	$8 = ((int_64)$12 + (int_64)-2000)
+	CALL eosio_assert(((int_64)$8 > (int_64)-4611686018427387904), [864])
+	CALL eosio_assert(((int_64)$8 < (int_64)4611686018427387904), [896])
+	*($15 + [312]) = $10
+	CALL eosio_assert($4, [816])
+	$8 = ((int_64)$12 + (int_64)-3000)
+	*($15 + [304]) = $8
+	CALL eosio_assert(((int_64)$8 > (int_64)-4611686018427387904), [864])
+	CALL eosio_assert(((int_64)$8 < (int_64)4611686018427387904), [896])
+	CALL eosio_assert(((int_64)$12 > (int_64)3000), [928])
+	$4 = *($2)
+	if ( ($4 & [1]) ){ goto $label$21 }
+	$1 = uint_32($4 >> [1])
+	$6 = ($2 + [1])
+	goto $label$20 
+	
+.LABEL $label$21
+	$1 = *($2 + [4])
+	$6 = *($2 + [8])
+	
+.LABEL $label$20
+	$7 = ($6 + $1)
+	if ( ((int_32)$6 == (int_32)$7) ){ goto $label$23 }
+	$1 = $6
+	
+.LOOP $label$25:
+	if ( (CALL isspace(*($1)) == 0) ){ goto $label$24 }
+	$1 = ($1 + [1])
+	if ( ((int_32)$7 != (int_32)$1) ){ goto $label$25 }
+	$1 = $7
+	
+.LABEL $label$24
+	$4 = *($2)
+	goto $label$22 
+	
+.LABEL $label$23
+	$1 = $6
+	
+.LABEL $label$22
+	if ( ($4 & [1]) ){ goto $label$27 }
+	$7 = ($2 + [1])
+	goto $label$26 
+	
+.LABEL $label$27
+	$7 = *($2 + [8])
+	
+.LABEL $label$26
+	CALL $38($2, ($6 - $7), ($1 - $6))
+	$1 = *($2)
+	if ( ($1 & [1]) ){ goto $label$30 }
+	$7 = ($2 + [1])
+	$6 = ($7 + uint_32($1 >> [1]))
+	if ( ((int_32)$6 != (int_32)$7) ){ goto $label$29 }
+	goto $label$28 
+	
+.LABEL $label$30
+	$7 = *($2 + [8])
+	$6 = ($7 + *($2 + [4]))
+	if ( ((int_32)$6 == (int_32)$7) ){ goto $label$28 }
+	
+.LABEL $label$29
+	$4 = ([0] - $7)
+	$1 = ($6 + [-1])
+	
+.LOOP $label$32:
+	if ( (CALL isspace(*($1)) == 0) ){ goto $label$31 }
+	$6 = $1
+	$7 = ($1 + [-1])
+	$1 = $7
+	if ( ((int_32)($7 + $4) != (int_32)[-1]) ){ goto $label$32 }
+	
+.LABEL $label$31
+	$1 = *($2)
+	
+.LABEL $label$28
+	if ( ($1 & [1]) ){ goto $label$34 }
+	$7 = ($2 + [1])
+	$1 = ($7 + uint_32(($1 & [254]) >> [1]))
+	goto $label$33 
+	
+.LABEL $label$34
+	$7 = *($2 + [8])
+	$1 = ($7 + *($2 + [4]))
+	
+.LABEL $label$33
+	CALL $38($2, ($6 - $7), ($1 - $6))
+	$7 = [-1]
+	$3 = CALL $39($2, [58], [0])
+	CALL eosio_assert(((int_32)$3 != (int_32)[-1]), [960])
+	CALL $43(($15 + [288]), $2, [0], $3, $2)
+	$1 = *($15 + [288])
+	CALL eosio_assert(((int_32)( *($15 + [292]) ? uint_32($1 >> [1]) : ($1 & [1]) ) == (int_32)[12]), [1008])
+	$1 = ( *($15 + [296]) ? (($15 + [288]) | [1]) : (*($15 + [288]) & [1]) )
+	
+.LOOP $label$35:
+	$6 = ($1 + $7)
+	$4 = ($7 + [1])
+	$7 = $4
+	if ( *(($6 + [1])) ){ goto $label$35 }
+	$11 = (CASTING uint_64)(uint_32 $4)
+	$8 = (int_64)0
+	$12 = (int_64)59
+	$9 = (int_64)0
+	
+.LOOP $label$36:
+	$10 = (int_64)0
+	if ( ((uint_64)$8 >= (uint_64)$11) ){ goto $label$37 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$39 }
+	$7 = ($7 + [165])
+	goto $label$38 
+	
+.LABEL $label$39
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$38
+	$10 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$37
+	if ( ((uint_64)$8 > (uint_64)(int_64)11) ){ goto $label$41 }
+	$10 = ((int_64)((int_64)$10 & (int_64)31) << (int_64)((int_64)$12 & (int_64)4294967295))
+	goto $label$40 
+	
+.LABEL $label$41
+	$10 = ((int_64)$10 & (int_64)15)
+	
+.LABEL $label$40
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$9 = ((int_64)$10 | (int_64)$9)
+	$12 = ((int_64)$12 + (int_64)-5)
+	if ( ((int_64)$12 != (int_64)-6) ){ goto $label$36 }
+	CALL $43(($15 + [272]), $2, ($3 + [1]), [-1], $2)
+	$1 = *($15 + [272])
+	$1 = ( *($15 + [276]) ? uint_32($1 >> [1]) : ($1 & [1]) )
+	CALL eosio_assert((((int_32)$1 == (int_32)[53]) | ((int_32)$1 == (int_32)[57])), [1040])
+	$1 = ($1 & [1])
+	$1 = *($15 + [272])
+	*($15 + [228]) = ( *($15 + [276]) ? uint_32($1 >> [1]) : $1 )
+	*($15 + [224]) = ( *($15 + [280]) ? (($15 + [272]) | [1]) : $1 )
+	*($15) = *($15 + [224])
+	CALL _ZN6abieos20string_to_public_keyENSt3__117basic_string_viewIcNS0_11char_traitsIcEEEE(($15 + [232]), $15)
+	*($15 + [185]) = *($15 + [234])
+	*($15 + [184]) = *($15 + [233])
+	*($15 + [186]) = *($15 + [235])
+	*($15 + [187]) = *($15 + [236])
+	*($15 + [188]) = *($15 + [237])
+	*($15 + [189]) = *($15 + [238])
+	*($15 + [190]) = *($15 + [239])
+	*($15 + [191]) = *((($15 + [232]) + [8]))
+	*($15 + [192]) = *(($15 + [241]))
+	*($15 + [193]) = *(($15 + [242]))
+	*($15 + [194]) = *(($15 + [243]))
+	*($15 + [195]) = *((($15 + [232]) + [12]))
+	*($15 + [196]) = *(($15 + [245]))
+	*($15 + [197]) = *(($15 + [246]))
+	*($15 + [198]) = *(($15 + [247]))
+	*($15 + [199]) = *(($15 + [248]))
+	*($15 + [200]) = *(($15 + [249]))
+	*($15 + [201]) = *(($15 + [250]))
+	*($15 + [202]) = *(($15 + [251]))
+	*($15 + [203]) = *((($15 + [232]) + [20]))
+	*($15 + [204]) = *(($15 + [253]))
+	*($15 + [205]) = *(($15 + [254]))
+	*($15 + [206]) = *(($15 + [255]))
+	*($15 + [207]) = *((($15 + [232]) + [24]))
+	*($15 + [208]) = *((($15 + [232]) + [25]))
+	*($15 + [209]) = *(($15 + [258]))
+	*($15 + [210]) = *(($15 + [259]))
+	*($15 + [211]) = *(($15 + [260]))
+	*($15 + [212]) = *(($15 + [261]))
+	*($15 + [213]) = *(($15 + [262]))
+	*($15 + [214]) = *(($15 + [263]))
+	*($15 + [215]) = *((($15 + [232]) + [32]))
+	*($15 + [216]) = *((($15 + [232]) + [33]))
+	*($15 + [144]) = [1]
+	*($15 + [8]) = *($15 + [232])
+	CALL memcpy((($15 + [8]) | [4]), ($15 + [184]), [33])
+	*(($7 = (($15 + [144]) + [12]))) = [0]
+	*($15 + [48]) = [1]
+	$8 = (int_64)0
+	*($15 + [148 align=4]) = (int_64)0
+	$1 = CALL $34([44])
+	$6 = ($1 + [44])
+	*($7) = $6
+	*($15 + [148]) = $1
+	CALL memcpy($1, ($15 + [8]), [44])
+	*((($15 + [144]) + [8])) = $6
+	*((($15 + [144]) + [20])) = [0]
+	*((($15 + [144]) + [24])) = [0]
+	*((($15 + [144]) + [32])) = [0]
+	*(($15 + [180])) = [0]
+	*($15 + [160]) = [0]
+	*($15 + [172]) = [0]
+	$5 = *($0)
+	$10 = (int_64)59
+	$1 = [1088]
+	$11 = (int_64)0
+	
+.LOOP $label$42:
+	if ( ((uint_64)$8 > (uint_64)(int_64)5) ){ goto $label$47 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$46 }
+	$7 = ($7 + [165])
+	goto $label$45 
+	
+.LABEL $label$47
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$44 }
+	goto $label$43 
+	
+.LABEL $label$46
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$45
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$44
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$43
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$11 = ((int_64)$12 | (int_64)$11)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$42 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [496]
+	$13 = (int_64)0
+	
+.LOOP $label$48:
+	if ( ((uint_64)$8 > (uint_64)(int_64)4) ){ goto $label$53 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$52 }
+	$7 = ($7 + [165])
+	goto $label$51 
+	
+.LABEL $label$53
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$50 }
+	goto $label$49 
+	
+.LABEL $label$52
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$51
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$50
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$49
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$13 = ((int_64)$12 | (int_64)$13)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$48 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [608]
+	$14 = (int_64)0
+	
+.LOOP $label$54:
+	if ( ((uint_64)$8 > (uint_64)(int_64)9) ){ goto $label$59 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$58 }
+	$7 = ($7 + [165])
+	goto $label$57 
+	
+.LABEL $label$59
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$56 }
+	goto $label$55 
+	
+.LABEL $label$58
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$57
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$56
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$55
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$14 = ((int_64)$12 | (int_64)$14)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$54 }
+	*($15 + [16]) = $9
+	*($15 + [8]) = $5
+	CALL $17((($15 + [8]) + [16]), ($15 + [144]))
+	CALL $17(($15 + [64]), ($15 + [144]))
+	*(($7 = ($15 + [128]))) = [0]
+	*($15 + [112]) = $14
+	*($15 + [104]) = $13
+	*($15 + [120]) = (int_64)0
+	*(($1 = CALL $34([16]))) = $5
+	*($1 + [8]) = $11
+	$6 = ($1 + [16])
+	*($7) = $6
+	*(($15 + [124])) = $6
+	*($15 + [120]) = $1
+	CALL $18(($15 + [132]), ($15 + [8]))
+	CALL $19(($15 + [336]), ($15 + [104]))
+	$1 = *($15 + [336])
+	CALL send_inline($1, (*($15 + [340]) - $1))
+	$1 = *($15 + [336])
+	if ( ($1 == 0) ){ goto $label$60 }
+	*($15 + [340]) = $1
+	CALL $35($1)
+	
+.LABEL $label$60
+	$1 = *($15 + [132])
+	if ( ($1 == 0) ){ goto $label$61 }
+	*(($15 + [136])) = $1
+	CALL $35($1)
+	
+.LABEL $label$61
+	$1 = *($15 + [120])
+	if ( ($1 == 0) ){ goto $label$62 }
+	*(($15 + [124])) = $1
+	CALL $35($1)
+	
+.LABEL $label$62
+	$1 = *(($15 + [92]))
+	if ( ($1 == 0) ){ goto $label$63 }
+	*(($15 + [96])) = $1
+	CALL $35($1)
+	
+.LABEL $label$63
+	$1 = *(($15 + [80]))
+	if ( ($1 == 0) ){ goto $label$64 }
+	*(($15 + [84])) = $1
+	CALL $35($1)
+	
+.LABEL $label$64
+	$1 = *(($15 + [68]))
+	if ( ($1 == 0) ){ goto $label$65 }
+	*(($15 + [72])) = $1
+	CALL $35($1)
+	
+.LABEL $label$65
+	$1 = *(($15 + [52]))
+	if ( ($1 == 0) ){ goto $label$66 }
+	*(($15 + [56])) = $1
+	CALL $35($1)
+	
+.LABEL $label$66
+	$1 = *(($15 + [40]))
+	if ( ($1 == 0) ){ goto $label$67 }
+	*(($15 + [44])) = $1
+	CALL $35($1)
+	
+.LABEL $label$67
+	$1 = *(($15 + [28]))
+	if ( ($1 == 0) ){ goto $label$68 }
+	*(($15 + [32])) = $1
+	CALL $35($1)
+	
+.LABEL $label$68
+	$5 = *($0)
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [1088]
+	$11 = (int_64)0
+	
+.LOOP $label$69:
+	if ( ((uint_64)$8 > (uint_64)(int_64)5) ){ goto $label$74 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$73 }
+	$7 = ($7 + [165])
+	goto $label$72 
+	
+.LABEL $label$74
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$71 }
+	goto $label$70 
+	
+.LABEL $label$73
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$72
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$71
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$70
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$11 = ((int_64)$12 | (int_64)$11)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$69 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [496]
+	$13 = (int_64)0
+	
+.LOOP $label$75:
+	if ( ((uint_64)$8 > (uint_64)(int_64)4) ){ goto $label$80 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$79 }
+	$7 = ($7 + [165])
+	goto $label$78 
+	
+.LABEL $label$80
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$77 }
+	goto $label$76 
+	
+.LABEL $label$79
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$78
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$77
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$76
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$13 = ((int_64)$12 | (int_64)$13)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$75 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [1104]
+	$14 = (int_64)0
+	
+.LOOP $label$81:
+	if ( ((uint_64)$8 > (uint_64)(int_64)5) ){ goto $label$86 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$85 }
+	$7 = ($7 + [165])
+	goto $label$84 
+	
+.LABEL $label$86
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$83 }
+	goto $label$82 
+	
+.LABEL $label$85
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$84
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$83
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$82
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$14 = ((int_64)$12 | (int_64)$14)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$81 }
+	*((($15 + [104]) + [20])) = *($15 + [308])
+	*($15 + [112]) = $9
+	*((($15 + [104]) + [28])) = *(($15 + [316]))
+	*((($15 + [104]) + [24])) = *(($15 + [312]))
+	*($15 + [104]) = $5
+	*($15 + [120]) = *($15 + [304])
+	*($15 + [8]) = $13
+	*($15 + [16]) = $14
+	*($15 + [24]) = [0]
+	*(($7 = (($15 + [8]) + [20]))) = [0]
+	*(($6 = (($15 + [8]) + [24]))) = [0]
+	*(($1 = CALL $34([16]))) = $5
+	*($1 + [8]) = $11
+	*(($4 = (($15 + [8]) + [32]))) = [0]
+	$2 = ($1 + [16])
+	*($6) = $2
+	*($7) = $2
+	*($15 + [24]) = $1
+	*($15 + [36]) = [0]
+	*(($15 + [44])) = [0]
+	CALL $16((($15 + [8]) + [28]), [32])
+	$1 = *($4)
+	$7 = *($15 + [36])
+	*($15 + [340]) = $7
+	*($15 + [336]) = $7
+	*($15 + [344]) = $1
+	*($15 + [320]) = ($15 + [336])
+	*($15 + [328]) = ($15 + [104])
+	CALL $20(($15 + [328]), ($15 + [320]))
+	CALL $19(($15 + [336]), ($15 + [8]))
+	$1 = *($15 + [336])
+	CALL send_inline($1, (*($15 + [340]) - $1))
+	$1 = *($15 + [336])
+	if ( ($1 == 0) ){ goto $label$87 }
+	*($15 + [340]) = $1
+	CALL $35($1)
+	
+.LABEL $label$87
+	$1 = *($15 + [36])
+	if ( ($1 == 0) ){ goto $label$88 }
+	*(($15 + [40])) = $1
+	CALL $35($1)
+	
+.LABEL $label$88
+	$1 = *($15 + [24])
+	if ( ($1 == 0) ){ goto $label$89 }
+	*(($15 + [28])) = $1
+	CALL $35($1)
+	
+.LABEL $label$89
+	$5 = *($0)
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [1088]
+	$11 = (int_64)0
+	
+.LOOP $label$90:
+	if ( ((uint_64)$8 > (uint_64)(int_64)5) ){ goto $label$95 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$94 }
+	$7 = ($7 + [165])
+	goto $label$93 
+	
+.LABEL $label$95
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$92 }
+	goto $label$91 
+	
+.LABEL $label$94
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$93
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$92
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$91
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$11 = ((int_64)$12 | (int_64)$11)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$90 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [496]
+	$13 = (int_64)0
+	
+.LOOP $label$96:
+	if ( ((uint_64)$8 > (uint_64)(int_64)4) ){ goto $label$101 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$100 }
+	$7 = ($7 + [165])
+	goto $label$99 
+	
+.LABEL $label$101
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$98 }
+	goto $label$97 
+	
+.LABEL $label$100
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$99
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$98
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$97
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$13 = ((int_64)$12 | (int_64)$13)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$96 }
+	$8 = (int_64)0
+	$10 = (int_64)59
+	$1 = [1120]
+	$14 = (int_64)0
+	
+.LOOP $label$102:
+	if ( ((uint_64)$8 > (uint_64)(int_64)9) ){ goto $label$107 }
+	$7 = *($1)
+	if ( ((uint_32)(($7 + [-97]) & [255]) > (uint_32)[25]) ){ goto $label$106 }
+	$7 = ($7 + [165])
+	goto $label$105 
+	
+.LABEL $label$107
+	$12 = (int_64)0
+	if ( ((uint_64)$8 <= (uint_64)(int_64)11) ){ goto $label$104 }
+	goto $label$103 
+	
+.LABEL $label$106
+	$7 = ( ($7 + [208]) ? [0] : ((($7 + [-49]) & [255]) <= [5]) )
+	
+.LABEL $label$105
+	$12 = (int_64)((int_64)(CASTING uint_64)(uint_32 $7) << (int_64)56) >> (int_64)56)
+	
+.LABEL $label$104
+	$12 = ((int_64)((int_64)$12 & (int_64)31) << (int_64)((int_64)$10 & (int_64)4294967295))
+	
+.LABEL $label$103
+	$1 = ($1 + [1])
+	$8 = ((int_64)$8 + (int_64)1)
+	$14 = ((int_64)$12 | (int_64)$14)
+	$10 = ((int_64)$10 + (int_64)-5)
+	if ( ((int_64)$10 != (int_64)-6) ){ goto $label$102 }
+	*((($15 + [8]) + [24])) = (int_64)1397703940
+	*(($15 + [48])) = (int_64)1397703940
+	*($15 + [16]) = $9
+	*($15 + [8]) = $5
+	*($15 + [24]) = (int_64)1000
+	*($15 + [40]) = (int_64)1000
+	*($15 + [56]) = [1]
+	*($15 + [112]) = $14
+	*($15 + [104]) = $13
+	*(($1 = CALL $34([16]))) = $5
+	*($1 + [8]) = $11
+	*(($7 = ($15 + [136]))) = [0]
+	$6 = ($1 + [16])
+	*((($15 + [104]) + [24])) = $6
+	*(($15 + [124])) = $6
+	*($15 + [120]) = $1
+	*($15 + [132]) = [0]
+	*(($15 + [140])) = [0]
+	CALL $16(($15 + [132]), [49])
+	$1 = *($7)
+	$7 = *($15 + [132])
+	*($15 + [340]) = $7
+	*($15 + [336]) = $7
+	*($15 + [344]) = $1
+	*($15 + [320]) = ($15 + [336])
+	*($15 + [328]) = ($15 + [8])
+	CALL $21(($15 + [328]), ($15 + [320]))
+	CALL $19(($15 + [336]), ($15 + [104]))
+	$1 = *($15 + [336])
+	CALL send_inline($1, (*($15 + [340]) - $1))
+	$1 = *($15 + [336])
+	if ( ($1 == 0) ){ goto $label$108 }
+	*($15 + [340]) = $1
+	CALL $35($1)
+	
+.LABEL $label$108
+	$1 = *($15 + [132])
+	if ( ($1 == 0) ){ goto $label$109 }
+	*(($15 + [136])) = $1
+	CALL $35($1)
+	
+.LABEL $label$109
+	$1 = *($15 + [120])
+	if ( ($1 == 0) ){ goto $label$110 }
+	*(($15 + [124])) = $1
+	CALL $35($1)
+	
+.LABEL $label$110
+	CALL prints([1136])
+	CALL printn($9)
+	CALL prints([1152])
+	CALL $22(($15 + [304]))
+	CALL prints([1168])
+	$1 = *(($15 + [172]))
+	if ( ($1 == 0) ){ goto $label$111 }
+	*(($15 + [176])) = $1
+	CALL $35($1)
+	
+.LABEL $label$111
+	$1 = *(($15 + [160]))
+	if ( ($1 == 0) ){ goto $label$112 }
+	*(($15 + [164])) = $1
+	CALL $35($1)
+	
+.LABEL $label$112
+	$1 = *($15 + [148])
+	if ( ($1 == 0) ){ goto $label$113 }
+	*(($15 + [152])) = $1
+	CALL $35($1)
+	
+.LABEL $label$113
+	if ( ((*($15 + [272]) & [1]) == 0) ){ goto $label$114 }
+	CALL $35(*(($15 + [280])))
+	
+.LABEL $label$114
+	if ( ((*($15 + [288]) & [1]) == 0) ){ goto $label$115 }
+	CALL $35(*(($15 + [296])))
+	
+.LABEL $label$115
+	*([0] + [4]) = ($15 + [352])
+}
+
+int_32 .FUNC $12 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_64 $3
+	int_32 $4
+	int_32 $5
+	$4 = (*([0] + [4]) - [64])
+	*([0] + [4]) = $4
+	*(($5 = $4) + [44]) = $0
+	*($5 + [32]) = *($1)
+	*($5 + [36]) = *($1 + [4])
+	$1 = [0]
+	$0 = [0]
+	$2 = CALL action_data_size()
+	if ( ($2 == 0) ){ goto $label$1 }
+	if ( ($2 <= [513]) ){ goto $label$3 }
+	$0 = CALL malloc($2)
+	goto $label$2 
+	
+.LABEL $label$3
+	$0 = ($4 - (($2 + [15]) & [-16]))
+	*([0] + [4]) = $0
+	
+.LABEL $label$2
+	CALL read_action_data($0, $2)
+	
+.LABEL $label$1
+	*($5 + [8]) = (int_64)1397703940
+	*($5) = (int_64)0
+	CALL eosio_assert([1], [624])
+	$3 = (int_64)5459781
+	
+.LOOP $label$6:
+	if ( ((uint_32)(((CASTING uint_32)(uint_64 $3) << [24]) + [-1073741825]) > (uint_32)[452984830]) ){ goto $label$5 }
+	$3 = (uint_64)$3 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$3) & (int_64)255) != (int_64)0) ){ goto $label$7 }
+	
+.LOOP $label$8:
+	$3 = (uint_64)$3 >> (uint_64)(int_64)8
+	if ( ((int_64)((int_64)$3) & (int_64)255) != (int_64)0) ){ goto $label$5 }
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$8 }
+	
+.LABEL $label$7
+	$4 = [1]
+	$1 = ($1 + [1])
+	if ( ((int_32)$1 < (int_32)[7]) ){ goto $label$6 }
+	goto $label$4 
+	
+.LABEL $label$5
+	$4 = [0]
+	
+.LABEL $label$4
+	CALL eosio_assert($4, [688])
+	*(($5 + [24])) = [0]
+	*($5 + [16]) = (int_64)0
+	*($5 + [48]) = $0
+	$1 = ($0 + $2)
+	*($5 + [56]) = $1
+	CALL eosio_assert(((uint_32)$2 > (uint_32)[7]), [720])
+	CALL memcpy($5, $0, [8])
+	$4 = ($0 + [8])
+	CALL eosio_assert(((uint_32)($1 - $4) > (uint_32)[7]), [720])
+	CALL memcpy(($5 + [8]), $4, [8])
+	*($5 + [52]) = ($0 + [16])
+	CALL $13(($5 + [48]), ($5 + [16]))
+	if ( ($2 <= [513]) ){ goto $label$9 }
+	CALL free($0)
+	
+.LABEL $label$9
+	*($5 + [52]) = ($5 + [32])
+	*($5 + [48]) = ($5 + [44])
+	CALL $14(($5 + [48]), $5)
+	if ( ((*($5 + [16]) & [1]) == 0) ){ goto $label$10 }
+	CALL $35(*(($5 + [24])))
+	
+.LABEL $label$10
+	*([0] + [4]) = ($5 + [64])
+	return [1]
+}
+
+int_32 .FUNC $13 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	$7 = (*([0] + [4]) - [32])
+	*([0] + [4]) = $7
+	*($7 + [24]) = [0]
+	*($7 + [16]) = (int_64)0
+	CALL $15($0, ($7 + [16]))
+	$4 = *($7 + [16])
+	$5 = *($7 + [20])
+	if ( ((int_32)$5 != (int_32)$4) ){ goto $label$9 }
+	if ( (*($1) & [1]) ){ goto $label$8 }
+	*($1) = [0]
+	$4 = ($1 + [8])
+	goto $label$7 
+	
+.LABEL $label$9
+	*(($7 + [8])) = [0]
+	*($7) = (int_64)0
+	$2 = ($5 - $4)
+	if ( ((uint_32)$2 >= (uint_32)[-16]) ){ goto $label$1 }
+	if ( ((uint_32)$2 >= (uint_32)[11]) ){ goto $label$6 }
+	*($7) = ($2 << [1])
+	$6 = ($7 | [1])
+	if ( $2 ){ goto $label$5 }
+	goto $label$4 
+	
+.LABEL $label$8
+	*(*($1 + [8])) = [0]
+	*($1 + [4]) = [0]
+	$4 = ($1 + [8])
+	
+.LABEL $label$7
+	CALL $37($1, [0])
+	*($4) = [0]
+	*($1) = (int_64)0
+	$4 = *($7 + [16])
+	if ( $4 ){ goto $label$3 }
+	goto $label$2 
+	
+.LABEL $label$6
+	$5 = (($2 + [16]) & [-16])
+	$6 = CALL $34($5)
+	*($7) = ($5 | [1])
+	*($7 + [8]) = $6
+	*($7 + [4]) = $2
+	
+.LABEL $label$5
+	$3 = $2
+	$5 = $6
+	
+.LOOP $label$10:
+	*($5) = *($4)
+	$5 = ($5 + [1])
+	$4 = ($4 + [1])
+	$3 = ($3 + [-1])
+	if ( $3 ){ goto $label$10 }
+	$6 = ($6 + $2)
+	
+.LABEL $label$4
+	*($6) = [0]
+	if ( (*($1) & [1]) ){ goto $label$12 }
+	*($1) = [0]
+	goto $label$11 
+	
+.LABEL $label$12
+	*(*($1 + [8])) = [0]
+	*($1 + [4]) = [0]
+	
+.LABEL $label$11
+	CALL $37($1, [0])
+	*(($1 + [8])) = *(($7 + [8]))
+	*($1) = *($7)
+	$4 = *($7 + [16])
+	if ( ($4 == 0) ){ goto $label$2 }
+	
+.LABEL $label$3
+	*($7 + [20]) = $4
+	CALL $35($4)
+	
+.LABEL $label$2
+	*([0] + [4]) = ($7 + [32])
+	return $0
+	
+.LABEL $label$1
+	CALL $36($7)
+	return (unreachable)
+}
+
+void .FUNC $36 (int_32 $0)
+{
+	CALL abort()
+	(unreachable)
+}
+
+void .FUNC $37 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	if ( ((uint_32)$1 >= (uint_32)[-16]) ){ goto $label$1 }
+	$2 = [10]
+	$5 = *($0)
+	if ( (($5 & [1]) == 0) ){ goto $label$2 }
+	$5 = *($0)
+	$2 = (($5 & [-2]) + [-1])
+	
+.LABEL $label$2
+	if ( ($5 & [1]) ){ goto $label$4 }
+	$3 = uint_32(($5 & [254]) >> [1])
+	goto $label$3 
+	
+.LABEL $label$4
+	$3 = *($0 + [4])
+	
+.LABEL $label$3
+	$4 = [10]
+	$1 = ( $3 ? $1 : ((uint_32)$3 > (uint_32)$1) )
+	if ( ($1 <= [11]) ){ goto $label$5 }
+	$4 = ((($1 + [16]) & [-16]) + [-1])
+	
+.LABEL $label$5
+	if ( ((int_32)$4 == (int_32)$2) ){ goto $label$6 }
+	if ( ((int_32)$4 != (int_32)[10]) ){ goto $label$8 }
+	$6 = [1]
+	$1 = ($0 + [1])
+	$2 = *($0 + [8])
+	$7 = [0]
+	goto $label$7 
+	
+.LABEL $label$8
+	$1 = CALL $34(($4 + [1]))
+	if ( ((uint_32)$4 > (uint_32)$2) ){ goto $label$9 }
+	if ( ($1 == 0) ){ goto $label$6 }
+	
+.LABEL $label$9
+	$5 = *($0)
+	if ( ($5 & [1]) ){ goto $label$10 }
+	$7 = [1]
+	$2 = ($0 + [1])
+	$6 = [0]
+	goto $label$7 
+	
+.LABEL $label$10
+	$2 = *($0 + [8])
+	$6 = [1]
+	$7 = [1]
+	
+.LABEL $label$7
+	if ( ($5 & [1]) ){ goto $label$12 }
+	$5 = uint_32(($5 & [254]) >> [1])
+	goto $label$11 
+	
+.LABEL $label$12
+	$5 = *($0 + [4])
+	
+.LABEL $label$11
+	$5 = ($5 + [1])
+	if ( ($5 == 0) ){ goto $label$13 }
+	CALL memcpy($1, $2, $5)
+	
+.LABEL $label$13
+	if ( ($6 == 0) ){ goto $label$14 }
+	CALL $35($2)
+	
+.LABEL $label$14
+	if ( ($7 == 0) ){ goto $label$15 }
+	*($0 + [4]) = $3
+	*($0 + [8]) = $1
+	*($0) = (($4 + [1]) | [1])
+	return 
+	
+.LABEL $label$15
+	*($0) = ($3 << [1])
+	
+.LABEL $label$6
+	return (unreachable)
+	
+.LABEL $label$1
+	CALL abort()
+}
+
+int_32 .FUNC $34 (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	$1 = ( $0 ? [1] : $0 )
+	$0 = CALL malloc($1)
+	if ( $0 ){ goto $label$1 }
+	
+.LOOP $label$2:
+	$0 = [0]
+	$2 = *([0] + [1328])
+	if ( ($2 == 0) ){ goto $label$1 }
+	CALL void $2()
+	$0 = CALL malloc($1)
+	if ( ($0 == 0) ){ goto $label$2 }
+	
+.LABEL $label$1
+	return $0
+}
+
+void .FUNC $35 (int_32 $0)
+{
+	if ( ($0 == 0) ){ goto $label$1 }
+	CALL free($0)
+	
+.LABEL $label$1
+}
+
+void .FUNC $32 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	$2 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((uint_32)(*($3 + [8]) - *($3 + [4])) > (uint_32)[7]), [720])
+	CALL memcpy($2, *($3 + [4]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$0 = *($0)
+	$3 = *($1)
+	CALL eosio_assert(((uint_32)(*($3 + [8]) - *($3 + [4])) > (uint_32)[7]), [720])
+	CALL memcpy(($0 + [8]), *($3 + [4]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	$3 = *($1)
+	CALL eosio_assert(((uint_32)(*($3 + [8]) - *($3 + [4])) > (uint_32)[7]), [720])
+	CALL memcpy(($0 + [16]), *($3 + [4]), [8])
+	$2 = (*($3 + [4]) + [8])
+	*($3 + [4]) = $2
+	CALL eosio_assert(((uint_32)(*($3 + [8]) - $2) > (uint_32)[7]), [720])
+	CALL memcpy(($0 + [24]), *($3 + [4]), [8])
+	*($3 + [4]) = (*($3 + [4]) + [8])
+	CALL $13(*($1), ($0 + [32]))
+}
+
+void .FUNC $33 (int_32 $0, int_32 $1)
+{
+	int_64 $2
+	int_64 $3
+	int_32 $4
+	int_32 $5
+	$5 = (*([0] + [4]) - [96])
+	*([0] + [4]) = $5
+	*(($5 + [44])) = *(($1 + [28]))
+	*(($4 = (($5 + [32]) + [8]))) = *(($1 + [24]))
+	*($5 + [32]) = *($1 + [16])
+	*($5 + [36]) = *(($1 + [20]))
+	$3 = *($1 + [8])
+	$2 = *($1)
+	CALL $42(($5 + [16]), ($1 + [32]))
+	*((($5 + [48]) + [8])) = *($4)
+	*($5 + [48]) = *($5 + [32])
+	$1 = *($0 + [4])
+	$4 = *($1 + [4])
+	$0 = (*(*($0)) + int_32($4 >> [1]))
+	$1 = *($1)
+	if ( (($4 & [1]) == 0) ){ goto $label$1 }
+	$1 = *((*($0) + $1))
+	
+.LABEL $label$1
+	*(($4 = (($5 + [80]) + [8]))) = *((($5 + [48]) + [8]))
+	*($5 + [80]) = *($5 + [48])
+	CALL $42(($5 + [64]), ($5 + [16]))
+	*(($5 + [8])) = *($4)
+	*($5) = *($5 + [80])
+	CALL void $0((int_32 $2), (int_64 $3), (int_64 $5), (int_32 ($5 + [64])), (int_32 $1))
+	if ( ((*($5 + [64]) & [1]) == 0) ){ goto $label$2 }
+	CALL $35(*($5 + [72]))
+	
+.LABEL $label$2
+	if ( ((*($5 + [16]) & [1]) == 0) ){ goto $label$3 }
+	CALL $35(*($5 + [24]))
+	
+.LABEL $label$3
+	*([0] + [4]) = ($5 + [96])
+}
+
+int_32 .FUNC $30 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_64 $5
+	int_32 $6
+	int_32 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	$5 = (CASTING uint_64)(uint_32 int_32((*($1 + [4]) - *($1)) >> [3]))
+	$6 = *($0 + [4])
+	$3 = ($0 + [8])
+	$4 = ($0 + [4])
+	
+.LOOP $label$1:
+	$7 = (CASTING uint_32)(uint_64 $5)
+	$5 = (uint_64)$5 >> (uint_64)(int_64)7
+	$2 = ((int_64)$5) != (int_64)0
+	*($8 + [15]) = (($2) << [7]) | ($7 & [127]))
+	CALL eosio_assert(((int_32)(*($3) - $6) > (int_32)[0]), [1232])
+	CALL memcpy(*($4), ($8 + [15]), [1])
+	$6 = (*($4) + [1])
+	*($4) = $6
+	if ( $2 ){ goto $label$1 }
+	$3 = *(($1 + [4]))
+	$7 = *($1)
+	if ( ((int_32)$7 == (int_32)$3) ){ goto $label$2 }
+	
+.LOOP $label$3:
+	$2 = ($0 + [8])
+	CALL eosio_assert(((int_32)(*($2) - $6) > (int_32)[3]), [1232])
+	$4 = ($0 + [4])
+	CALL memcpy(*($4), $7, [4])
+	$6 = (*($4) + [4])
+	*($4) = $6
+	CALL eosio_assert(((int_32)(*($2) - $6) > (int_32)[1]), [1232])
+	CALL memcpy(*($4), ($7 + [4]), [2])
+	$6 = (*($4) + [2])
+	*($4) = $6
+	$7 = ($7 + [8])
+	if ( ((int_32)$7 != (int_32)$3) ){ goto $label$3 }
+	
+.LABEL $label$2
+	*([0] + [4]) = ($8 + [16])
+	return $0
+}
+
+int_32 .FUNC $31 (int_32 $0, int_32 $1)
+{
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_64 $6
+	int_32 $7
+	int_32 $8
+	$8 = (*([0] + [4]) - [16])
+	*([0] + [4]) = $8
+	$7 = *($0 + [4])
+	$6 = *($1)
+	$3 = ($0 + [8])
+	$4 = ($0 + [4])
+	
+.LOOP $label$1:
+	$5 = (CASTING uint_32)(uint_64 $6)
+	$6 = (uint_64)$6 >> (uint_64)(int_64)7
+	$2 = ((int_64)$6) != (int_64)0
+	*($8 + [15]) = (($2) << [7]) | ($5 & [127]))
+	CALL eosio_assert(((int_32)(*($3) - $7) > (int_32)[0]), [1232])
+	CALL memcpy(*($4), ($8 + [15]), [1])
+	$7 = (*($4) + [1])
+	*($4) = $7
+	if ( $2 ){ goto $label$1 }
+	$2 = ($0 + [8])
+	$4 = [4]
+	
+.LOOP $label$2:
+	CALL eosio_assert(((int_32)(*($2) - $7) > (int_32)[0]), [1232])
+	$5 = ($0 + [4])
+	CALL memcpy(*($5), ($1 + $4), [1])
+	$7 = (*($5) + [1])
+	*($5) = $7
+	$4 = ($4 + [1])
+	if ( ((int_32)$4 != (int_32)[37]) ){ goto $label$2 }
+	*([0] + [4]) = ($8 + [16])
+	return $0
+}
+
+int_32 .FUNC $50 (int_32 $0)
+{
+	int_32 $1
+	int_32 $2
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	int_32 $7
+	int_32 $8
+	$1 = *($0 + [8388])
+	if ( (*([0] + [9814]) == 0) ){ goto $label$2 }
+	$7 = *([0] + [9816])
+	goto $label$1 
+	
+.LABEL $label$2
+	$7 = (current_memory)
+	*([0] + [9814]) = [1]
+	$7 = ($7 << [16])
+	*([0] + [9816]) = $7
+	
+.LABEL $label$1
+	$3 = $7
+	$8 = (current_memory)
+	$2 = uint_32(($7 + [65535]) >> [16])
+	if ( ((uint_32)$2 <= (uint_32)$8) ){ goto $label$6 }
+	($2 - $8)
+	$8 = [0]
+	if ( ((int_32)$2 != (int_32)(current_memory)) ){ goto $label$5 }
+	$3 = *([0] + [9816])
+	
+.LABEL $label$6
+	$8 = [0]
+	*([0] + [9816]) = $3
+	if ( ((int_32)$7 < (int_32)[0]) ){ goto $label$5 }
+	$2 = ($0 + ((int_32)$1 * (int_32)[12]))
+	$8 = ($7 & [65535])
+	$6 = ($8 <= [64513])
+	$7 = ((($7 + ( [65536] ? [131072] : $6 )) - ( $8 ? ($7 & [131071]) : $6 )) - $7)
+	if ( *([0] + [9814]) ){ goto $label$7 }
+	$3 = (current_memory)
+	*([0] + [9814]) = [1]
+	$3 = ($3 << [16])
+	*([0] + [9816]) = $3
+	
+.LABEL $label$7
+	$2 = ($2 + [8192])
+	if ( ((int_32)$7 < (int_32)[0]) ){ goto $label$4 }
+	$6 = $3
+	$4 = (current_memory)
+	$5 = (($7 + [7]) & [-8])
+	$8 = uint_32((($5 + $3) + [65535]) >> [16])
+	if ( ((uint_32)$8 <= (uint_32)$4) ){ goto $label$8 }
+	($8 - $4)
+	if ( ((int_32)$8 != (int_32)(current_memory)) ){ goto $label$4 }
+	$6 = *([0] + [9816])
+	
+.LABEL $label$8
+	*([0] + [9816]) = ($6 + $5)
+	if ( ((int_32)$3 == (int_32)[-1]) ){ goto $label$4 }
+	$8 = *($2)
+	$1 = ($0 + ((int_32)$1 * (int_32)[12]))
+	$6 = *(($1 + [8196]))
+	if ( ((int_32)($6 + $8) == (int_32)$3) ){ goto $label$3 }
+	$5 = ($1 + [8200])
+	$1 = *($5)
+	if ( ((int_32)$8 == (int_32)$1) ){ goto $label$9 }
+	*(($6 = ($6 + $1))) = ((*($6) & [-2147483648]) | (([-4] - $1) + $8))
+	*($5) = *($2)
+	*($6) = (*($6) & [2147483647])
+	
+.LABEL $label$9
+	$2 = (*($2) + [1])
+	*(($2 = ($0 + [8388]))) = $2
+	*((($0 = ($0 + ((int_32)$2 * (int_32)[12]))) + [8196])) = $3
+	*(($8 = ($0 + [8192]))) = $7
+	
+.LABEL $label$5
+	return $8
+	
+.LABEL $label$4
+	$3 = ($0 + ((int_32)$1 * (int_32)[12]))
+	$1 = ($3 + [8200])
+	$7 = *($1)
+	$8 = *($2)
+	if ( ((int_32)$8 == (int_32)$7) ){ goto $label$10 }
+	*(($3 = (*(($3 + [8196])) + $7))) = ((*($3) & [-2147483648]) | (([-4] - $7) + $8))
+	*($1) = *($2)
+	*($3) = (*($3) & [2147483647])
+	
+.LABEL $label$10
+	$7 = ($0 + [8388])
+	$3 = (*($7) + [1])
+	*($0 + [8384]) = $3
+	*($7) = $3
+	return [0]
+	
+.LABEL $label$3
+	*($2) = ($8 + $7)
+	return $2
+}
+
+int_32 .FUNC $38 (int_32 $0, int_32 $1, int_32 $2)
+{
+	int_32 $3
+	int_32 $4
+	int_32 $5
+	int_32 $6
+	$6 = *($0)
+	$3 = ($6 & [1])
+	if ( $3 ){ goto $label$3 }
+	$4 = uint_32($6 >> [1])
+	if ( ((uint_32)$4 >= (uint_32)$1) ){ goto $label$2 }
+	goto $label$1 
+	
+.LABEL $label$3
+	$4 = *($0 + [4])
+	if ( ($4 <= $1) ){ goto $label$1 }
+	
+.LABEL $label$2
+	if ( ($2 == 0) ){ goto $label$4 }
+	if ( $3 ){ goto $label$6 }
+	$5 = ($0 + [1])
+	goto $label$5 
+	
+.LABEL $label$6
+	$5 = *($0 + [8])
+	
+.LABEL $label$5
+	$2 = ( $3 ? $2 : ($3 <= $2) )
+	$3 = ($4 - $1)
+	$3 = ($3 - $2)
+	if ( ($3 == 0) ){ goto $label$7 }
+	$1 = ($5 + $1)
+	CALL memmove($1, ($1 + $2), $3)
+	$6 = *($0)
+	
+.LABEL $label$7
+	$2 = ($4 - $2)
+	if ( ($6 & [1]) ){ goto $label$9 }
+	*($0) = ($2 << [1])
+	goto $label$8 
+	
+.LABEL $label$9
+	*($0 + [4]) = $2
+	
+.LABEL $label$8
+	*(($5 + $2)) = [0]
+	
+.LABEL $label$4
+	return $0
+	
+.LABEL $label$1
+	CALL abort()
+	return (unreachable)
+}
+
+void .FUNC $52 ()
+{
+	(unreachable)
+}

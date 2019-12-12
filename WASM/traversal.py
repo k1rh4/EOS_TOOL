@@ -12,7 +12,10 @@ def main():
         print "[+] Trying..(%d) DAPP [%s] " %(i,appName)
         #cmd = "python ./main.py %s/%s.%s" %(dapp,appName, "wasm")
 
-        #"../CONTRACT/eosmagiecube/eosmagiecube.wasm.decompile" 
+        #"../CONTRACT/eosmagiecube/eosmagiecube.wasm.decompile"
+        import os.path
+        if os.path.isfile("%s/%s.wasm.decompile" % (dapp,appName)): pass
+        if os.path.isfile("%s/%s.abi" % (dapp,appName)): pass
         cmd = "python ./now.py %s/%s.wasm.decompile %s/%s.abi" %(dapp,appName, dapp,appName)
         print cmd 
         proc = subprocess.call(cmd, shell=True)

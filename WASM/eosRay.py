@@ -31,9 +31,9 @@ class eosRay():
             source = self.ray(stack)
             
             #restore = self.beautifulSrc(source)
-            #restore = self.Flair(restore)
-            restore = self.IR(source)
             #restore = source
+            restore = self.IR(source)
+            restore = self.Flair(restore)
             f.write(self.showSource(restore))
             sRes += self.showSource(restore)
         f.close()
@@ -219,8 +219,11 @@ class eosRay():
             elif "return" in data       : sourceList.append("return %s" % operand.pop()) if operand else sourceList.append("return ")
             elif "br_if" in data        : sourceList.append("if ( %s ){ goto %s }" % (operand.pop(), data.split(" ")[1]))
             elif "if" in data           : 
-                raw_input("[!] 'if' instruction is not implemented yet");
+                #raw_input("[!] 'if' instruction is not implemented yet");
                 #sourceList.append("if ( %s ) " % (operand.pop()))
+                print "[D] if instruction";
+                break;
+
             elif "br" in data           : sourceList.append("goto %s " %(data.split(" ")[1]))
             ### [Local variables ] ###
             elif "get_local" in data    : operand.append(data.split(" ")[1])
